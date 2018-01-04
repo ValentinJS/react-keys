@@ -123,6 +123,7 @@ class Carousel extends Component {
           binderId={binderId}
           key={`item_${iIndex}`}
           item={item}
+          itemIndex={iIndex}
           itemWidth={itemWidth}
           itemHeight={itemHeight}
           itemStyles={itemStyles}
@@ -142,6 +143,7 @@ class Carousel extends Component {
           binderId={binderId}
           key={`item_${iIndex}`}
           item={item}
+          itemIndex={iIndex}
           itemWidth={itemWidth}
           itemHeight={itemHeight}
           itemStyles={itemStyles}
@@ -155,20 +157,22 @@ class Carousel extends Component {
   updatePositions = (positions, cb) => {
     const { children, id } = this.props;
 
-    this.setState({ refresh: true });
-    if (!isNaN(positions.scrollableTranslateX)) {
-      itemFocusedHandler(id, positions.iFocused, () => {
-        horizontalScrollHandler(id, positions.scrollableTranslateX);
-      })
-    }
-    else if (!isNaN(positions.scrollableTranslateY)) {
-      itemFocusedHandler(id, positions.iFocused, () => {
-        verticalScrollHandler(id, positions.scrollableTranslateY);
-      })
-    }
-    else if (isNaN(positions.scrollableTranslateX) && isNaN(positions.scrollableTranslateY)) {
-      itemFocusedHandler(id, positions.iFocused)
-    }
+    this.setState({ refresh: true }, () => {
+      if (!isNaN(positions.scrollableTranslateX)) {
+        itemFocusedHandler(id, positions.iFocused, () => {
+          horizontalScrollHandler(id, positions.scrollableTranslateX);
+        })
+      }
+      else if (!isNaN(positions.scrollableTranslateY)) {
+        itemFocusedHandler(id, positions.iFocused, () => {
+          verticalScrollHandler(id, positions.scrollableTranslateY);
+        })
+      }
+      else if (isNaN(positions.scrollableTranslateX) && isNaN(positions.scrollableTranslateY)) {
+        itemFocusedHandler(id, positions.iFocused)
+      }
+    });
+    
   }
 
   render() {

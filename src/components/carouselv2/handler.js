@@ -38,13 +38,15 @@ export function verticalScrollHandler(id, translateY) {
   scrollableRef.style.transform = `translate3d(0, ${translateY}px, 0)`;
 }
 
-export function addScrollableItemRef(id, scrollableItemRef) {
+export function addScrollableItemRef(id, itemIndex, scrollableItemRef) {
   const { scrollableItems } = getBinder(id);
   if (!scrollableItems) {
-    _updateBinder(id, { scrollableItems: [scrollableItemRef], iFocused: 0 });
+    let newScrollableItems = [];
+    newScrollableItems[itemIndex] = scrollableItemRef;
+    _updateBinder(id, { scrollableItems: newScrollableItems, iFocused: 0 });
   }
   else {
-    scrollableItems.push(scrollableItemRef);
+    scrollableItems[itemIndex] = scrollableItemRef;
     _updateBinder(id, { scrollableItems });
   }
 }
@@ -70,13 +72,17 @@ let nextBinderItemFocusedTimeout = null,
 export function itemFocusedHandler(id, iFocused, callback) {
   const { childItemWrapper, focusedClassName, iFocused: prevIFocused, preloadItemsCount, scrollableItems } = getBinder(id);
   const focusedItem = scrollableItems[iFocused].querySelector(childItemWrapper).childNodes.item(0);
+
   if (focusedClassName) {
     if (nextItemFocusedTimeout) clearTimeout(nextItemFocusedTimeout);
-    nextItemFocusedTimeout = setTimeout(() => focusedItem.classList.add(focusedClassName), ITEM_FOCUSED_TIMEOUT);
+    nextItemFocusedTimeout = setTimeout(() => {
+      focusedItem.classList.add(focusedClassName)
+    }, ITEM_FOCUSED_TIMEOUT);
+    
+    const prevFocusedItem = scrollableItems[prevIFocused].querySelector(childItemWrapper).childNodes.item(0);
+    prevFocusedItem.classList.remove(focusedClassName);
   }
 
-  const prevFocusedItem = scrollableItems[prevIFocused].querySelector(childItemWrapper).childNodes.item(0);
-  prevFocusedItem.classList.remove(focusedClassName);
 
   _updateBinder(id, { iFocused, selectedId: focusedItem.id, scrollableItems });
 

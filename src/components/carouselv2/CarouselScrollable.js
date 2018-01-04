@@ -27,6 +27,10 @@ class CarouselScrollable extends Component {
     }
   }
 
+  // shouldComponentUpdate() {
+  //   return false;
+  // }
+
   render() {
     const {
       children,

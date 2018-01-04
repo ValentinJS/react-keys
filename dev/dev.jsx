@@ -207,8 +207,7 @@ class CarouselV2Wrapper extends React.Component {
           loop={loop}
           onEnter={this.onEnter}
           preloadItemsCount={4}
-          selectedId={selectedId}
-          focusedClassName={'focused'}
+          focusedClassName={'focuseditemlol'}
           wrapperOverflow={wrapperOverflow}
           childItemWrapper={'.item-child'}
         >
@@ -217,7 +216,6 @@ class CarouselV2Wrapper extends React.Component {
                 return (
                   <div className={'item-child'} key={`carousel-h-${iCarousel}`}>
                     <CarouselV2
-                      active={selectedId == `carousel-h-${iCarousel}`}
                       id={`carousel-h-${iCarousel}`}
                       direction="horizontal"
                       focusedClassName={'focuseditem'}

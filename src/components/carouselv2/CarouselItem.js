@@ -6,8 +6,12 @@ class CarouselItem extends Component {
   state = {}
 
   componentDidMount() {
-    const { binderId } = this.props;
-    addScrollableItemRef(binderId, this.el)
+    const { binderId, itemIndex } = this.props;
+    addScrollableItemRef(binderId, itemIndex, this.el)
+  }
+
+  shouldComponentUpdate() {
+    return false
   }
 
   render() {
