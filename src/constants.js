@@ -11,6 +11,10 @@ export const STRATEGY_MEMORY = 'memory';
 
 export const BINDER_TYPE = 'binder';
 export const CAROUSEL_TYPE = 'carousel';
+export const CAROUSEL_DIRECTIONS = {
+  horizontal: 'horizontal',
+  vertical: 'vertical'
+}
 
 export const LONG_PRESS_TIMEOUT = 500;
 export const DEBOUNCE_TIMEOUT = 10;

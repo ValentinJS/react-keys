@@ -1,6 +1,7 @@
 import _Binder from './components/binder/Binder';
 import _Keys from './components/Keys';
-import _Carousel from './components/carousel/Carousel';
+import _Carousel from './components/Carousel';
+import _CarouselV2 from './components/carouselv2/Carousel';
 import _Catcher from './components/Catcher';
 import _catcher from './catcher';
 import { _init, getConfig } from './listener';
@@ -35,6 +36,7 @@ export const keysInit = _init;
 export const Keys = _Keys;
 export const Binder = _Binder;
 export const Carousel = _Carousel;
+export const CarouselV2 = _CarouselV2;
 export const Catcher = _Catcher;
 
 export const keysReducer = reducer;
