@@ -82,6 +82,9 @@ export function getIFocused(id) {
   return iFocused;
 }
 
+export function isItemMounted(idItem) {
+  return !!document.getElementById(idItem);
+}
 
 
 export function initCarousel(carouselId, direction, children, itemsVisiblesCount, preloadItemsCount) {
