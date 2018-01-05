@@ -196,26 +196,78 @@ class CarouselV2Wrapper extends React.Component {
 
     return (
       <div>
+        {
+          /**
+           * CAROUSEL EXAMPLE :
+           * Vertical Bidirectional (oyeaaah)
+           */
+        }
         <CarouselV2
           active
           id="carousel-v-1"
-          currentIndex={currentIndex}
-          direction="vertical"
+          direction="vertical-bidirectional"
+          itemsVisiblesCount={3}
+          loop={loop}
+          onEnter={this.onEnter}
+          preloadItemsCount={5}
+          focusedClassName={'focuseditemlol'}
+          nestedFocusedClassName={'focuseditemlolilol'}
+          wrapperWidth={600}
+          wrapperHeight={715}
+          wrapperOverflow={30}
+          horizontalChildItemWrapper={'.item-child'}
+          verticalChildItemWrapper={'.parent-child'}
+        >
+          {
+            items.map((parentItem, parentIndex) => {
+              return (
+                <div id={`parent_item_${parentIndex}`} key={`parent_item_${parentIndex}`}>
+                  {parentIndex % 2 === 0 && <div> Titre </div>}
+                  {parentIndex === 2 && <div> <em>Un sous-titre</em> </div> }
+                  <div className={'parent-child'} style={{display: 'flex', flexDirection: 'row'}}>
+                    {
+                      items.map((item, index) => {
+                        return (
+                          <div key={`item_${parentIndex}_${index}`} className={'item-child-2'} style={{ width: index === 4 ? '200px' : '200px', height: '200px' }}>
+                            <div id={`item_${parentIndex}_${index}`} className={'item-child'}>
+                              item_{index}
+                            </div>
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                </div>
+              )
+            })
+          }
+        </CarouselV2>
+
+
+        {
+          /**
+           * CAROUSEL EXAMPLE :
+           * Horizontal
+           */
+        }
+        {/* <CarouselV2
+          active
+          id="carousel-v-1"
+          direction="horizontal"
           itemsVisiblesCount={3}
           loop={loop}
           onEnter={this.onEnter}
           preloadItemsCount={5}
           focusedClassName={'focuseditemlol'}
           wrapperWidth={600}
-          wrapperHeight={450}
-          wrapperOverflow={0}
+          wrapperHeight={715}
+          wrapperOverflow={30}
           childItemWrapper={'.item-child'}
         >
-
           {
             items.map((item, index) => {
               return (
-                <div key={`item_${index}`} className={'item-child-2'} style={{height: index === 4 ? '200px' : '150px', width: index === 4 ? '300px' : '200px'}}>
+                <div key={`item_${index}`} className={'item-child-2'} style={{ width: index % 2 === 0 ? '300px' : '200px', height: '200px' }}>
                   <div id={`item_${index}`} className={'item-child'}>
                     item_{index}
                   </div>
@@ -223,8 +275,41 @@ class CarouselV2Wrapper extends React.Component {
               )
             })
           }
-
-        </CarouselV2>
+        </CarouselV2> */}
+        
+        {
+          /**
+           * CAROUSEL EXAMPLE :
+           * Vertical
+           */
+        }
+        {/* <CarouselV2
+          active
+          id="carousel-v-1"
+          direction="vertical"
+          itemsVisiblesCount={3}
+          loop={loop}
+          onEnter={this.onEnter}
+          preloadItemsCount={5}
+          focusedClassName={'focuseditemlol'}
+          wrapperWidth={600}
+          wrapperHeight={715}
+          wrapperOverflow={30}
+          childItemWrapper={'.item-child'}
+        >
+          {
+            items.map((item, index) => {
+              return (
+                <div key={`item_${index}`} className={'item-child-2'} style={{ height: index === 3 ? '300px' : '200px', width: '200px' }}>
+                  <div id={`item_${index}`} className={'item-child'}>
+                    item_{index}
+                  </div>
+                </div>
+              )
+            })
+          }
+        </CarouselV2> */}
+        
 
       </div>
     )

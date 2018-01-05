@@ -3,14 +3,23 @@ import React, { Component } from 'react';
 import CarouselItem from './CarouselItem';
 import { CAROUSEL_DIRECTIONS } from '../../constants';
 import PropTypes from 'prop-types';
-import { addScrollableRef, computeScrollableWidth } from './handler';
+import { 
+  addScrollableRef, 
+  addNestedScrollableRef,
+  computeScrollableWidth 
+} from './handler';
 
-class CarouselScrollable extends Component {
+class CarouselScrollable extends React.PureComponent {
   state = {}
 
   componentDidMount() {
-    const { carouselId } = this.props;
-    addScrollableRef(carouselId, this.el);
+    const { carouselId, nested, parentCarouselId, parentItemIndex } = this.props;
+    if(!nested){
+      addScrollableRef(carouselId, this.el);
+    }
+    else {
+      addNestedScrollableRef(parentCarouselId, this.el, parentItemIndex);
+    }
   }
 
   getHorizontalScrollableStyles() {

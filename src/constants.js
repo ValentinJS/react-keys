@@ -13,7 +13,15 @@ export const BINDER_TYPE = 'binder';
 export const CAROUSEL_TYPE = 'carousel';
 export const CAROUSEL_DIRECTIONS = {
   horizontal: 'horizontal',
-  vertical: 'vertical'
+  horizontalBidirectional: 'horizontal-bidirectional',
+  vertical: 'vertical',
+  verticalBidirectional: 'vertical-bidirectional'
+}
+export const CAROUSEL_SCROLLABLE_DIRECTIONS = {
+  up: 'up',
+  down: 'down',
+  left: 'left',
+  right: 'right'
 }
 
 export const LONG_PRESS_TIMEOUT = 500;

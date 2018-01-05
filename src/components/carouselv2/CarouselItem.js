@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { addScrollableItemRef } from './handler';
+import { addScrollableItemRef, addNestedScrollableItemRef } from './handler';
 import { CAROUSEL_DIRECTIONS } from '../../constants';
 class CarouselItem extends Component {
   state = {}
 
   componentDidMount() {
-    const { carouselId, itemIndex } = this.props;
-    addScrollableItemRef(carouselId, itemIndex, this.el)
-  }
-
-  shouldComponentUpdate() {
-    return false
+    const { carouselId, itemIndex, nested, parentCarouselId, parentItemIndex } = this.props;
+    if(!nested) {
+      addScrollableItemRef(carouselId, itemIndex, this.el)
+    }
+    else {
+      addNestedScrollableItemRef(parentCarouselId, itemIndex, parentItemIndex, this.el)
+    }
   }
 
   render() {
     const {
       direction,
-      item,
+      children,
       itemWidth, 
       itemHeight,
       itemStyles,
@@ -32,7 +33,7 @@ class CarouselItem extends Component {
     return (
       <div ref={(el) => { this.el = el }} style={itemWrapperStyles}>
         <div style={itemStyles}>
-          {item}
+          {children}
         </div>
       </div>
     );
