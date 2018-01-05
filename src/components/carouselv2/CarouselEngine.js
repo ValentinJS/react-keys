@@ -5,8 +5,19 @@ import { block, isBlocked } from '../../clock';
 import { enterTo, execCb } from '../../funcHandler';
 import { throttle } from '../../engines/helpers';
 import { CAROUSEL_DIRECTIONS } from '../../constants';
-import { getBinder, getIFocused, getScrollableTranslateX, getScrollableTranslateY, isCarouselActive } from './handler';
+import { 
+  getBinder, 
+  getIFocused, 
+  getItemOffsetHeight, 
+  getItemOffsetLeft,
+  getItemOffsetTop, 
+  getItemOffsetWidth,
+  getScrollableTranslateX, 
+  getScrollableTranslateY, 
+  isCarouselActive 
+} from './handler';
 import { addListener, removeListener, userConfig } from '../../listener';
+import { debounce } from '../../engines/helpers';
 
 class CarouselEngine extends Component {
   constructor(props) {
@@ -21,20 +32,20 @@ class CarouselEngine extends Component {
   scrollToDown = () => {
     const {
       binderId,
-      itemsTop,
-      itemHeight,
+      //itemHeight,
       wrapperHeight,
       updatePositions,
     } = this.props;
 
     const iFocused = getIFocused(binderId);
     const scrollableTranslateY = getScrollableTranslateY(binderId);
-
     const nextIFocused = iFocused + 1;
-    const nextItemFocusedPosition = itemsTop[iFocused + 1];
+    const nextItemFocusedPosition = getItemOffsetTop(binderId, nextIFocused);
+    const itemHeight = getItemOffsetHeight(binderId, nextIFocused);
     const isAboveWrapperLeftBorder = nextItemFocusedPosition >= -scrollableTranslateY;
     const isBeforeWrapperRightBorder = nextItemFocusedPosition + itemHeight <= wrapperHeight - scrollableTranslateY;
     const isNextItemFocusedVisible = isAboveWrapperLeftBorder && isBeforeWrapperRightBorder;
+
     if (isNextItemFocusedVisible) {
       const newPositions = {
         iFocused: nextIFocused,
@@ -55,8 +66,6 @@ class CarouselEngine extends Component {
   scrollToLeft = () => {
     const {
       binderId,
-      itemsLeft,
-      itemWidth,
       wrapperWidth,
       updatePositions
     } = this.props;
@@ -64,18 +73,20 @@ class CarouselEngine extends Component {
     const iFocused = getIFocused(binderId);
     const scrollableTranslateX = getScrollableTranslateX(binderId);
 
-    const previousItemFocusedPosition = itemsLeft[iFocused - 1];
+    const previousIFocused = iFocused - 1;
+    const previousItemFocusedPosition = getItemOffsetLeft(binderId, previousIFocused);
+    const itemWidth = getItemOffsetWidth(binderId, previousIFocused);
     const isAboveWrapperLeftBorder = previousItemFocusedPosition >= -scrollableTranslateX;
     const isBeforeWrapperRightBorder = previousItemFocusedPosition + itemWidth <= wrapperWidth - scrollableTranslateX;
     const isPreviousItemFocusedVisible = isAboveWrapperLeftBorder && isBeforeWrapperRightBorder;
 
     if (isPreviousItemFocusedVisible) {
       updatePositions({
-        iFocused: iFocused - 1,
+        iFocused: previousIFocused,
       });
 
       const newPositions = {
-        iFocused: iFocused - 1
+        iFocused: previousIFocused
       }
 
       updatePositions(newPositions);
@@ -83,7 +94,7 @@ class CarouselEngine extends Component {
     else if (!isNaN(previousItemFocusedPosition)) {
       const newScrollableTranslateX = scrollableTranslateX + itemWidth;
       const newPositions = {
-        iFocused: iFocused - 1,
+        iFocused: previousIFocused,
         scrollableTranslateX: newScrollableTranslateX,
       };
       updatePositions(newPositions);
@@ -93,8 +104,6 @@ class CarouselEngine extends Component {
   scrollToRight = () => {
     const {
       binderId,
-      itemsLeft,
-      itemWidth,
       wrapperWidth,
       updatePositions,
     } = this.props;
@@ -103,7 +112,9 @@ class CarouselEngine extends Component {
     const scrollableTranslateX = getScrollableTranslateX(binderId);
 
     const nextIFocused = iFocused + 1;
-    const nextItemFocusedPosition = itemsLeft[nextIFocused];
+    const nextItemFocusedPosition = getItemOffsetLeft(binderId, nextIFocused);
+    const itemWidth = getItemOffsetWidth(binderId, nextIFocused);
+
     const isAboveWrapperLeftBorder = nextItemFocusedPosition >= -scrollableTranslateX;
     const isBeforeWrapperRightBorder = nextItemFocusedPosition + itemWidth <= wrapperWidth - scrollableTranslateX;
     const isNextItemFocusedVisible = isAboveWrapperLeftBorder && isBeforeWrapperRightBorder;
@@ -128,8 +139,6 @@ class CarouselEngine extends Component {
   scrollToUp = () => {
     const {
       binderId,
-      itemsTop,
-      itemHeight,
       wrapperHeight,
       updatePositions
     } = this.props;
@@ -137,20 +146,22 @@ class CarouselEngine extends Component {
     const iFocused = getIFocused(binderId);
     const scrollableTranslateY = getScrollableTranslateY(binderId);
 
-    const previousItemFocusedPosition = itemsTop[iFocused - 1];
+    const previousIFocused = iFocused - 1;
+    const previousItemFocusedPosition = getItemOffsetTop(binderId, previousIFocused);
+    const itemHeight = getItemOffsetHeight(binderId, previousIFocused);
     const isAboveWrapperLeftBorder = previousItemFocusedPosition >= -scrollableTranslateY;
     const isBeforeWrapperRightBorder = previousItemFocusedPosition + itemHeight <= wrapperHeight - scrollableTranslateY;
     const isPreviousItemFocusedVisible = isAboveWrapperLeftBorder && isBeforeWrapperRightBorder;
 
     if (isPreviousItemFocusedVisible) {
       updatePositions({
-        iFocused: iFocused - 1,
+        iFocused: previousIFocused,
       });
     }
     else if (!isNaN(previousItemFocusedPosition)) {
       const newScrollableTranslateY = scrollableTranslateY + itemHeight;
       const newPositions = {
-        iFocused: iFocused - 1,
+        iFocused: previousIFocused,
         scrollableTranslateY: newScrollableTranslateY,
       };
       updatePositions(newPositions);
@@ -175,7 +186,11 @@ class CarouselEngine extends Component {
 
   keysHandler(keyCode, longPress, click) {
     const { binderId, direction } = this.props;
-    if (isCarouselActive(binderId)) {
+    const newCall = Date.now();
+    const timeDiff = newCall - this.lastKeysCall;
+    
+    if (isCarouselActive(binderId) && (isNaN(timeDiff) || timeDiff > 200)) {
+      this.lastKeysCall = Date.now();
       switch (keyCode) {
         case userConfig.left:
           if (direction === CAROUSEL_DIRECTIONS.horizontal) {

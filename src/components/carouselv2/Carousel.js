@@ -7,29 +7,42 @@ import CarouselItem from './CarouselItem';
 import CarouselScrollable from './CarouselScrollable';
 import { defaultProps, propTypes } from './props';
 import { _updateBinder, addCarouselToStore, _removeBinder } from '../../redux/actions';
-import { throttle } from '../../engines/helpers';
 import { CAROUSEL_DIRECTIONS, CAROUSEL_TYPE } from '../../constants';
-import { itemFocusedHandler, horizontalScrollHandler, verticalScrollHandler } from './handler';
-import { getIFocused, getScrollableRef, getScrollableTranslateX, getScrollableTranslateY, initItemFocused } from './handler';
+import { itemFocusedHandler, horizontalScrollHandler, verticalScrollHandler, getItemOffsetHeight } from './handler';
+import { getIFocused, getItemOffsetWidth, getScrollableRef, getScrollableTranslateX, getScrollableTranslateY, initCarousel, initItemFocused } from './handler';
 
 class Carousel extends Component {
 
+  state = {
+    initialized: false
+  }
+
   constructor(props) {
     super(props);
-    if (props.throttle) {
-      this.updatePositions = throttle(this.updatePositions, 120);
-    }
-    this.isAnimating = false;
   }
 
   componentWillMount() {
+    const { children, direction, itemsVisiblesCount, loop, preloadItemsCount } = this.props;
+    
     addCarouselToStore(this.props, CAROUSEL_TYPE);
-    const { children, direction, itemsVisiblesCount, itemHeight, itemWidth, loop, preloadItemsCount } = this.props;
-    this.initCarousel(direction, children, itemsVisiblesCount, itemHeight, itemWidth, loop, preloadItemsCount);
+    _updateBinder(this.props.id,
+      {
+        childItemWrapper: this.props.childItemWrapper,
+        focusedClassName: this.props.focusedClassName,
+        direction,
+        iFocused: 0,
+        loop,
+        itemsVisiblesCount,
+        preloadItemsCount,
+        scrollableItems: [],
+        scrollableTranslateX: 0,
+        scrollableTranslateY: 0,
+        scrollableWidth: 0
+      }); 
   }
 
   componentDidMount() {
-    initItemFocused(this.props.id);
+    itemFocusedHandler(this.props.id, 0)
   }
 
   componentWillReceiveProps({ id, children, direction, itemsVisiblesCount, itemHeight, itemWidth, loop, preloadItemsCount }) {
@@ -37,9 +50,9 @@ class Carousel extends Component {
       children: previousChildren
     } = this.props;
 
-    if (previousChildren.length !== children.length) {
-      this.initCarousel(direction, children, itemsVisiblesCount, itemHeight, itemWidth, loop, preloadItemsCount);
-    }
+    // if (previousChildren.length !== children.length) {
+    //   this.initCarousel(direction, children, itemsVisiblesCount, itemHeight, itemWidth, loop, preloadItemsCount);
+    // }
   }
 
   getHorizontalWrapperStyles(itemHeight, wrapperOverflow, wrapperWidth) {
@@ -52,112 +65,66 @@ class Carousel extends Component {
     };
   }
 
-  getVerticalWrapperStyles(itemHeight, wrapperOverflow, wrapperHeight) {
+  getVerticalWrapperStyles(wrapperHeight, wrapperWidth, wrapperOverflow) {
     return {
       height: `${wrapperHeight + wrapperOverflow}px`,
-      width: '100%',
+      width: wrapperWidth,
       margin: '0 auto',
       overflow: 'hidden',
-      position: 'relative'
+      position: 'relative',
+      display: 'block'
     };
   }
 
-  initCarousel(type, items, itemsVisiblesCount, itemHeight, itemWidth, loop, preloadItemsCount, iFocused = 0) {
-    _updateBinder(this.props.id, { childItemWrapper: this.props.childItemWrapper, focusedClassName: this.props.focusedClassName, itemsVisiblesCount, preloadItemsCount });
+  renderItems(carouselId, iFocused, itemsVisiblesCount, children, direction, itemStyles, preloadItemsCount, scrollableTranslateY, wrapperHeight) {
+    return children.map((item, iIndex) => {
+      const maxItemsVisible = iFocused + itemsVisiblesCount + preloadItemsCount;
+      const minItemsVisible = iFocused - itemsVisiblesCount - preloadItemsCount;
+      const isItemVisible = iIndex < maxItemsVisible && iIndex > minItemsVisible
 
-    if (type === CAROUSEL_DIRECTIONS.horizontal) {
-      const itemsLeft = [];
-
-      for (let i = 0; i < items.length; i++) {
-        const pos = itemWidth * i
-        itemsLeft[i] = pos;
+      if(!isItemVisible){
+        const height = getItemOffsetHeight(carouselId, iIndex);
+        const width = getItemOffsetWidth(carouselId, iIndex);
+        return (
+          <div key={`spacer_${iIndex}`} style={{display: direction === CAROUSEL_DIRECTIONS.horizontal ? 'inline-block' : 'block' }}>
+            <div style={{ height: height, width: width }}>
+            </div>
+          </div>
+        )
       }
 
-      if (loop) {
-        const scrollableWidth = items.length * itemWidth;
-        this.setState({
-          iFocused,
-          itemsLeft,
-          preloadItemsCount,
-          scrollableWidth,
-          wrapperWidth: itemsVisiblesCount * itemWidth,
-          scrollable2TranslateX: -scrollableWidth,
-          scrollableTranslateX: 0
-        });
-      }
-      else {
-        this.setState({
-          itemsLeft,
-          preloadItemsCount,
-          scrollableTranslateX: 0,
-          scrollableWidth: items.length * itemWidth,
-          wrapperWidth: itemsVisiblesCount * itemWidth,
-        });
-      }
-    }
-    else if (type === CAROUSEL_DIRECTIONS.vertical) {
-      const itemsTop = [];
-
-      for (let i = 0; i < items.length; i++) {
-        const pos = itemHeight * i;
-        itemsTop[i] = pos;
-      }
-
-      this.setState({
-        items,
-        itemsTop,
-        preloadItemsCount,
-        scrollableTranslateY: 0,
-        scrollableHeight: items.length * itemWidth,
-        wrapperHeight: itemsVisiblesCount * itemHeight,
-      });
-    }
-  }
-
-  renderHorizontalItems(binderId, items, itemsLeft, itemHeight, itemWidth, itemStyles, preloadItemsCount, scrollableTranslateX, wrapperWidth) {
-    const itemsToDisplay = items.map((item, iIndex) => {
-      const itemLeft = itemsLeft[iIndex];
-      const isItemVisible = (itemLeft + (itemWidth * preloadItemsCount)) >= -scrollableTranslateX && (itemLeft - (itemWidth * preloadItemsCount)) < ((wrapperWidth) - scrollableTranslateX);
       return isItemVisible && (
         <CarouselItem
-          binderId={binderId}
+          carouselId={carouselId}
+          direction={direction}
           key={`item_${iIndex}`}
           item={item}
           itemIndex={iIndex}
-          itemWidth={itemWidth}
-          itemHeight={itemHeight}
           itemStyles={itemStyles}
+          preloadItemsCount={preloadItemsCount}
+          wrapperHeight={wrapperHeight}
         />
-      );
+      )
     })
-    return itemsToDisplay;
   }
 
-  renderVerticalItems(binderId, items, itemsTop, itemHeight, itemWidth, itemStyles, preloadItemsCount, scrollableTranslateY, wrapperHeight) {
-    const itemsToDisplay = items.map((item, iIndex) => {
-      const itemTop = itemsTop[iIndex];
-      const isItemVisible = (itemTop + (itemHeight * preloadItemsCount)) >= -scrollableTranslateY && (itemTop - (itemHeight * preloadItemsCount)) < ((wrapperHeight) - scrollableTranslateY);
-
-      return isItemVisible ? (
-        <CarouselItem
-          binderId={binderId}
-          key={`item_${iIndex}`}
-          item={item}
-          itemIndex={iIndex}
-          itemWidth={itemWidth}
-          itemHeight={itemHeight}
-          itemStyles={itemStyles}
-        />) : (
-          <div key={`spacer_${iIndex}`} style={{ height: itemHeight }}></div>
-        )
-    })
-    return itemsToDisplay;
+  refreshCarousel = (cb) => {
+    const {children, preloadItemsCount} = this.props;
+    if(preloadItemsCount < children.length){
+      this.setState({ refresh: true }, () => {
+        cb();
+      })
+    }
+    else {
+      cb();
+    }
   }
 
   updatePositions = (positions, cb) => {
-    const { children, id } = this.props;
+    const { children, id, preloadItemsCount } = this.props;
 
-    this.setState({ refresh: true }, () => {
+
+    this.refreshCarousel(() => {
       if (!isNaN(positions.scrollableTranslateX)) {
         itemFocusedHandler(id, positions.iFocused, () => {
           horizontalScrollHandler(id, positions.scrollableTranslateX);
@@ -172,23 +139,21 @@ class Carousel extends Component {
         itemFocusedHandler(id, positions.iFocused)
       }
     });
-    
+
   }
 
   render() {
     const {
+      initialized,
       itemsLeft,
       itemsTop,
       itemsPositionsIndex,
-      preloadItemsCount,
       scrollableAnimated,
       scrollable2Animated,
       scrollable2TranslateX,
       scrollablesVisibles,
       scrollableHeight,
       scrollableWidth,
-      wrapperHeight,
-      wrapperWidth
     } = this.state;
 
     const {
@@ -201,12 +166,15 @@ class Carousel extends Component {
       itemWidth,
       itemStyles,
       loop,
+      preloadItemsCount,
       onEnter,
-      wrapperOverflow
+      wrapperOverflow,
+      wrapperHeight,
+      wrapperWidth
     } = this.props,
       wrapperStyles = direction === CAROUSEL_DIRECTIONS.horizontal ?
         this.getHorizontalWrapperStyles(itemHeight, wrapperOverflow, wrapperWidth) :
-        this.getVerticalWrapperStyles(itemHeight, wrapperOverflow, wrapperHeight);
+        this.getVerticalWrapperStyles(wrapperHeight, wrapperWidth, wrapperOverflow);
 
     const iFocused = getIFocused(id);
     const scrollableTranslateY = getScrollableTranslateY(id) || 0;
@@ -215,7 +183,7 @@ class Carousel extends Component {
     return (
       <div id={id} style={wrapperStyles}>
         <CarouselScrollable
-          id={id}
+          carouselId={id}
           direction={direction}
           scrollableHeight={scrollableHeight}
           scrollableTranslateX={scrollableTranslateX}
@@ -224,27 +192,17 @@ class Carousel extends Component {
           scrollableWidth={scrollableWidth}
         >
           {
-            direction === CAROUSEL_DIRECTIONS.horizontal ?
-              this.renderHorizontalItems(
-                id,
-                children,
-                itemsLeft,
-                itemHeight,
-                itemWidth,
-                itemStyles,
-                preloadItemsCount,
-                scrollableTranslateX,
-                wrapperWidth) :
-              this.renderVerticalItems(
-                id,
-                children,
-                itemsTop,
-                itemHeight,
-                itemWidth,
-                itemStyles,
-                preloadItemsCount,
-                scrollableTranslateY,
-                wrapperHeight)
+            this.renderItems(
+              id,
+              iFocused,
+              itemsVisiblesCount,
+              children,
+              direction,
+              itemStyles,
+              preloadItemsCount,
+              scrollableTranslateY,
+              wrapperHeight
+            )
           }
         </CarouselScrollable>
         {
@@ -268,22 +226,12 @@ class Carousel extends Component {
             : <CarouselEngine
               binderId={id}
               direction={direction}
-              itemsLeft={itemsLeft}
-              itemsTop={itemsTop}
-              itemsVisiblesCount={itemsVisiblesCount}
-              itemHeight={itemHeight}
-              itemWidth={itemWidth}
               onEnter={onEnter}
-              scrollableTranslateX={scrollableTranslateX}
-              scrollableTranslateY={scrollableTranslateY}
-              scrollableHeight={scrollableHeight}
-              scrollableWidth={scrollableWidth}
               wrapperHeight={wrapperHeight}
               wrapperWidth={wrapperWidth}
               updatePositions={this.updatePositions}
             />
         }
-
       </div>
     );
   }

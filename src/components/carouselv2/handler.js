@@ -2,6 +2,7 @@
 import { globalStore } from '../../listener';
 import { C_DOWN, C_LEFT, C_RIGHT, C_UP, NAME } from '../../constants';
 import { _updateBinder } from '../../redux/actions';
+import { CAROUSEL_DIRECTIONS } from '../../constants';
 
 export function getBinder(id) {
   return globalStore.getState()[NAME][id];
@@ -39,16 +40,41 @@ export function verticalScrollHandler(id, translateY) {
 }
 
 export function addScrollableItemRef(id, itemIndex, scrollableItemRef) {
+  const { direction, scrollableItems } = getBinder(id);
+  
+  scrollableItems[itemIndex] = {};
+  scrollableItems[itemIndex].ref = scrollableItemRef
+  
+  if(direction === CAROUSEL_DIRECTIONS.vertical){
+    scrollableItems[itemIndex].offsetHeight = scrollableItemRef.offsetHeight;
+    scrollableItems[itemIndex].offsetTop = scrollableItemRef.offsetTop;
+  }
+  else if(direction === CAROUSEL_DIRECTIONS.horizontal){
+    scrollableItems[itemIndex].offsetWidth = scrollableItemRef.offsetWidth;
+    scrollableItems[itemIndex].offsetLeft = scrollableItemRef.offsetLeft;
+  }
+
+  _updateBinder(id, { scrollableItems });
+}
+
+export function getItemOffsetHeight(id, iFocused) {
   const { scrollableItems } = getBinder(id);
-  if (!scrollableItems) {
-    let newScrollableItems = [];
-    newScrollableItems[itemIndex] = scrollableItemRef;
-    _updateBinder(id, { scrollableItems: newScrollableItems, iFocused: 0 });
-  }
-  else {
-    scrollableItems[itemIndex] = scrollableItemRef;
-    _updateBinder(id, { scrollableItems });
-  }
+  return scrollableItems[iFocused] ? scrollableItems[iFocused].offsetHeight : undefined; 
+}
+
+export function getItemOffsetLeft(id, iFocused) {
+  const { scrollableItems } = getBinder(id);
+  return scrollableItems[iFocused] ? scrollableItems[iFocused].offsetLeft : undefined; 
+}
+
+export function getItemOffsetTop(id, iFocused) {
+  const { scrollableItems } = getBinder(id);
+  return scrollableItems[iFocused] ? scrollableItems[iFocused].offsetTop : undefined; 
+}
+
+export function getItemOffsetWidth(id, iFocused) {
+  const { scrollableItems } = getBinder(id);
+  return scrollableItems[iFocused] ? scrollableItems[iFocused].offsetWidth : undefined; 
 }
 
 export function getIFocused(id) {
@@ -56,33 +82,33 @@ export function getIFocused(id) {
   return iFocused;
 }
 
-export function initItemFocused(id) {
-  const { active, childItemWrapper, focusedClassName, iFocused, scrollableItems } = getBinder(id);
-  if (active) {
-    const focusedItem = scrollableItems[iFocused].querySelector(childItemWrapper).childNodes.item(0);
-    focusedItem.classList.add(focusedClassName);
-  }
+
+
+export function initCarousel(carouselId, direction, children, itemsVisiblesCount, preloadItemsCount) {
+  console.log('====================================');
+  console.log('Initializing carousel id', carouselId, direction, children);
+  console.log('====================================');
+
+
 }
 
 const ITEM_FOCUSED_TIMEOUT = 90;
 let nextBinderItemFocusedTimeout = null,
   nextItemFocusedTimeout = null;
 
-
 export function itemFocusedHandler(id, iFocused, callback) {
   const { childItemWrapper, focusedClassName, iFocused: prevIFocused, preloadItemsCount, scrollableItems } = getBinder(id);
-  const focusedItem = scrollableItems[iFocused].querySelector(childItemWrapper).childNodes.item(0);
+  const focusedItem = scrollableItems[iFocused].ref.querySelector(childItemWrapper);
 
   if (focusedClassName) {
     if (nextItemFocusedTimeout) clearTimeout(nextItemFocusedTimeout);
     nextItemFocusedTimeout = setTimeout(() => {
       focusedItem.classList.add(focusedClassName)
     }, ITEM_FOCUSED_TIMEOUT);
-    
-    const prevFocusedItem = scrollableItems[prevIFocused].querySelector(childItemWrapper).childNodes.item(0);
-    prevFocusedItem.classList.remove(focusedClassName);
-  }
 
+    const prevFocusedItem = scrollableItems[prevIFocused].ref.querySelector(childItemWrapper);
+    if(prevFocusedItem) prevFocusedItem.classList.remove(focusedClassName);
+  }
 
   _updateBinder(id, { iFocused, selectedId: focusedItem.id, scrollableItems });
 

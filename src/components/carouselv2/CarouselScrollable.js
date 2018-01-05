@@ -3,19 +3,20 @@ import React, { Component } from 'react';
 import CarouselItem from './CarouselItem';
 import { CAROUSEL_DIRECTIONS } from '../../constants';
 import PropTypes from 'prop-types';
-import { addScrollableRef } from './handler';
+import { addScrollableRef, computeScrollableWidth } from './handler';
 
 class CarouselScrollable extends Component {
   state = {}
 
   componentDidMount() {
-    const { id } = this.props;
-    addScrollableRef(id, this.el);
+    const { carouselId } = this.props;
+    addScrollableRef(carouselId, this.el);
   }
 
-  getHorizontalScrollableStyles(scrollableTranslateX, scrollableWidth) {
+  getHorizontalScrollableStyles() {
     return {
-      width: `${scrollableWidth}px`,
+      display: 'flex',
+      flexDirection: 'row',
       height: '100%',
     }
   }
@@ -26,10 +27,6 @@ class CarouselScrollable extends Component {
       height: scrollableHeight,
     }
   }
-
-  // shouldComponentUpdate() {
-  //   return false;
-  // }
 
   render() {
     const {
@@ -42,7 +39,7 @@ class CarouselScrollable extends Component {
       scrollableWidth
     } = this.props;
 
-    const scrollableStyles = direction === CAROUSEL_DIRECTIONS.horizontal ? this.getHorizontalScrollableStyles(scrollableTranslateX, scrollableWidth) : this.getVerticalScrollableStyles(scrollableTranslateY, scrollableHeight),
+    const scrollableStyles = direction === CAROUSEL_DIRECTIONS.horizontal ? this.getHorizontalScrollableStyles() : this.getVerticalScrollableStyles(scrollableTranslateY, scrollableHeight),
       scrollable2Styles = this.getHorizontalScrollableStyles(scrollable2TranslateX, scrollableWidth);
 
     return (

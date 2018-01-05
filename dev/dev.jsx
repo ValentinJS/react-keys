@@ -202,50 +202,28 @@ class CarouselV2Wrapper extends React.Component {
           currentIndex={currentIndex}
           direction="vertical"
           itemsVisiblesCount={3}
-          itemHeight={200}
-          itemWidth={1000}
           loop={loop}
           onEnter={this.onEnter}
-          preloadItemsCount={4}
+          preloadItemsCount={5}
           focusedClassName={'focuseditemlol'}
-          wrapperOverflow={wrapperOverflow}
+          wrapperWidth={600}
+          wrapperHeight={450}
+          wrapperOverflow={0}
           childItemWrapper={'.item-child'}
         >
-            {
-              carousels.map((car, iCarousel) => {
-                return (
-                  <div className={'item-child'} key={`carousel-h-${iCarousel}`}>
-                    <CarouselV2
-                      id={`carousel-h-${iCarousel}`}
-                      direction="horizontal"
-                      focusedClassName={'focuseditem'}
-                      itemsVisiblesCount={itemsVisiblesCount}
-                      itemHeight={itemHeight}
-                      itemWidth={itemWidth}
-                      loop={loop}
-                      onEnter={this.onEnter}
-                      preloadItemsCount={3}
-                      transition={'0.15s transform cubic-bezier(0.22, 0.61, 0.36, 1)'}
-                      wrapperOverflow={wrapperOverflow}
-                      childItemWrapper={'.item-child-2'}
-                    >
-                      {
-                        items.map((item, index) => {
-                          return (
-                            <div key={`item_${index}_${iCarousel}`} className={'item-child-2'}>
-                              <div id={`item_${index}_${iCarousel}`} className={'childitem'}>
-                                item_{iCarousel}_{index}
-                                {/* <img src="./carousel_small_thumb.jpg" width={itemWidth - 50} height={itemHeight - 50} /> */}
-                              </div>
-                            </div>
-                          )
-                        })
-                      }
-                    </CarouselV2>
+
+          {
+            items.map((item, index) => {
+              return (
+                <div key={`item_${index}`} className={'item-child-2'} style={{height: index === 4 ? '200px' : '150px', width: index === 4 ? '300px' : '200px'}}>
+                  <div id={`item_${index}`} className={'item-child'}>
+                    item_{index}
                   </div>
-                )
-              })
-            }
+                </div>
+              )
+            })
+          }
+
         </CarouselV2>
 
       </div>
@@ -258,7 +236,7 @@ class CarouselV2Wrapper extends React.Component {
 
 const CarouselV2Sandbox = connect(state => {
   return {
-    lool: state['LOL'].active,
+    // lool: state['LOL'].active,
     // selectedId: getBinderSelectedId('carousel-v-1')()
   };
 })(CarouselV2Wrapper);

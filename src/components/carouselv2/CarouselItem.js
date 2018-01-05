@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { addScrollableItemRef } from './handler';
-
+import { CAROUSEL_DIRECTIONS } from '../../constants';
 class CarouselItem extends Component {
   state = {}
 
   componentDidMount() {
-    const { binderId, itemIndex } = this.props;
-    addScrollableItemRef(binderId, itemIndex, this.el)
+    const { carouselId, itemIndex } = this.props;
+    addScrollableItemRef(carouselId, itemIndex, this.el)
   }
 
   shouldComponentUpdate() {
@@ -16,16 +16,17 @@ class CarouselItem extends Component {
 
   render() {
     const {
+      direction,
       item,
       itemWidth, 
       itemHeight,
-      itemStyles, 
+      itemStyles,
     } = this.props;
 
     const itemWrapperStyles = {
       width: `${itemWidth}px`,
       height: `${itemHeight}px`,
-      display: 'inline-block'
+      display: direction === CAROUSEL_DIRECTIONS.horizontal ? 'inline-block' : 'block'
     };
     
     return (
