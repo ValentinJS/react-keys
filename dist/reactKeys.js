@@ -7,28 +7,28 @@
         ? (exports.ReactKeys = t(require('React'), require('ReactDOM')))
         : (e.ReactKeys = t(e.React, e.ReactDOM));
 })('undefined' == typeof self ? this : self, function(e, t) {
-  var n = Math.abs,
-    r = String.fromCharCode;
+  var r = Math.abs,
+    n = String.fromCharCode;
   return (function(e) {
-    function t(r) {
-      if (n[r]) return n[r].exports;
-      var i = (n[r] = { i: r, l: !1, exports: {} });
-      return e[r].call(i.exports, i, i.exports, t), (i.l = !0), i.exports;
+    function t(i) {
+      if (r[i]) return r[i].exports;
+      var n = (r[i] = { i: i, l: !1, exports: {} });
+      return e[i].call(n.exports, n, n.exports, t), (n.l = !0), n.exports;
     }
-    var n = {};
+    var r = {};
     return (
       (t.m = e),
-      (t.c = n),
-      (t.d = function(e, n, r) {
-        t.o(e, n) ||
-          Object.defineProperty(e, n, {
+      (t.c = r),
+      (t.d = function(e, r, i) {
+        t.o(e, r) ||
+          Object.defineProperty(e, r, {
             configurable: !1,
             enumerable: !0,
-            get: r,
+            get: i,
           });
       }),
       (t.n = function(e) {
-        var n =
+        var r =
           e && e.__esModule
             ? function() {
                 return e['default'];
@@ -36,258 +36,288 @@
             : function() {
                 return e;
               };
-        return t.d(n, 'a', n), n;
+        return t.d(r, 'a', r), r;
       }),
       (t.o = function(e, t) {
         return Object.prototype.hasOwnProperty.call(e, t);
       }),
       (t.p = ''),
-      t((t.s = 21))
+      t((t.s = 23))
     );
   })([
     function(e, t) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 });
-      const n = (t.NAME = '@@keys'),
-        r = (t.C_UP = 'up'),
-        i = (t.C_DOWN = 'down'),
+      const r = (t.NAME = '@@keys'),
+        i = (t.C_UP = 'up'),
+        n = (t.C_DOWN = 'down'),
         d = (t.C_LEFT = 'left'),
         o = (t.C_RIGHT = 'right'),
         l = (t.STRATEGY_MIRROR = 'mirror'),
-        a = (t.STRATEGY_START = 'start'),
-        s = (t.STRATEGY_MEMORY = 'memory'),
-        p = (t.BINDER_TYPE = 'binder'),
+        s = (t.STRATEGY_START = 'start'),
+        a = (t.STRATEGY_MEMORY = 'memory'),
+        c = (t.BINDER_TYPE = 'binder'),
         u = (t.CAROUSEL_TYPE = 'carousel'),
-        c = (t.LONG_PRESS_TIMEOUT = 500),
-        f = (t.DEBOUNCE_TIMEOUT = 10),
-        g = (t.VERTICAL = 'vertical'),
-        y = (t.NAVIGATION_CENTER = 'center'),
-        m = (t.NAVIGATION_BOUND = 'bound');
+        p = (t.CAROUSEL_DIRECTIONS = {
+          horizontal: 'horizontal',
+          horizontalBidirectional: 'horizontal-bidirectional',
+          vertical: 'vertical',
+          verticalBidirectional: 'vertical-bidirectional',
+        }),
+        f = (t.CAROUSEL_SCROLLABLE_DIRECTIONS = {
+          up: 'up',
+          down: 'down',
+          left: 'left',
+          right: 'right',
+        }),
+        g = (t.LONG_PRESS_TIMEOUT = 500),
+        m = (t.DEBOUNCE_TIMEOUT = 10),
+        h = (t.VERTICAL = 'vertical'),
+        b = (t.NAVIGATION_CENTER = 'center'),
+        y = (t.NAVIGATION_BOUND = 'bound');
     },
-    function(e, t, n) {
+    function(t) {
+      t.exports = e;
+    },
+    function(e, t, r) {
       'use strict';
-      function r(e) {
-        (0, m.ensureKnownBinder)(e.id) &&
-          (0, u.dispatch)({ type: E, binder: e });
+      function i(e) {
+        (0, h.ensureKnownBinder)(e.id) &&
+          (0, u.dispatch)({ type: S, binder: e });
       }
-      function i(e, t, n) {
-        if ((0, m.ensureKnownBinder)(e)) {
-          const r = (0, c.findIdByStrategy)((0, u.getStore)(), e, t);
-          (0, u.dispatch)({ type: k, binderId: e });
-          const i = (0, h.findBinder)((0, u.getBinders)(), e);
-          i && i.type === y.CAROUSEL_TYPE ? d(e, r, n) : o(e, r, n);
+      function n(e, t, r) {
+        if ((0, h.ensureKnownBinder)(e)) {
+          const i = (0, p.findIdByStrategy)((0, u.getStore)(), e, t);
+          (0, u.dispatch)({ type: E, binderId: e });
+          const n = (0, b.findBinder)((0, u.getBinders)(), e);
+          n && n.type === m.CAROUSEL_TYPE ? d(e, i, r) : o(e, i, r);
         }
       }
       function d(e, t) {
-        if (!(0, m.ensureKnownBinder)(e)) return;
-        const n = (0, h.findBinder)((0, u.getBinders)(), e),
-          { elements: i, selectedId: d } = n;
-        if (0 === i.length) return;
-        const o = t || i[0].id,
+        if (!(0, h.ensureKnownBinder)(e)) return;
+        const r = (0, b.findBinder)((0, u.getBinders)(), e),
+          { elements: n, selectedId: d } = r;
+        if (0 === n.length) return;
+        const o = t || n[0].id,
           l = {
             id: e,
             selectedId: o,
             hasMoved: !0,
-            prevEl: i.find(t => t.id === d),
-            nextEl: i.find(t => t.id === o),
+            prevEl: n.find(t => t.id === d),
+            nextEl: n.find(t => t.id === o),
             prevDir: null,
           };
-        r(l);
+        i(l);
       }
       function o(e, t) {
-        if (!(0, m.ensureKnownBinder)(e)) return;
-        const n = (0, h.findBinder)((0, u.getBinders)(), e),
-          { elements: i, selectedId: d } = n;
-        if (0 === i.length) return;
-        const o = t || i[0].id,
-          l = (0, f.boundsMargin)(o, n, { visibilityOffset: 0 }),
-          a = {
+        if (!(0, h.ensureKnownBinder)(e)) return;
+        const r = (0, b.findBinder)((0, u.getBinders)(), e),
+          { elements: n, selectedId: d } = r;
+        if (0 === n.length) return;
+        const o = t || n[0].id,
+          l = (0, f.boundsMargin)(o, r, { visibilityOffset: 0 }),
+          s = {
             id: e,
             selectedId: o,
             hasMoved: !0,
-            prevEl: i.find(t => t.id === d),
-            nextEl: i.find(t => t.id === o),
+            prevEl: n.find(t => t.id === d),
+            nextEl: n.find(t => t.id === o),
             prevDir: null,
             elements: l.elements,
             marginLeft: l.marginLeft,
             marginTop: l.marginTop,
           };
-        r(a);
+        i(s);
       }
-      function l(e, t, n) {
-        e && e.call(n, t || {});
+      function l(e, t, r) {
+        e && e.call(r, t || {});
       }
-      function a(e, t) {
-        e && ('string' == typeof e ? i(e) : e(t));
+      function s(e, t) {
+        e && ('string' == typeof e ? n(e) : e(t));
       }
-      function s(e) {
-        if ((0, m.ensureKnownBinder)(e)) {
-          const { memory: t, prevDir: n } = (0, h.findBinder)(
+      function a(e) {
+        if ((0, h.ensureKnownBinder)(e)) {
+          const { memory: t, prevDir: r } = (0, b.findBinder)(
             (0, u.getBinders)(),
             e
           );
-          !t && n && r({ id: e, prevDir: null });
+          !t && r && i({ id: e, prevDir: null });
         }
       }
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.UPDATE_PRESS_STATUS = t.ACTIVE_BINDER = t.REMOVE_BINDER = t.UPDATE_BINDER = t.MOUNT_BINDER = t.ADD_BINDER = void 0);
-      var p =
+      var c =
         Object.assign ||
         function(e) {
-          for (var t, n = 1; n < arguments.length; n++)
-            for (var r in ((t = arguments[n]), t))
-              Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
+          for (var t, r = 1; r < arguments.length; r++)
+            for (var i in ((t = arguments[r]), t))
+              Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
           return e;
         };
       (t.addBinder = function(e, t) {
-        return (0, m.isUnknownBinder)(e.id)
+        return (0, h.isUnknownBinder)(e.id)
           ? void (0, u.dispatch)({
-              type: b,
+              type: y,
               binder:
-                t === y.CAROUSEL_TYPE
-                  ? (0, h.buildCarsouelFromProps)(e, t)
-                  : (0, h.buildBinderFromProps)(e, t),
+                t === m.CAROUSEL_TYPE
+                  ? (0, b.buildCarsouelFromProps)(e, t)
+                  : (0, b.buildBinderFromProps)(e, t),
             })
           : void (0, u.dispatch)({
-              type: _,
+              type: I,
               binderId: e.id,
               priority: e.priority,
             });
       }),
-        (t._updateBinder = r),
+        (t._updateBinder = i),
         (t._removeBinder = function(e, t = !1) {
-          (0, u.dispatch)({ type: B, binderId: e, force: t });
+          (0, u.dispatch)({ type: _, binderId: e, force: t });
         }),
-        (t._activeBinder = i),
+        (t._activeBinder = n),
         (t._resetCarousel = d),
         (t._resetBinder = o),
         (t.updatePressStatus = function(e, t = null) {
           (0, u.getPress)().press !== e &&
-            (0, u.dispatch)({ type: S, press: e, keyCode: t });
+            (0, u.dispatch)({ type: T, press: e, keyCode: t });
         }),
         (t.execCb = l),
-        (t.enterTo = a),
-        (t.determineNewState = function(e, t, n, i, d, o) {
-          if ((0, m.ensureKnownBinder)(e)) {
-            const { nextEl: c, prevEl: y, prevDir: m, elements: b } = (0,
-            h.findBinder)((0, u.getBinders)(), e);
-            if (c) {
-              const _ = (0, g.calculateNewState)(n, c, y, m, b);
-              if (_.hasMoved) {
-                const n = (0, f.boundsMargin)(
-                  _.nextEl.id,
-                  (0, h.findBinder)((0, u.getBinders)(), e),
+        (t.enterTo = s),
+        (t.determineNewState = function(e, t, r, n, d, o) {
+          if ((0, h.ensureKnownBinder)(e)) {
+            const { nextEl: p, prevEl: m, prevDir: h, elements: y } = (0,
+            b.findBinder)((0, u.getBinders)(), e);
+            if (p) {
+              const I = (0, g.calculateNewState)(r, p, m, h, y);
+              if (I.hasMoved) {
+                const r = (0, f.boundsMargin)(
+                  I.nextEl.id,
+                  (0, b.findBinder)((0, u.getBinders)(), e),
                   t
                 );
-                r(
-                  p({}, _, {
+                i(
+                  c({}, I, {
                     id: e,
-                    selectedId: _.nextEl.id,
-                    elements: n.elements,
-                    marginLeft: n.marginLeft,
-                    marginTop: n.marginTop,
+                    selectedId: I.nextEl.id,
+                    elements: r.elements,
+                    marginLeft: r.marginLeft,
+                    marginTop: r.marginTop,
                   })
                 ),
-                  l(i, c, o);
-              } else s(e), a(d);
+                  l(n, p, o);
+              } else a(e), s(d);
             }
           }
         }),
-        (t.resetFlipFlop = s);
-      var u = n(3),
-        c = n(29),
-        f = n(14),
-        g = n(5),
-        y = n(0),
-        m = n(17),
-        h = n(2);
-      const b = (t.ADD_BINDER = `${y.NAME}/ADD_BINDER`),
-        _ = (t.MOUNT_BINDER = `${y.NAME}/MOUNT_BINDER`),
-        E = (t.UPDATE_BINDER = `${y.NAME}/UPDATE_BINDER`),
-        B = (t.REMOVE_BINDER = `${y.NAME}/REMOVE_BINDER`),
-        k = (t.ACTIVE_BINDER = `${y.NAME}/ACTIVE_BINDER`),
-        S = (t.UPDATE_PRESS_STATUS = `${y.NAME}/UPDATE_PRESS_STATUS`);
+        (t.resetFlipFlop = a);
+      var u = r(5),
+        p = r(31),
+        f = r(17),
+        g = r(7),
+        m = r(0),
+        h = r(19),
+        b = r(4);
+      const y = (t.ADD_BINDER = `${m.NAME}/ADD_BINDER`),
+        I = (t.MOUNT_BINDER = `${m.NAME}/MOUNT_BINDER`),
+        S = (t.UPDATE_BINDER = `${m.NAME}/UPDATE_BINDER`),
+        _ = (t.REMOVE_BINDER = `${m.NAME}/REMOVE_BINDER`),
+        E = (t.ACTIVE_BINDER = `${m.NAME}/ACTIVE_BINDER`),
+        T = (t.UPDATE_PRESS_STATUS = `${m.NAME}/UPDATE_PRESS_STATUS`);
+    },
+    function(e, t, r) {
+      (function(t) {
+        if ('production' !== t.env.NODE_ENV) {
+          var i =
+              ('function' == typeof Symbol &&
+                Symbol.for &&
+                Symbol.for('react.element')) ||
+              60103,
+            n = function(e) {
+              return 'object' == typeof e && null !== e && e.$$typeof === i;
+            };
+          e.exports = r(26)(n, !0);
+        } else e.exports = r(29)();
+      }.call(t, r(8)));
     },
     function(e, t) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 });
-      var n =
+      var r =
         Object.assign ||
         function(e) {
-          for (var t, n = 1; n < arguments.length; n++)
-            for (var r in ((t = arguments[n]), t))
-              Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
+          for (var t, r = 1; r < arguments.length; r++)
+            for (var i in ((t = arguments[r]), t))
+              Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
           return e;
         };
-      const r = (t.findMountedId = e => {
-          const t = i(e);
+      const i = (t.findMountedId = e => {
+          const t = n(e);
           return t ? t.id : void 0;
         }),
-        i = (t.findMounted = e => e.find(e => e.mounted)),
+        n = (t.findMounted = e => e.find(e => e.mounted)),
         d = (t.findBinder = (e, t) => e.find(e => e.id === t)),
         o = (t.updateBinder = (e, t) => {
-          const r = e.findIndex(e => e.id === t.id);
-          return Object.assign([], e, { [r]: n({}, e[r], t) });
+          const i = e.findIndex(e => e.id === t.id);
+          return Object.assign([], e, { [i]: r({}, e[i], t) });
         }),
         l = (t.computeAddingBinder = (e, t) => {
-          const n = a(e, t);
-          return t.active ? s(n, t) : n;
+          const r = s(e, t);
+          return t.active ? a(r, t) : r;
         }),
-        a = (t.addBinder = (e, t) => [...e, n({}, t, { sleep: !1 })]),
-        s = (t.computeMountBinder = (e, t) =>
-          p(e, t) ? u(e, t.id) : c(e, t.id)),
-        p = (t.isBinderShouldMount = (e, t) => {
-          const n = i(e);
-          return !n || t.priority >= n.priority;
+        s = (t.addBinder = (e, t) => [...e, r({}, t, { sleep: !1 })]),
+        a = (t.computeMountBinder = (e, t) =>
+          c(e, t) ? u(e, t.id) : p(e, t.id)),
+        c = (t.isBinderShouldMount = (e, t) => {
+          const r = n(e);
+          return !r || t.priority >= r.priority;
         }),
         u = (t.mountBinder = (e, t) =>
           e.map(e => {
-            const r = n({}, e, { mounted: e.id === t });
+            const i = r({}, e, { mounted: e.id === t });
             return (
-              e.id === t && ((r.mountedTime = Date.now()), (r.sleep = !1)), r
+              e.id === t && ((i.mountedTime = Date.now()), (i.sleep = !1)), i
             );
           })),
-        c = (t.unsleepBinder = (e, t) =>
+        p = (t.unsleepBinder = (e, t) =>
           e.map(
-            e => (e.memory ? n({}, e, { sleep: e.id !== t && e.sleep }) : e)
+            e => (e.memory ? r({}, e, { sleep: e.id !== t && e.sleep }) : e)
           )),
-        f = (t.computeRemoveBinder = (e, t, n) => {
-          const r = g(e, t, n);
-          return y(r) ? r : m(r);
+        f = (t.computeRemoveBinder = (e, t, r) => {
+          const i = g(e, t, r);
+          return m(i) ? i : h(i);
         }),
-        g = (t.removeBinder = (e, t, r = !1) => {
-          const i = e.find(e => e.id === t);
-          return i && (r || !i.memory)
+        g = (t.removeBinder = (e, t, i = !1) => {
+          const n = e.find(e => e.id === t);
+          return n && (i || !n.memory)
             ? e.filter(e => e.id !== t)
             : e.map(e =>
-                n({}, e, {
+                r({}, e, {
                   mounted: e.id !== t && e.mounted,
                   sleep: !(e.id !== t) || e.sleep,
                 })
               );
         }),
-        y = (t.hasMountedBinder = e => e.some(e => e.mounted)),
-        m = (t.mountfreshestBinder = e => {
+        m = (t.hasMountedBinder = e => e.some(e => e.mounted)),
+        h = (t.mountfreshestBinder = e => {
           const t = e.filter(e => !e.sleep);
           if (0 === t.length) return e;
-          const n = t.filter(e => e.mountedTime),
-            r =
-              0 === n.length
+          const r = t.filter(e => e.mountedTime),
+            i =
+              0 === r.length
                 ? t.reduce((e, t) => (e.priority > t.priority ? e : t), t[0])
-                : n.reduce(
+                : r.reduce(
                     (e, t) => (e.mountedTime > t.mountedTime ? e : t),
-                    n[0]
+                    r[0]
                   );
-          return (r.mounted = !0), u(e, r.id);
+          return (i.mounted = !0), u(e, i.id);
         }),
-        h = (t.buildCurrent = (e, t) => {
-          const n = i(e);
+        b = (t.buildCurrent = (e, t) => {
+          const r = n(e);
           return {
-            binderId: n ? n.id : t.binderId,
-            selectedId: n ? n.selectedId : t.selectedId,
+            binderId: r ? r.id : t.binderId,
+            selectedId: r ? r.selectedId : t.selectedId,
           };
         }),
-        b = (t.buildBinderFromProps = (e, t) => ({
+        y = (t.buildBinderFromProps = (e, t) => ({
           id: e.id,
           active: e.active,
           type: t,
@@ -308,7 +338,7 @@
           marginLeft: 0,
           marginTop: 0,
         })),
-        _ = (t.buildCarsouelFromProps = (e, t) => ({
+        I = (t.buildCarsouelFromProps = (e, t) => ({
           id: e.id,
           type: t,
           active: e.active,
@@ -320,176 +350,176 @@
           elements: [],
         }));
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.getPress = t.getBinders = t.dispatch = t.getStore = t.updateStore = t.globalStore = void 0);
-      var r = n(0);
-      let i = (t.globalStore = {
+      var i = r(0);
+      let n = (t.globalStore = {
         dispatch: () => ({}),
-        getState: () => ({ [r.NAME]: {} }),
+        getState: () => ({ [i.NAME]: {} }),
       });
-      const d = (t.updateStore = e => (t.globalStore = i = e)),
-        o = (t.getStore = () => i.getState()[r.NAME]),
-        l = (t.dispatch = e => i.dispatch(e)),
-        a = (t.getBinders = () => i.getState()[r.NAME].binders),
-        s = (t.getPress = () => i.getState()[r.NAME].PRESS);
+      const d = (t.updateStore = e => (t.globalStore = n = e)),
+        o = (t.getStore = () => n.getState()[i.NAME]),
+        l = (t.dispatch = e => n.dispatch(e)),
+        s = (t.getBinders = () => n.getState()[i.NAME].binders),
+        a = (t.getPress = () => n.getState()[i.NAME].PRESS);
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
-      function r(e) {
+      function i(e) {
         return e && e.__esModule ? e : { default: e };
       }
-      function i(e, t, n = !1) {
-        const r = (0, h.getStore)().current.binderId;
-        _.forEach(i => {
-          (i.context.uniqElement && i.context.props.id !== r) ||
-            i.callback.call(i.context, e, t, n);
+      function n(e, t, r = !1) {
+        const i = (0, b.getStore)().current.binderId;
+        I.forEach(n => {
+          (n.context.uniqElement && n.context.props.id !== i) ||
+            n.callback.call(n.context, e, t, r);
         });
       }
       function d(e) {
-        B ||
-          (e === I.enter
-            ? setTimeout(() => i(e, !1, !0), 0)
-            : setTimeout(() => i(e, !1), 0),
-          (t.clicked = B = !0));
+        _ ||
+          (e === B.enter
+            ? setTimeout(() => n(e, !1, !0), 0)
+            : setTimeout(() => n(e, !1), 0),
+          (t.clicked = _ = !0));
       }
       function o(e) {
-        e === I.enter && setTimeout(() => i(e, !1), 0);
+        e === B.enter && setTimeout(() => n(e, !1), 0);
       }
-      function l(n) {
-        t.keysCopy = _ = [...b];
-        const e = n.keyCode ? n.keyCode : n;
-        c.default.isBlocked(e) ||
+      function l(r) {
+        t.keysCopy = I = [...y];
+        const e = r.keyCode ? r.keyCode : r;
+        p.default.isBlocked(e) ||
           (d(e),
-          !E &&
-            -1 !== T.indexOf(e) &&
-            (t.pressTimeout = k = setTimeout(() => {
-              S(e, 'long'), (0, p.updatePressStatus)(!0, e), (t.fired = E = !0);
-            }, m.LONG_PRESS_TIMEOUT)),
-          (0, h.getPress)().press && i(e, !0));
+          !S &&
+            -1 !== O.indexOf(e) &&
+            (t.pressTimeout = E = setTimeout(() => {
+              T(e, 'long'), (0, c.updatePressStatus)(!0, e), (t.fired = S = !0);
+            }, h.LONG_PRESS_TIMEOUT)),
+          (0, b.getPress)().press && n(e, !0));
       }
-      function a(n) {
-        const e = n.keyCode ? n.keyCode : n;
-        c.default.isBlocked(e) ||
-          ((0, y.catcherWatcher)(e),
-          S(e, 'short'),
+      function s(r) {
+        const e = r.keyCode ? r.keyCode : r;
+        p.default.isBlocked(e) ||
+          ((0, m.catcherWatcher)(e),
+          T(e, 'short'),
           o(e),
-          clearTimeout(k),
-          (0, p.updatePressStatus)(!1),
-          (t.fired = E = !1),
-          (t.clicked = B = !1));
+          clearTimeout(E),
+          (0, c.updatePressStatus)(!1),
+          (t.fired = S = !1),
+          (t.clicked = _ = !1));
       }
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.getConfig = t.availableForLongPress = t.userConfig = t.rkDebounce = t.eventCb = t.pressTimeout = t.clicked = t.fired = t.keysCopy = t.keysListeners = void 0);
-      var s =
+      var a =
         Object.assign ||
         function(e) {
-          for (var t, n = 1; n < arguments.length; n++)
-            for (var r in ((t = arguments[n]), t))
-              Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
+          for (var t, r = 1; r < arguments.length; r++)
+            for (var i in ((t = arguments[r]), t))
+              Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
           return e;
         };
-      (t.callListeners = i),
+      (t.callListeners = n),
         (t.callTriggerClick = d),
         (t.releaseClickTouch = o),
         (t.cb = l),
-        (t.cbRelease = a),
+        (t.cbRelease = s),
         (t._init = function(e) {
-          e && e.store && (0, h.updateStore)(e.store),
-            (t.rkDebounce = v =
-              e && e.debounce ? e.debounce : m.DEBOUNCE_TIMEOUT),
-            (t.eventCb = S = e && e.eventCb ? e.eventCb : () => ({})),
-            (t.userConfig = I = e && e.config ? s({}, I, e.config) : I),
-            (t.availableForLongPress = T =
-              e && e.longPressTouch ? e.longPressTouch : T),
+          e && e.store && (0, b.updateStore)(e.store),
+            (t.rkDebounce = C =
+              e && e.debounce ? e.debounce : h.DEBOUNCE_TIMEOUT),
+            (t.eventCb = T = e && e.eventCb ? e.eventCb : () => ({})),
+            (t.userConfig = B = e && e.config ? a({}, B, e.config) : B),
+            (t.availableForLongPress = O =
+              e && e.longPressTouch ? e.longPressTouch : O),
             e && (!e || e.bindkeys)
-              ? e.bindkeys(l, a)
+              ? e.bindkeys(l, s)
               : (document.addEventListener('keydown', l),
-                document.addEventListener('keyup', a));
+                document.addEventListener('keyup', s));
         }),
         (t.addListener = function(e, t) {
-          const n = Math.random()
+          const r = Math.random()
             .toString(36)
             .substring(2, 10);
-          return b.unshift({ id: n, callback: e, context: t }), n;
+          return y.unshift({ id: r, callback: e, context: t }), r;
         }),
         (t.removeListener = function(e) {
-          return (t.keysListeners = b = b.filter(t => t.id !== e)), null;
+          return (t.keysListeners = y = y.filter(t => t.id !== e)), null;
         });
-      var p = n(1),
-        u = n(9),
-        c = r(u),
-        f = n(18),
-        g = r(f),
-        y = n(19),
-        m = n(0),
-        h = n(3);
-      let b = (t.keysListeners = []),
-        _ = (t.keysCopy = []),
-        E = (t.fired = !1),
-        B = (t.clicked = !1),
-        k = (t.pressTimeout = null),
-        S = (t.eventCb = null),
-        v = (t.rkDebounce = m.DEBOUNCE_TIMEOUT),
-        I = (t.userConfig = g.default),
-        T = (t.availableForLongPress = f.AVAILABLE_FOR_LONG_PRESS);
-      t.getConfig = () => I;
+      var c = r(2),
+        u = r(10),
+        p = i(u),
+        f = r(20),
+        g = i(f),
+        m = r(21),
+        h = r(0),
+        b = r(5);
+      let y = (t.keysListeners = []),
+        I = (t.keysCopy = []),
+        S = (t.fired = !1),
+        _ = (t.clicked = !1),
+        E = (t.pressTimeout = null),
+        T = (t.eventCb = null),
+        C = (t.rkDebounce = h.DEBOUNCE_TIMEOUT),
+        B = (t.userConfig = g.default),
+        O = (t.availableForLongPress = f.AVAILABLE_FOR_LONG_PRESS);
+      t.getConfig = () => B;
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
-      function r(e, t, n, r) {
-        let i = !1,
-          o = n,
+      function i(e, t, r, i) {
+        let n = !1,
+          o = r,
           l = t,
-          a = null;
+          s = null;
         switch (e) {
           case d.C_UP:
-            a = r === d.C_DOWN ? d.C_UP : null;
+            s = i === d.C_DOWN ? d.C_UP : null;
             break;
           case d.C_RIGHT:
-            a = r === d.C_LEFT ? d.C_RIGHT : null;
+            s = i === d.C_LEFT ? d.C_RIGHT : null;
             break;
           case d.C_DOWN:
-            a = r === d.C_UP ? d.C_DOWN : null;
+            s = i === d.C_UP ? d.C_DOWN : null;
             break;
           case d.C_LEFT:
-            a = r === d.C_RIGHT ? d.C_LEFT : null;
+            s = i === d.C_RIGHT ? d.C_LEFT : null;
             break;
           default:
         }
-        if (a) {
-          i = !0;
-          (o = t), (l = n);
-        } else a = r;
-        return { hasMoved: i, nextEl: l, prevEl: o, prevDir: a };
+        if (s) {
+          n = !0;
+          (o = t), (l = r);
+        } else s = i;
+        return { hasMoved: n, nextEl: l, prevEl: o, prevDir: s };
       }
-      var i = Math.max;
+      var n = Math.max;
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.calculateElSpace = function(e) {
           if (e) {
             const {
               left: t,
-              top: n,
-              width: r,
-              height: i,
+              top: r,
+              width: i,
+              height: n,
             } = e.getBoundingClientRect();
             return {
               id: e.id,
-              width: r,
-              height: i,
+              width: i,
+              height: n,
               left: t,
-              top: n,
-              down: n + i,
-              right: t + r,
+              top: r,
+              down: r + n,
+              right: t + i,
             };
           }
         }),
         (t.downLimit = function(e) {
-          return i.apply(null, e.map(e => e.coords.down));
+          return n.apply(null, e.map(e => e.coords.down));
         }),
         (t.rightLimit = function(e) {
-          return i.apply(null, e.map(e => e.coords.right));
+          return n.apply(null, e.map(e => e.coords.right));
         }),
         (t.getCurrentChildren = function(e, t) {
           return [].slice.call(e.querySelectorAll(t));
@@ -500,125 +530,135 @@
         (t.hasElementsDiff = function(e, t) {
           if (0 === e.length) return !1;
           if (0 === t.length || t.length !== e.length) return !0;
-          let n = !1,
-            r = 0;
-          for (const i = Math.min(e.length, t.length); r < i && !n; ) {
-            const i = e[r].id || e[r].props.id,
-              d = t[r].id || t[r].props.id;
-            (n = i !== d), r++;
+          let r = !1,
+            i = 0;
+          for (const n = Math.min(e.length, t.length); i < n && !r; ) {
+            const n = e[i].id || e[i].props.id,
+              d = t[i].id || t[i].props.id;
+            (r = n !== d), i++;
           }
-          return n;
+          return r;
         }),
-        (t.hasWrapperDiff = function(e, t, n) {
+        (t.hasWrapperDiff = function(e, t, r) {
           if (!e || !t) return !1;
-          return 'horizontal' === n
+          return 'horizontal' === r
             ? e.width !== t.width || e.height !== t.height || e.left !== t.left
-            : 'vertical' === n
+            : 'vertical' === r
               ? e.width !== t.width || e.height !== t.height || e.top !== t.top
               : e.width !== t.width ||
                 e.height !== t.height ||
                 e.top !== t.top ||
                 e.left !== t.left;
         }),
-        (t.flipflop = r),
-        (t.calculateNewState = function(t, e, n, i, d) {
+        (t.flipflop = i),
+        (t.calculateNewState = function(t, e, r, n, d) {
           let o = !1,
             l = e,
+            s = r,
             a = n,
-            s = i,
-            p = r(t, e, n, i);
-          if (!p.hasMoved) {
-            const n = e;
-            n[t] && (l = d.find(r => r.id === n[t])),
-              l.id !== n.id && ((o = !0), (a = n), (s = t)),
-              (p = { hasMoved: o, nextEl: l, prevEl: a, prevDir: s });
+            c = i(t, e, r, n);
+          if (!c.hasMoved) {
+            const r = e;
+            r[t] && (l = d.find(i => i.id === r[t])),
+              l.id !== r.id && ((o = !0), (s = r), (a = t)),
+              (c = { hasMoved: o, nextEl: l, prevEl: s, prevDir: a });
           }
-          return p;
+          return c;
+        }),
+        (t.debounce = function(e, t, r) {
+          var i;
+          return function() {
+            var n = this,
+              d = arguments,
+              o = r && !i;
+            clearTimeout(i),
+              (i = setTimeout(function() {
+                (i = null), r || e.apply(n, d);
+              }, t)),
+              o && e.apply(n, d);
+          };
         });
-      var d = n(0);
-    },
-    function(t) {
-      t.exports = e;
+      var d = r(0);
     },
     function(e) {
       function t() {
         throw new Error('setTimeout has not been defined');
       }
-      function n() {
+      function r() {
         throw new Error('clearTimeout has not been defined');
       }
-      function r(e) {
-        if (s === setTimeout) return setTimeout(e, 0);
-        if ((s === t || !s) && setTimeout)
-          return (s = setTimeout), setTimeout(e, 0);
+      function n(e) {
+        if (a === setTimeout) return setTimeout(e, 0);
+        if ((a === t || !a) && setTimeout)
+          return (a = setTimeout), setTimeout(e, 0);
         try {
-          return s(e, 0);
+          return a(e, 0);
         } catch (t) {
           try {
-            return s.call(null, e, 0);
+            return a.call(null, e, 0);
           } catch (t) {
-            return s.call(this, e, 0);
+            return a.call(this, e, 0);
           }
         }
       }
       function i(e) {
-        if (p === clearTimeout) return clearTimeout(e);
-        if ((p === n || !p) && clearTimeout)
-          return (p = clearTimeout), clearTimeout(e);
+        if (c === clearTimeout) return clearTimeout(e);
+        if ((c === r || !c) && clearTimeout)
+          return (c = clearTimeout), clearTimeout(e);
         try {
-          return p(e);
+          return c(e);
         } catch (t) {
           try {
-            return p.call(null, e);
+            return c.call(null, e);
           } catch (t) {
-            return p.call(this, e);
+            return c.call(this, e);
           }
         }
       }
       function d() {
         g &&
-          c &&
-          ((g = !1), c.length ? (f = c.concat(f)) : (y = -1), f.length && o());
+          p &&
+          ((g = !1), p.length ? (f = p.concat(f)) : (m = -1), f.length && o());
       }
       function o() {
         if (!g) {
-          var e = r(d);
+          var e = n(d);
           g = !0;
           for (var t = f.length; t; ) {
-            for (c = f, f = []; ++y < t; ) c && c[y].run();
-            (y = -1), (t = f.length);
+            for (p = f, f = []; ++m < t; ) p && p[m].run();
+            (m = -1), (t = f.length);
           }
-          (c = null), (g = !1), i(e);
+          (p = null), (g = !1), i(e);
         }
       }
       function l(e, t) {
         (this.fun = e), (this.array = t);
       }
-      function a() {}
-      var s,
-        p,
+      function s() {}
+      var a,
+        c,
         u = (e.exports = {});
       (function() {
         try {
-          s = 'function' == typeof setTimeout ? setTimeout : t;
-        } catch (n) {
-          s = t;
+          a = 'function' == typeof setTimeout ? setTimeout : t;
+        } catch (r) {
+          a = t;
         }
         try {
-          p = 'function' == typeof clearTimeout ? clearTimeout : n;
+          c = 'function' == typeof clearTimeout ? clearTimeout : r;
         } catch (t) {
-          p = n;
+          c = r;
         }
       })();
-      var c,
+      var p,
         f = [],
         g = !1,
-        y = -1;
+        m = -1;
       (u.nextTick = function(e) {
         var t = Array(arguments.length - 1);
         if (1 < arguments.length)
-          for (var n = 1; n < arguments.length; n++) t[n - 1] = arguments[n];
-        f.push(new l(e, t)), 1 !== f.length || g || r(o);
+          for (var r = 1; r < arguments.length; r++) t[r - 1] = arguments[r];
+        f.push(new l(e, t)), 1 !== f.length || g || n(o);
       }),
         (l.prototype.run = function() {
           this.fun.apply(null, this.array);
@@ -629,15 +669,15 @@
         (u.argv = []),
         (u.version = ''),
         (u.versions = {}),
-        (u.on = a),
-        (u.addListener = a),
-        (u.once = a),
-        (u.off = a),
-        (u.removeListener = a),
-        (u.removeAllListeners = a),
-        (u.emit = a),
-        (u.prependListener = a),
-        (u.prependOnceListener = a),
+        (u.on = s),
+        (u.addListener = s),
+        (u.once = s),
+        (u.off = s),
+        (u.removeListener = s),
+        (u.removeAllListeners = s),
+        (u.emit = s),
+        (u.prependListener = s),
+        (u.prependOnceListener = s),
         (u.listeners = function() {
           return [];
         }),
@@ -654,20 +694,17 @@
           return 0;
         });
     },
-    function(e, t, n) {
-      (function(t) {
-        if ('production' !== t.env.NODE_ENV) {
-          var r =
-              ('function' == typeof Symbol &&
-                Symbol.for &&
-                Symbol.for('react.element')) ||
-              60103,
-            i = function(e) {
-              return 'object' == typeof e && null !== e && e.$$typeof === r;
-            };
-          e.exports = n(24)(i, !0);
-        } else e.exports = n(27)();
-      }.call(t, n(7)));
+    function(e, t, r) {
+      'use strict';
+      Object.defineProperty(t, '__esModule', { value: !0 }),
+        (t.block = function(e = i.rkDebounce) {
+          (n = !0), setTimeout(() => (n = !1), e);
+        }),
+        (t.isBlocked = function() {
+          return n;
+        });
+      var i = r(6);
+      let n = !1;
     },
     function(e, t) {
       'use strict';
@@ -748,6 +785,242 @@
         }
       }();
     },
+    function(e, t, r) {
+      'use strict';
+      function i(e) {
+        return e && e.__esModule ? e : { default: e };
+      }
+      Object.defineProperty(t, '__esModule', { value: !0 });
+      var n = r(1),
+        d = r(3),
+        o = i(d),
+        l = r(9),
+        s = r(6),
+        a = r(10),
+        c = i(a),
+        u = r(2);
+      class p extends n.Component {
+        static get propTypes() {
+          return {
+            children: o.default.oneOfType([o.default.object, o.default.array]),
+            id: o.default.string.isRequired,
+            debounce: o.default.number,
+            active: o.default.bool,
+          };
+        }
+        static get defaultProps() {
+          return { active: !0 };
+        }
+        constructor(e) {
+          super(e),
+            (this.listenerId = (0, s.addListener)(this.keysHandler, this));
+        }
+        isActive() {
+          return (
+            this.props.active &&
+            !(0, l.isBlocked)() &&
+            !c.default.isBlocked(this.props.id)
+          );
+        }
+        keysHandler(e, t, r) {
+          if (!r && this.isActive())
+            for (const t in s.userConfig) {
+              const r = s.userConfig[t],
+                i = t
+                  .toLowerCase()
+                  .replace(/\b[a-z](?=[a-z]{1})/g, e => e.toUpperCase());
+              if (
+                (Number.isInteger(r) && r === e) ||
+                (Array.isArray(r) && -1 !== r.indexOf(e))
+              ) {
+                this.performAction(this.props[`on${i}`], e);
+                break;
+              }
+            }
+        }
+        performAction(e, t) {
+          const { debounce: r } = this.props;
+          e && ((0, l.block)(r), (0, u.execCb)(e, t, this));
+        }
+        componentWillUnmount() {
+          (0, s.removeListener)(this.listenerId);
+        }
+        render() {
+          return this.props.children || null;
+        }
+      }
+      t.default = p;
+    },
+    function(e, t, r) {
+      'use strict';
+      function i(e) {
+        return n.globalStore.getState()[d.NAME][e];
+      }
+      Object.defineProperty(t, '__esModule', { value: !0 }),
+        (t.getBinder = i),
+        (t.addScrollableRef = function(e, t) {
+          (0, o._updateBinder)(e, {
+            scrollableRef: t,
+            scrollableTranslateX: 0,
+            scrollableTranslateY: 0,
+          });
+        }),
+        (t.addNestedScrollableRef = function(e, t, r) {
+          const { nestedScrollableRefs: n } = i(e);
+          (n[r] = {
+            ref: t,
+            scrollableTranslateX: 0,
+            scrollableTranslateY: 0,
+            iFocused: 0,
+          }),
+            (0, o._updateBinder)(e, { nestedScrollableRefs: n });
+        }),
+        (t.getScrollableRef = function(e) {
+          const { scrollableRef: t } = i(e);
+          return t;
+        }),
+        (t.getScrollableTranslateX = function(e) {
+          const { scrollableTranslateX: t } = i(e);
+          return t;
+        }),
+        (t.getScrollableTranslateY = function(e) {
+          const { scrollableTranslateY: t } = i(e);
+          return t;
+        }),
+        (t.horizontalScrollHandler = function(e, t) {
+          const { direction: r, scrollableRef: n } = i(e);
+          (0, o._updateBinder)(e, { scrollableTranslateX: t }),
+            (n.style.transform = `translate3d(${t}px, 0, 0)`);
+        }),
+        (t.horizontalNestedScrollHandler = function(e, t) {
+          const { iFocused: r, nestedIFocused: n, nestedScrollableRefs: d } = i(
+            e
+          );
+          (d[r].scrollableTranslateX = t),
+            (0, o._updateBinder)(e, { nestedScrollableRefs: d }),
+            (d[r].ref.style.transform = `translate3d(${t}px, 0, 0)`);
+        }),
+        (t.verticalScrollHandler = function(e, t) {
+          const { scrollableRef: r } = i(e);
+          (0, o._updateBinder)(e, { scrollableTranslateY: t }),
+            (r.style.transform = `translate3d(0, ${t}px, 0)`);
+        }),
+        (t.addScrollableItemRef = function(e, t, r) {
+          const {
+            direction: n,
+            nestedScrollableItems: l,
+            scrollableItems: s,
+          } = i(e);
+          (s[t] = {}),
+            (s[t].ref = r),
+            n === d.CAROUSEL_DIRECTIONS.vertical ||
+            n === d.CAROUSEL_DIRECTIONS.verticalBidirectional
+              ? ((s[t].offsetHeight = r.offsetHeight),
+                (s[t].offsetTop = r.offsetTop))
+              : n === d.CAROUSEL_DIRECTIONS.horizontal &&
+                ((s[t].offsetWidth = r.offsetWidth),
+                (s[t].offsetLeft = r.offsetLeft)),
+            (0, o._updateBinder)(e, { scrollableItems: s });
+        }),
+        (t.addNestedScrollableItemRef = function(e, t, r, n) {
+          const { nestedScrollableItems: d } = i(e);
+          d[r] || (d[r] = []),
+            (d[r][t] = {}),
+            (d[r][t].ref = n),
+            (d[r][t].offsetWidth = n.offsetWidth),
+            (d[r][t].offsetLeft = n.offsetLeft),
+            (0, o._updateBinder)(e, { nestedScrollableItems: d });
+        }),
+        (t.getItemOffsetHeight = function(e, t) {
+          const { scrollableItems: r } = i(e);
+          return r[t] ? r[t].offsetHeight : void 0;
+        }),
+        (t.getItemOffsetLeft = function(e, t) {
+          const { scrollableItems: r } = i(e);
+          return r[t] ? r[t].offsetLeft : void 0;
+        }),
+        (t.getItemOffsetTop = function(e, t) {
+          const { scrollableItems: r } = i(e);
+          return r[t] ? r[t].offsetTop : void 0;
+        }),
+        (t.getItemOffsetWidth = function(e, t) {
+          const { scrollableItems: r } = i(e);
+          return r[t] ? r[t].offsetWidth : void 0;
+        }),
+        (t.getIFocused = function(e) {
+          const { iFocused: t } = i(e);
+          return t;
+        }),
+        (t.isItemMounted = function(e) {
+          return !!document.getElementById(e);
+        }),
+        (t.getNestedIFocused = function(e, t) {
+          const { nestedScrollableRefs: r } = i(e);
+          return r[t] ? r[t].iFocused : 0;
+        }),
+        (t.getNestedItemOffsetLeft = function(e, t, r) {
+          const { nestedScrollableItems: n } = i(e);
+          return n[t] && n[t][r] ? n[t][r].offsetLeft : void 0;
+        }),
+        (t.getNestedItemOffsetWidth = function(e, t, r) {
+          const { nestedScrollableItems: n } = i(e);
+          return n[t] && n[t][r] ? n[t][r].offsetWidth : void 0;
+        }),
+        (t.getNestedScrollableTranslateX = function(e, t) {
+          const { nestedScrollableRefs: r } = i(e);
+          return r[t].scrollableTranslateX;
+        }),
+        (t.itemFocusedHandler = function(e, t, r) {
+          const {
+            childItemWrapper: n,
+            direction: l,
+            focusedClassName: s,
+            nestedFocusedClassName: a,
+            horizontalChildItemWrapper: c,
+            iFocused: u,
+            nestedScrollableItems: p,
+            nestedScrollableRefs: f,
+            preloadItemsCount: g,
+            scrollableItems: m,
+            verticalChildItemWrapper: h,
+          } = i(e);
+          if (l === d.CAROUSEL_DIRECTIONS.verticalBidirectional) {
+            const i = m[t].ref.querySelector(h),
+              n = f[u].iFocused;
+            isNaN(r) && (r = f[t].iFocused);
+            const d = p[u][n || 0].ref.querySelector(c);
+            d && d.classList.remove(a);
+            const l = p[t][r || 0].ref.querySelector(c);
+            l.classList.add(a),
+              (f[t].iFocused = r),
+              (0, o._updateBinder)(e, {
+                iFocused: t,
+                selectedId: i.id,
+                nestedIFocused: r,
+                nestedSelectedId: l.id,
+                nestedScrollableRefs: f,
+              });
+          } else {
+            const r = m[t].ref.querySelector(n);
+            if (s) {
+              const e = m[u].ref.querySelector(n);
+              e && e.classList.remove(s), r.classList.add(s);
+            }
+            (0, o._updateBinder)(e, {
+              iFocused: t,
+              selectedId: r.id,
+              scrollableItems: m,
+            });
+          }
+        }),
+        (t.isCarouselActive = function(e) {
+          const { active: t } = i(e);
+          return t;
+        });
+      var n = r(6),
+        d = r(0),
+        o = r(2);
+    },
     function(e) {
       'use strict';
       function t(e) {
@@ -755,300 +1028,288 @@
           return e;
         };
       }
-      var n = function() {};
-      (n.thatReturns = t),
-        (n.thatReturnsFalse = t(!1)),
-        (n.thatReturnsTrue = t(!0)),
-        (n.thatReturnsNull = t(null)),
-        (n.thatReturnsThis = function() {
+      var r = function() {};
+      (r.thatReturns = t),
+        (r.thatReturnsFalse = t(!1)),
+        (r.thatReturnsTrue = t(!0)),
+        (r.thatReturnsNull = t(null)),
+        (r.thatReturnsThis = function() {
           return this;
         }),
-        (n.thatReturnsArgument = function(e) {
+        (r.thatReturnsArgument = function(e) {
           return e;
         }),
-        (e.exports = n);
+        (e.exports = r);
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       (function(t) {
-        var n = function() {};
+        var r = function() {};
         'production' !== t.env.NODE_ENV &&
-          (n = function(e) {
+          (r = function(e) {
             if (e === void 0)
               throw new Error('invariant requires an error message argument');
           }),
-          (e.exports = function(t, r, i, o, l, a, d, e) {
-            if ((n(r), !t)) {
-              var s;
-              if (void 0 === r)
-                s = new Error(
+          (e.exports = function(t, i, n, o, l, s, d, e) {
+            if ((r(i), !t)) {
+              var a;
+              if (void 0 === i)
+                a = new Error(
                   'Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.'
                 );
               else {
-                var p = [i, o, l, a, d, e],
+                var c = [n, o, l, s, d, e],
                   u = 0;
-                (s = new Error(
-                  r.replace(/%s/g, function() {
-                    return p[u++];
+                (a = new Error(
+                  i.replace(/%s/g, function() {
+                    return c[u++];
                   })
                 )),
-                  (s.name = 'Invariant Violation');
+                  (a.name = 'Invariant Violation');
               }
-              throw ((s.framesToPop = 1), s);
+              throw ((a.framesToPop = 1), a);
             }
           });
-      }.call(t, n(7)));
+      }.call(t, r(8)));
     },
     function(e) {
       'use strict';
       e.exports = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
     },
-    function(e, t, n) {
-      'use strict';
-      Object.defineProperty(t, '__esModule', { value: !0 }),
-        (t.block = function(e = r.rkDebounce) {
-          (i = !0), setTimeout(() => (i = !1), e);
-        }),
-        (t.isBlocked = function() {
-          return i;
-        });
-      var r = n(4);
-      let i = !1;
-    },
-    function(e, t, n) {
-      'use strict';
-      function r(e, t) {
-        let n = 'equal',
-          r = 'equal';
-        return (
-          e.left > t.left ? (r = 'left') : e.left < t.left && (r = 'right'),
-          e.top > t.top ? (n = 'top') : e.top < t.top && (n = 'down'),
-          { vertical: n, horizontal: r }
-        );
-      }
-      function i(e, t, n) {
-        return t.top >= e.top + n;
-      }
-      function d(e, t, n) {
-        return e.down >= t.down + n;
-      }
-      function o(e, t, n) {
-        return t.left >= e.left + n;
-      }
-      function l(e, t, n) {
-        return e.right >= t.right + n;
-      }
-      function a(e, t) {
-        return i(e, t, 0) && d(e, t, 0);
-      }
-      function s(e, t) {
-        return o(e, t, 0) && l(e, t, 0);
-      }
-      function p(e, t, n, r, i) {
-        const { top: d } = t.coords,
-          o = r || i,
-          l = 0 > d - (e.top + o),
-          a = d - (l ? o : n),
-          s = a - e.top;
-        return 0 > s && !l ? 0 : -s;
-      }
-      function u(e, t, n, r, i, d) {
-        const { down: o } = t.coords,
-          l = i || d,
-          a = o + l > r,
-          s = o + (a ? l : n);
-        return s > r && !a ? -(r - e.down) : -(s - e.down);
-      }
-      function c(e, t, n, r, i, d) {
-        const { right: o } = t.coords,
-          l = i || d,
-          a = o + l > r,
-          s = o + (a ? l : n);
-        return s > r && !a ? -(r - e.right) : -(s - e.right);
-      }
-      function f(e, t, n, r, i) {
-        const { left: d } = t.coords,
-          o = r || i,
-          l = 0 > d - (e.left + o),
-          a = d - (l ? o : n),
-          s = a - e.left;
-        return 0 > s && !l ? 0 : -s;
-      }
-      Object.defineProperty(t, '__esModule', { value: !0 });
-      var g =
-        Object.assign ||
-        function(e) {
-          for (var t, n = 1; n < arguments.length; n++)
-            for (var r in ((t = arguments[n]), t))
-              Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
-          return e;
-        };
-      (t.correctBoundsMargin = function(e, t) {
-        const {
-            wrapper: n,
-            elements: r,
-            marginLeft: i,
-            marginTop: d,
-            gap: o,
-            boundedGap: l,
-            topGap: u,
-            leftGap: c,
-          } = t,
-          g = r.find(t => t.id === e),
-          m = (0, y.calculateElSpace)(document.getElementById(e));
-        return {
-          marginLeft: s(n, m) ? i : f(n, g, o, l, c),
-          marginTop: a(n, m) ? d : p(n, g, o, l, u),
-        };
-      }),
-        (t.boundsMargin = function(e, t, n) {
-          const {
-            wrapper: a,
-            elements: s,
-            marginLeft: h,
-            marginTop: b,
-            downLimit: _,
-            rightLimit: E,
-            gap: B,
-            boundedGap: k,
-            topGap: S,
-            rightGap: v,
-            leftGap: I,
-            downGap: T,
-            selectedId: C,
-          } = t;
-          let P = h,
-            O = b,
-            R = s;
-          if (!n || C === e)
-            return { marginLeft: P, marginTop: O, elements: R };
-          const x = document.getElementById(C),
-            N = document.getElementById(e);
-          if (!x || !N || !a)
-            return { marginLeft: P, marginTop: O, elements: R };
-          const w = s.find(t => t.id === e),
-            M = (0, y.calculateElSpace)(x),
-            L = (0, y.calculateElSpace)(N),
-            A = r(M, L);
-          return (
-            'left' !== A.horizontal || o(a, L, B)
-              ? ('right' === A.horizontal || 'equal' === A.horizontal) &&
-                !l(a, L, B) &&
-                (P = c(a, w, B, E, k, v))
-              : (P = f(a, w, B, k, I)),
-            'top' !== A.vertical || i(a, L, B)
-              ? ('down' === A.vertical || 'equal' === A.horizontal) &&
-                !d(a, L, B) &&
-                (O = u(a, w, B, _, k, T, b))
-              : (O = p(a, w, B, k, S)),
-            (h !== P || b !== O) &&
-              (R = s.map(e =>
-                g({}, e, {
-                  isVisible: (0, m.isVisible)(
-                    a,
-                    e.coords,
-                    P,
-                    O,
-                    n.visibilityOffset
-                  ),
-                })
-              )),
-            { marginLeft: P, marginTop: O, elements: R }
-          );
-        }),
-        (t.determineGeo = r),
-        (t.isInsideTop = i),
-        (t.isInsideDown = d),
-        (t.isInsideLeft = o),
-        (t.isInsideRight = l),
-        (t.isVerticalInside = a),
-        (t.isHorizontalInside = s),
-        (t.calculMarginOnTop = p),
-        (t.calculMarginOnDown = u),
-        (t.calculMarginOnRight = c),
-        (t.calculMarginOnLeft = f);
-      var y = n(5),
-        m = n(16);
-    },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       (function(t) {
-        var r = n(10),
-          i = r;
+        var i = r(13),
+          n = i;
         if ('production' !== t.env.NODE_ENV) {
           var d = function(e) {
             for (
-              var t = arguments.length, n = Array(1 < t ? t - 1 : 0), r = 1;
-              r < t;
-              r++
+              var t = arguments.length, r = Array(1 < t ? t - 1 : 0), i = 1;
+              i < t;
+              i++
             )
-              n[r - 1] = arguments[r];
-            var i = 0,
+              r[i - 1] = arguments[i];
+            var n = 0,
               d =
                 'Warning: ' +
                 e.replace(/%s/g, function() {
-                  return n[i++];
+                  return r[n++];
                 });
             'undefined' != typeof console && void 0;
             try {
               throw new Error(d);
             } catch (e) {}
           };
-          i = function(e, t) {
+          n = function(e, t) {
             if (t === void 0)
               throw new Error(
                 '`warning(condition, format, ...args)` requires a warning message argument'
               );
             if (0 !== t.indexOf('Failed Composite propType: ') && !e) {
               for (
-                var n = arguments.length, r = Array(2 < n ? n - 2 : 0), i = 2;
-                i < n;
-                i++
+                var r = arguments.length, i = Array(2 < r ? r - 2 : 0), n = 2;
+                n < r;
+                n++
               )
-                r[i - 2] = arguments[i];
-              d.apply(void 0, [t].concat(r));
+                i[n - 2] = arguments[n];
+              d.apply(void 0, [t].concat(i));
             }
           };
         }
-        e.exports = i;
-      }.call(t, n(7)));
+        e.exports = n;
+      }.call(t, r(8)));
+    },
+    function(e, t, r) {
+      'use strict';
+      function i(e, t) {
+        let r = 'equal',
+          i = 'equal';
+        return (
+          e.left > t.left ? (i = 'left') : e.left < t.left && (i = 'right'),
+          e.top > t.top ? (r = 'top') : e.top < t.top && (r = 'down'),
+          { vertical: r, horizontal: i }
+        );
+      }
+      function n(e, t, r) {
+        return t.top >= e.top + r;
+      }
+      function d(e, t, r) {
+        return e.down >= t.down + r;
+      }
+      function o(e, t, r) {
+        return t.left >= e.left + r;
+      }
+      function l(e, t, r) {
+        return e.right >= t.right + r;
+      }
+      function s(e, t) {
+        return n(e, t, 0) && d(e, t, 0);
+      }
+      function a(e, t) {
+        return o(e, t, 0) && l(e, t, 0);
+      }
+      function c(e, t, r, i, n) {
+        const { top: d } = t.coords,
+          o = i || n,
+          l = 0 > d - (e.top + o),
+          s = d - (l ? o : r),
+          a = s - e.top;
+        return 0 > a && !l ? 0 : -a;
+      }
+      function u(e, t, r, i, n, d) {
+        const { down: o } = t.coords,
+          l = n || d,
+          s = o + l > i,
+          a = o + (s ? l : r);
+        return a > i && !s ? -(i - e.down) : -(a - e.down);
+      }
+      function p(e, t, r, i, n, d) {
+        const { right: o } = t.coords,
+          l = n || d,
+          s = o + l > i,
+          a = o + (s ? l : r);
+        return a > i && !s ? -(i - e.right) : -(a - e.right);
+      }
+      function f(e, t, r, i, n) {
+        const { left: d } = t.coords,
+          o = i || n,
+          l = 0 > d - (e.left + o),
+          s = d - (l ? o : r),
+          a = s - e.left;
+        return 0 > a && !l ? 0 : -a;
+      }
+      Object.defineProperty(t, '__esModule', { value: !0 });
+      var g =
+        Object.assign ||
+        function(e) {
+          for (var t, r = 1; r < arguments.length; r++)
+            for (var i in ((t = arguments[r]), t))
+              Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
+          return e;
+        };
+      (t.correctBoundsMargin = function(e, t) {
+        const {
+            wrapper: r,
+            elements: i,
+            marginLeft: n,
+            marginTop: d,
+            gap: o,
+            boundedGap: l,
+            topGap: u,
+            leftGap: p,
+          } = t,
+          g = i.find(t => t.id === e),
+          h = (0, m.calculateElSpace)(document.getElementById(e));
+        return {
+          marginLeft: a(r, h) ? n : f(r, g, o, l, p),
+          marginTop: s(r, h) ? d : c(r, g, o, l, u),
+        };
+      }),
+        (t.boundsMargin = function(e, t, r) {
+          const {
+            wrapper: s,
+            elements: a,
+            marginLeft: b,
+            marginTop: y,
+            downLimit: I,
+            rightLimit: S,
+            gap: _,
+            boundedGap: E,
+            topGap: T,
+            rightGap: C,
+            leftGap: B,
+            downGap: O,
+            selectedId: R,
+          } = t;
+          let v = b,
+            k = y,
+            L = a;
+          if (!r || R === e)
+            return { marginLeft: v, marginTop: k, elements: L };
+          const P = document.getElementById(R),
+            N = document.getElementById(e);
+          if (!P || !N || !s)
+            return { marginLeft: v, marginTop: k, elements: L };
+          const x = a.find(t => t.id === e),
+            w = (0, m.calculateElSpace)(P),
+            F = (0, m.calculateElSpace)(N),
+            A = i(w, F);
+          return (
+            'left' !== A.horizontal || o(s, F, _)
+              ? ('right' === A.horizontal || 'equal' === A.horizontal) &&
+                !l(s, F, _) &&
+                (v = p(s, x, _, S, E, C))
+              : (v = f(s, x, _, E, B)),
+            'top' !== A.vertical || n(s, F, _)
+              ? ('down' === A.vertical || 'equal' === A.horizontal) &&
+                !d(s, F, _) &&
+                (k = u(s, x, _, I, E, O, y))
+              : (k = c(s, x, _, E, T)),
+            (b !== v || y !== k) &&
+              (L = a.map(e =>
+                g({}, e, {
+                  isVisible: (0, h.isVisible)(
+                    s,
+                    e.coords,
+                    v,
+                    k,
+                    r.visibilityOffset
+                  ),
+                })
+              )),
+            { marginLeft: v, marginTop: k, elements: L }
+          );
+        }),
+        (t.determineGeo = i),
+        (t.isInsideTop = n),
+        (t.isInsideDown = d),
+        (t.isInsideLeft = o),
+        (t.isInsideRight = l),
+        (t.isVerticalInside = s),
+        (t.isHorizontalInside = a),
+        (t.calculMarginOnTop = c),
+        (t.calculMarginOnDown = u),
+        (t.calculMarginOnRight = p),
+        (t.calculMarginOnLeft = f);
+      var m = r(7),
+        h = r(18);
     },
     function(e, t) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 });
-      const n = (t.insideHorizontal = (e, t, n, r) =>
-          e.left - r - n <= t.left && e.right + r - n >= t.right),
-        r = (t.insideRight = (e, t, n, r) =>
-          e.left - r - n >= t.left && e.left - r - n <= t.right),
-        i = (t.insideLeft = (e, t, n, r) =>
-          e.right + r - n >= t.left && e.right + r - n <= t.right),
+      const r = (t.insideHorizontal = (e, t, r, i) =>
+          e.left - i - r <= t.left && e.right + i - r >= t.right),
+        i = (t.insideRight = (e, t, r, i) =>
+          e.left - i - r >= t.left && e.left - i - r <= t.right),
+        n = (t.insideLeft = (e, t, r, i) =>
+          e.right + i - r >= t.left && e.right + i - r <= t.right),
         d = (t.isHorizontalVisible = (e, t, d = 0, o = 0) =>
-          n(e, t, d, o) || r(e, t, d, o) || i(e, t, d, o)),
-        o = (t.insideVertical = (e, t, n, r) =>
-          e.top - r - n <= t.top && e.down + r - n >= t.down),
-        l = (t.insideTop = (e, t, n, r) =>
-          e.top - r - n >= t.top && e.top - r - n <= t.down),
-        a = (t.insideDown = (e, t, n, r) =>
-          e.down + r - n >= t.top && e.down + r - n <= t.down),
-        s = (t.isVerticalVisible = (e, t, n = 0, r = 0) =>
-          o(e, t, n, r) || l(e, t, n, r) || a(e, t, n, r)),
-        p = (t.isVisible = (e, t, n, r, i) => d(e, t, n, i) && s(e, t, r, i));
+          r(e, t, d, o) || i(e, t, d, o) || n(e, t, d, o)),
+        o = (t.insideVertical = (e, t, r, i) =>
+          e.top - i - r <= t.top && e.down + i - r >= t.down),
+        l = (t.insideTop = (e, t, r, i) =>
+          e.top - i - r >= t.top && e.top - i - r <= t.down),
+        s = (t.insideDown = (e, t, r, i) =>
+          e.down + i - r >= t.top && e.down + i - r <= t.down),
+        a = (t.isVerticalVisible = (e, t, r = 0, i = 0) =>
+          o(e, t, r, i) || l(e, t, r, i) || s(e, t, r, i)),
+        c = (t.isVisible = (e, t, r, i, n) => d(e, t, r, n) && a(e, t, i, n));
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.ensureState = function() {
-          if (!(0, r.getStore)())
-            throw new Error(`${i}keys state not present un global state`);
+          if (!(0, i.getStore)())
+            throw new Error(`${n}keys state not present un global state`);
         }),
         (t.ensureKnownBinder = function(e) {
-          return !!(0, r.getBinders)().some(t => e === t.id);
+          return !!(0, i.getBinders)().some(t => e === t.id);
         }),
         (t.isUnknownBinder = function(e) {
-          return !(0, r.getBinders)().some(t => e === t.id);
+          return !(0, i.getBinders)().some(t => e === t.id);
         });
-      var r = n(3);
-      const i = '[react-keys] - ';
+      var i = r(5);
+      const n = '[react-keys] - ';
     },
     function(e, t) {
       'use strict';
@@ -1056,21 +1317,21 @@
         (t.default = { left: 37, up: 38, right: 39, down: 40, enter: 13 });
       t.AVAILABLE_FOR_LONG_PRESS = [37, 38, 39, 40];
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       function i(e, t) {
-        const n = Math.random()
+        const r = Math.random()
           .toString(36)
           .substring(2, 10);
-        return a.push({ id: n, sequence: e, cb: t, history: [] }), n;
+        return s.push({ id: r, sequence: e, cb: t, history: [] }), r;
       }
       function d(e) {
-        a = a.filter(t => t.id !== e);
+        s = s.filter(t => t.id !== e);
       }
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.catcherWatcher = function(e) {
-          const t = r(e);
-          a.forEach(e => {
+          const t = n(e);
+          s.forEach(e => {
             (e.history += t),
               e.history.length > e.sequence.length &&
                 (e.history = e.history.slice(1)),
@@ -1080,118 +1341,179 @@
         }),
         (t.addCatcher = i),
         (t.removeCatcher = d);
-      var o = n(6),
+      var o = r(1),
         l = (function(e) {
           return e && e.__esModule ? e : { default: e };
         })(o);
-      let a = [];
-      t.default = (e, t) => n =>
+      let s = [];
+      t.default = (e, t) => r =>
         class extends o.Component {
           componentDidMount() {
-            const n = this.props;
-            this.id = i(e, () => t.call(this, n));
+            const r = this.props;
+            this.id = i(e, () => t.call(this, r));
           }
           componentWillUnmount() {
             d(this.id);
           }
           render() {
-            return l.default.createElement(n, this.props);
+            return l.default.createElement(r, this.props);
           }
         };
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
-      Object.defineProperty(t, '__esModule', { value: !0 }),
-        (t.isActive = function({ id: e, active: t }) {
-          return !!t && (0, i.findMountedId)((0, r.getBinders)()) === e;
-        });
-      var r = n(3),
-        i = n(2);
-    },
-    function(e, t, n) {
-      'use strict';
-      function r(e) {
-        return e && e.__esModule ? e : { default: e };
-      }
-      Object.defineProperty(t, '__esModule', { value: !0 }),
-        (t._blocks = t.unblockExcept = t.blockExcept = t.unblock = t.block = t.resetCarousel = t.removeBinder = t.resetBinder = t.updateBinder = t.activeBinder = t.catcher = t.isVisibleInBinder = t.isLongPress = t.getKeyCode = t.getCurrentBinderId = t.getCurrentBinder = t.getCurrentSelectedId = t.getBinderSelectedId = t.getBinderMarginTop = t.getBinderMarginLeft = t.getBinders = t.isBinderActive = t.isCurrentBinder = t.keysSelector = t.keysReducer = t.Catcher = t.Carousel = t.Binder = t.Keys = t.keysInit = t.config = void 0);
-      var i = n(22),
-        d = r(i),
-        o = n(35),
-        l = r(o),
-        a = n(36),
-        s = r(a),
-        p = n(39),
-        u = r(p),
-        c = n(19),
-        f = r(c),
-        g = n(4),
-        y = n(40),
-        m = n(1),
-        h = n(41),
-        b = n(9),
-        _ = r(b);
-      const E = (t.config = g.getConfig),
-        B = (t.keysInit = g._init),
-        k = (t.Keys = l.default),
-        S = (t.Binder = d.default),
-        v = (t.Carousel = s.default),
-        I = (t.Catcher = u.default),
-        T = (t.keysReducer = y.reducer),
-        C = (t.keysSelector = h._selector),
-        P = (t.isCurrentBinder = h._isCurrentBinder),
-        O = (t.isBinderActive = h._isBinderActive),
-        R = (t.getBinders = h._getBinders),
-        x = (t.getBinderMarginLeft = h._getBinderMarginLeft),
-        N = (t.getBinderMarginTop = h._getBinderMarginTop),
-        w = (t.getBinderSelectedId = h._getBinderSelectedId),
-        M = (t.getCurrentSelectedId = h._getCurrentSelectedId),
-        L = (t.getCurrentBinder = h._getCurrentBinder),
-        A = (t.getCurrentBinderId = h._getCurrentBinderId),
-        D = (t.getKeyCode = h._getKeyCode),
-        U = (t.isLongPress = h._isLongPress),
-        G = (t.isVisibleInBinder = h._isVisibleInBinder),
-        V = (t.catcher = f.default),
-        j = (t.activeBinder = m._activeBinder),
-        q = (t.updateBinder = m._updateBinder),
-        Y = (t.resetBinder = m._resetBinder),
-        F = (t.removeBinder = e => (0, m._removeBinder)(e, !0)),
-        K = (t.resetCarousel = m._resetCarousel),
-        z = (t.block = _.default.block),
-        W = (t.unblock = _.default.unblock),
-        H = (t.blockExcept = _.default.blockExcept),
-        $ = (t.unblockExcept = _.default.unblockExcept),
-        X = (t._blocks = _.default);
-    },
-    function(e, t, n) {
-      'use strict';
-      function r(e) {
+      function i(e) {
         return e && e.__esModule ? e : { default: e };
       }
       Object.defineProperty(t, '__esModule', { value: !0 });
-      var i = n(6),
-        d = r(i),
-        o = n(23),
-        l = n(28),
-        a = n(0),
-        s = n(4),
-        p = n(1),
-        u = n(30),
-        c = r(u),
-        f = n(31);
-      class g extends i.Component {
+      var n = r(1),
+        d = i(n),
+        o = r(3),
+        l = i(o),
+        s = r(12),
+        a = r(0);
+      class c extends n.Component {
+        constructor(...e) {
+          var t;
+          return (t = super(...e)), (this.state = {}), t;
+        }
+        componentDidMount() {
+          const {
+            carouselId: e,
+            itemIndex: t,
+            nested: r,
+            parentCarouselId: i,
+            parentItemIndex: n,
+          } = this.props;
+          r
+            ? (0, s.addNestedScrollableItemRef)(i, t, n, this.el)
+            : (0, s.addScrollableItemRef)(e, t, this.el);
+        }
+        shouldComponentUpdate() {
+          return !!this.props.hasNestedItems;
+        }
+        render() {
+          const {
+              direction: e,
+              children: t,
+              itemWidth: r,
+              itemHeight: i,
+              itemStyles: n,
+            } = this.props,
+            o = {
+              width: `${r}px`,
+              height: `${i}px`,
+              display:
+                e === a.CAROUSEL_DIRECTIONS.horizontal
+                  ? 'inline-block'
+                  : 'block',
+            };
+          return d.default.createElement(
+            'div',
+            {
+              ref: e => {
+                this.el = e;
+              },
+              style: o,
+            },
+            d.default.createElement('div', { style: n }, t)
+          );
+        }
+      }
+      t.default = c;
+    },
+    function(e, t, r) {
+      'use strict';
+      function i(e) {
+        return e && e.__esModule ? e : { default: e };
+      }
+      Object.defineProperty(t, '__esModule', { value: !0 }),
+        (t._blocks = t.unblockExcept = t.blockExcept = t.unblock = t.block = t.resetCarousel = t.removeBinder = t.resetBinder = t.updateBinder = t.activeBinder = t.catcher = t.isVisibleInBinder = t.isLongPress = t.getKeyCode = t.getCurrentBinderId = t.getCurrentBinder = t.getCurrentSelectedId = t.getBinderSelectedId = t.getBinderMarginTop = t.getBinderMarginLeft = t.getBinders = t.isBinderActive = t.isCurrentBinder = t.keysSelector = t.keysReducer = t.Catcher = t.CarouselV2 = t.Carousel = t.Binder = t.Keys = t.keysInit = t.config = void 0);
+      var n = r(24),
+        d = i(n),
+        o = r(11),
+        l = i(o),
+        s = r(
+          !(function() {
+            var t = new Error('Cannot find module "./components/Carousel"');
+            throw ((t.code = 'MODULE_NOT_FOUND'), t);
+          })()
+        ),
+        a = i(s),
+        c = r(38),
+        u = i(c),
+        p = r(43),
+        f = i(p),
+        g = r(21),
+        m = i(g),
+        h = r(6),
+        b = r(44),
+        y = r(2),
+        I = r(45),
+        S = r(10),
+        _ = i(S);
+      const E = (t.config = h.getConfig),
+        T = (t.keysInit = h._init),
+        C = (t.Keys = l.default),
+        B = (t.Binder = d.default),
+        O = (t.Carousel = a.default),
+        R = (t.CarouselV2 = u.default),
+        v = (t.Catcher = f.default),
+        k = (t.keysReducer = b.reducer),
+        L = (t.keysSelector = I._selector),
+        P = (t.isCurrentBinder = I._isCurrentBinder),
+        N = (t.isBinderActive = I._isBinderActive),
+        x = (t.getBinders = I._getBinders),
+        w = (t.getBinderMarginLeft = I._getBinderMarginLeft),
+        F = (t.getBinderMarginTop = I._getBinderMarginTop),
+        A = (t.getBinderSelectedId = I._getBinderSelectedId),
+        M = (t.getCurrentSelectedId = I._getCurrentSelectedId),
+        D = (t.getCurrentBinder = I._getCurrentBinder),
+        U = (t.getCurrentBinderId = I._getCurrentBinderId),
+        W = (t.getKeyCode = I._getKeyCode),
+        H = (t.isLongPress = I._isLongPress),
+        V = (t.isVisibleInBinder = I._isVisibleInBinder),
+        G = (t.catcher = m.default),
+        X = (t.activeBinder = y._activeBinder),
+        Y = (t.updateBinder = y._updateBinder),
+        z = (t.resetBinder = y._resetBinder),
+        q = (t.removeBinder = e => (0, y._removeBinder)(e, !0)),
+        j = (t.resetCarousel = y._resetCarousel),
+        K = (t.block = _.default.block),
+        $ = (t.unblock = _.default.unblock),
+        J = (t.blockExcept = _.default.blockExcept),
+        Z = (t.unblockExcept = _.default.unblockExcept),
+        Q = (t._blocks = _.default);
+    },
+    function(e, t, r) {
+      'use strict';
+      function i(e) {
+        return e && e.__esModule ? e : { default: e };
+      }
+      Object.defineProperty(t, '__esModule', { value: !0 });
+      var n = r(1),
+        d = i(n),
+        o = r(25),
+        l = r(30),
+        s = r(0),
+        a = r(6),
+        c = r(2),
+        u = r(33),
+        p = i(u),
+        f = r(34);
+      class g extends n.Component {
         constructor(e) {
           super(e),
             (this.uniqElement = !0),
-            (this.innerProps = (0, c.default)(e)),
+            (this.innerProps = (0, p.default)(e)),
             (this.state = { mounted: !1 });
         }
         componentWillMount() {
-          (this.listenerId = (0, s.addListener)(l.keysHandler, this)),
-            (0, p.addBinder)(this.innerProps, a.BINDER_TYPE);
+          (this.listenerId = (0, a.addListener)(l.keysHandler, this)),
+            (0, c.addBinder)(this.innerProps, s.BINDER_TYPE);
         }
         componentWillReceiveProps(e) {
-          this.innerProps = (0, c.default)(e);
+          this.innerProps = (0, p.default)(e);
         }
         componentDidMount() {
           this.setState({ mounted: !0 }),
@@ -1202,8 +1524,8 @@
         }
         componentWillUnmount() {
           this.setState({ mounted: !1 }),
-            (this.listenerId = (0, s.removeListener)(this.listenerId)),
-            (0, p._removeBinder)(this.innerProps.id);
+            (this.listenerId = (0, a.removeListener)(this.listenerId)),
+            (0, c._removeBinder)(this.innerProps.id);
         }
         render() {
           const { id: e, children: t } = this.innerProps;
@@ -1214,46 +1536,46 @@
         (g.defaultProps = o.defaultProps),
         (t.default = g);
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.defaultProps = t.propTypes = void 0);
-      var r = n(8),
-        i = (function(e) {
+      var i = r(3),
+        n = (function(e) {
           return e && e.__esModule ? e : { default: e };
-        })(r);
+        })(i);
       const d = (t.propTypes = {
-          id: i.default.string.isRequired,
-          children: i.default.oneOfType([i.default.object, i.default.array]),
-          selector: i.default.string,
-          position: i.default.string,
-          wrapper: i.default.string,
-          filter: i.default.string,
-          gap: i.default.number,
-          boundedGap: i.default.number,
-          topGap: i.default.number,
-          rightGap: i.default.number,
-          leftGap: i.default.number,
-          downGap: i.default.number,
-          visibilityOffset: i.default.number,
-          strategy: i.default.string,
-          refreshStrategy: i.default.string,
-          memory: i.default.bool,
-          active: i.default.bool,
-          onRight: i.default.func,
-          onLeft: i.default.func,
-          onUp: i.default.func,
-          onDown: i.default.func,
-          onEnter: i.default.func,
-          debounce: i.default.number,
-          triggerClick: i.default.bool,
-          longPress: i.default.bool,
-          onLeftExit: i.default.oneOfType([i.default.string, i.default.func]),
-          onRightExit: i.default.oneOfType([i.default.string, i.default.func]),
-          onUpExit: i.default.oneOfType([i.default.string, i.default.func]),
-          onDownExit: i.default.oneOfType([i.default.string, i.default.func]),
-          priority: i.default.number,
-          direction: i.default.string,
+          id: n.default.string.isRequired,
+          children: n.default.oneOfType([n.default.object, n.default.array]),
+          selector: n.default.string,
+          position: n.default.string,
+          wrapper: n.default.string,
+          filter: n.default.string,
+          gap: n.default.number,
+          boundedGap: n.default.number,
+          topGap: n.default.number,
+          rightGap: n.default.number,
+          leftGap: n.default.number,
+          downGap: n.default.number,
+          visibilityOffset: n.default.number,
+          strategy: n.default.string,
+          refreshStrategy: n.default.string,
+          memory: n.default.bool,
+          active: n.default.bool,
+          onRight: n.default.func,
+          onLeft: n.default.func,
+          onUp: n.default.func,
+          onDown: n.default.func,
+          onEnter: n.default.func,
+          debounce: n.default.number,
+          triggerClick: n.default.bool,
+          longPress: n.default.bool,
+          onLeftExit: n.default.oneOfType([n.default.string, n.default.func]),
+          onRightExit: n.default.oneOfType([n.default.string, n.default.func]),
+          onUpExit: n.default.oneOfType([n.default.string, n.default.func]),
+          onDownExit: n.default.oneOfType([n.default.string, n.default.func]),
+          priority: n.default.number,
+          direction: n.default.string,
         }),
         o = (t.defaultProps = {
           selector: 'li',
@@ -1274,30 +1596,30 @@
           priority: 0,
         });
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       (function(t) {
-        var r = n(10),
-          i = n(11),
-          d = n(15),
-          o = n(25),
-          l = n(12),
-          a = n(26);
-        e.exports = function(e, n) {
-          function s(e) {
-            var t = e && ((E && e[E]) || e[B]);
+        var n = r(13),
+          i = r(14),
+          d = r(16),
+          o = r(27),
+          l = r(15),
+          s = r(28);
+        e.exports = function(e, r) {
+          function a(e) {
+            var t = e && ((S && e[S]) || e[_]);
             if ('function' == typeof t) return t;
           }
-          function p(e, t) {
+          function c(e, t) {
             return e === t ? 0 !== e || 1 / e == 1 / t : e !== e && t !== t;
           }
           function u(e) {
             (this.message = e), (this.stack = '');
           }
-          function c(e) {
-            function r(r, s, p, c, f, g, y) {
-              if (((c = c || k), (g = g || p), y !== l))
-                if (n)
+          function p(e) {
+            function n(n, a, c, p, f, g, m) {
+              if (((p = p || E), (g = g || c), m !== l))
+                if (r)
                   i(
                     !1,
                     'Calling PropTypes validators directly is not supported by the `prop-types` package. Use `PropTypes.checkPropTypes()` to call them. Read more at http://fb.me/use-check-prop-types'
@@ -1306,28 +1628,28 @@
                   'production' !== t.env.NODE_ENV &&
                   'undefined' != typeof console
                 ) {
-                  var m = c + ':' + p;
-                  !o[m] &&
-                    3 > a &&
+                  var h = p + ':' + c;
+                  !o[h] &&
+                    3 > s &&
                     (d(
                       !1,
                       'You are manually calling a React.PropTypes validation function for the `%s` prop on `%s`. This is deprecated and will throw in the standalone `prop-types` package. You may be seeing this warning due to a third-party PropTypes library. See https://fb.me/react-warning-dont-call-proptypes for details.',
                       g,
-                      c
+                      p
                     ),
-                    (o[m] = !0),
-                    a++);
+                    (o[h] = !0),
+                    s++);
                 }
-              return null == s[p]
-                ? r
-                  ? null === s[p]
+              return null == a[c]
+                ? n
+                  ? null === a[c]
                     ? new u(
                         'The ' +
                           f +
                           ' `' +
                           g +
                           '` is marked as required ' +
-                          ('in `' + c + '`, but its value is `null`.')
+                          ('in `' + p + '`, but its value is `null`.')
                       )
                     : new u(
                         'The ' +
@@ -1335,30 +1657,30 @@
                           ' `' +
                           g +
                           '` is marked as required in ' +
-                          ('`' + c + '`, but its value is `undefined`.')
+                          ('`' + p + '`, but its value is `undefined`.')
                       )
                   : null
-                : e(s, p, c, f, g);
+                : e(a, c, p, f, g);
             }
             if ('production' !== t.env.NODE_ENV)
               var o = {},
-                a = 0;
-            var s = r.bind(null, !1);
-            return (s.isRequired = r.bind(null, !0)), s;
+                s = 0;
+            var a = n.bind(null, !1);
+            return (a.isRequired = n.bind(null, !0)), a;
           }
           function f(e) {
-            return c(function(t, n, r, i, d) {
-              var o = t[n],
-                l = m(o);
+            return p(function(t, r, i, n, d) {
+              var o = t[r],
+                l = h(o);
               if (l !== e) {
-                var a = h(o);
+                var s = b(o);
                 return new u(
                   'Invalid ' +
-                    i +
+                    n +
                     ' `' +
                     d +
                     '` of type ' +
-                    ('`' + a + '` supplied to `' + r + '`, expected ') +
+                    ('`' + s + '` supplied to `' + i + '`, expected ') +
                     ('`' + e + '`.')
                 );
               }
@@ -1376,15 +1698,15 @@
               case 'object':
                 if (Array.isArray(t)) return t.every(g);
                 if (null === t || e(t)) return !0;
-                var n = s(t);
-                if (n) {
-                  var r,
-                    i = n.call(t);
-                  if (n !== t.entries) {
-                    for (; !(r = i.next()).done; ) if (!g(r.value)) return !1;
+                var r = a(t);
+                if (r) {
+                  var i,
+                    n = r.call(t);
+                  if (r !== t.entries) {
+                    for (; !(i = n.next()).done; ) if (!g(i.value)) return !1;
                   } else
-                    for (; !(r = i.next()).done; ) {
-                      var d = r.value;
+                    for (; !(i = n.next()).done; ) {
+                      var d = i.value;
                       if (d && !g(d[1])) return !1;
                     }
                 } else return !1;
@@ -1393,43 +1715,43 @@
                 return !1;
             }
           }
-          function y(e, t) {
+          function m(e, t) {
             return (
               'symbol' === e ||
               'Symbol' === t['@@toStringTag'] ||
               ('function' == typeof Symbol && t instanceof Symbol)
             );
           }
-          function m(e) {
+          function h(e) {
             var t = typeof e;
             return Array.isArray(e)
               ? 'array'
-              : e instanceof RegExp ? 'object' : y(t, e) ? 'symbol' : t;
+              : e instanceof RegExp ? 'object' : m(t, e) ? 'symbol' : t;
           }
-          function h(e) {
+          function b(e) {
             if ('undefined' == typeof e || null === e) return '' + e;
-            var t = m(e);
+            var t = h(e);
             if ('object' === t) {
               if (e instanceof Date) return 'date';
               if (e instanceof RegExp) return 'regexp';
             }
             return t;
           }
-          function b(e) {
-            var t = h(e);
+          function y(e) {
+            var t = b(e);
             return 'array' === t || 'object' === t
               ? 'an ' + t
               : 'boolean' === t || 'date' === t || 'regexp' === t
                 ? 'a ' + t
                 : t;
           }
-          function _(e) {
-            return e.constructor && e.constructor.name ? e.constructor.name : k;
+          function I(e) {
+            return e.constructor && e.constructor.name ? e.constructor.name : E;
           }
-          var E = 'function' == typeof Symbol && Symbol.iterator,
-            B = '@@iterator',
-            k = '<<anonymous>>',
-            S = {
+          var S = 'function' == typeof Symbol && Symbol.iterator,
+            _ = '@@iterator',
+            E = '<<anonymous>>',
+            T = {
               array: f('array'),
               bool: f('boolean'),
               func: f('function'),
@@ -1438,21 +1760,21 @@
               string: f('string'),
               symbol: f('symbol'),
               any: (function() {
-                return c(r.thatReturnsNull);
+                return p(n.thatReturnsNull);
               })(),
               arrayOf: function(e) {
-                return c(function(t, n, r, d, o) {
+                return p(function(t, r, n, d, o) {
                   if ('function' != typeof e)
                     return new u(
                       'Property `' +
                         o +
                         '` of component `' +
-                        r +
+                        n +
                         '` has invalid PropType notation inside arrayOf.'
                     );
-                  var a = t[n];
-                  if (!Array.isArray(a)) {
-                    var s = m(a);
+                  var s = t[r];
+                  if (!Array.isArray(s)) {
+                    var a = h(s);
                     return new u(
                       'Invalid ' +
                         d +
@@ -1460,36 +1782,36 @@
                         o +
                         '` of type ' +
                         ('`' +
-                          s +
+                          a +
                           '` supplied to `' +
-                          r +
+                          n +
                           '`, expected an array.')
                     );
                   }
-                  for (var p, c = 0; c < a.length; c++)
+                  for (var c, p = 0; p < s.length; p++)
                     if (
-                      ((p = e(a, c, r, d, o + '[' + c + ']', l)),
-                      p instanceof Error)
+                      ((c = e(s, p, n, d, o + '[' + p + ']', l)),
+                      c instanceof Error)
                     )
-                      return p;
+                      return c;
                   return null;
                 });
               },
               element: (function() {
-                return c(function(t, n, r, i, d) {
-                  var o = t[n];
+                return p(function(t, r, i, n, d) {
+                  var o = t[r];
                   if (!e(o)) {
-                    var l = m(o);
+                    var l = h(o);
                     return new u(
                       'Invalid ' +
-                        i +
+                        n +
                         ' `' +
                         d +
                         '` of type ' +
                         ('`' +
                           l +
                           '` supplied to `' +
-                          r +
+                          i +
                           '`, expected a single ReactElement.')
                     );
                   }
@@ -1497,17 +1819,17 @@
                 });
               })(),
               instanceOf: function(e) {
-                return c(function(t, n, r, i, d) {
-                  if (!(t[n] instanceof e)) {
-                    var o = e.name || k,
-                      l = _(t[n]);
+                return p(function(t, r, i, n, d) {
+                  if (!(t[r] instanceof e)) {
+                    var o = e.name || E,
+                      l = I(t[r]);
                     return new u(
                       'Invalid ' +
-                        i +
+                        n +
                         ' `' +
                         d +
                         '` of type ' +
-                        ('`' + l + '` supplied to `' + r + '`, expected ') +
+                        ('`' + l + '` supplied to `' + i + '`, expected ') +
                         ('instance of `' + o + '`.')
                     );
                   }
@@ -1515,57 +1837,57 @@
                 });
               },
               node: (function() {
-                return c(function(e, t, n, r, i) {
+                return p(function(e, t, r, i, n) {
                   return g(e[t])
                     ? null
                     : new u(
                         'Invalid ' +
-                          r +
-                          ' `' +
                           i +
+                          ' `' +
+                          n +
                           '` supplied to ' +
-                          ('`' + n + '`, expected a ReactNode.')
+                          ('`' + r + '`, expected a ReactNode.')
                       );
                 });
               })(),
               objectOf: function(e) {
-                return c(function(t, n, r, i, d) {
+                return p(function(t, r, i, n, d) {
                   if ('function' != typeof e)
                     return new u(
                       'Property `' +
                         d +
                         '` of component `' +
-                        r +
+                        i +
                         '` has invalid PropType notation inside objectOf.'
                     );
-                  var o = t[n],
-                    a = m(o);
-                  if ('object' !== a)
+                  var o = t[r],
+                    s = h(o);
+                  if ('object' !== s)
                     return new u(
                       'Invalid ' +
-                        i +
+                        n +
                         ' `' +
                         d +
                         '` of type ' +
                         ('`' +
-                          a +
+                          s +
                           '` supplied to `' +
-                          r +
+                          i +
                           '`, expected an object.')
                     );
-                  for (var s in o)
-                    if (o.hasOwnProperty(s)) {
-                      var p = e(o, s, r, i, d + '.' + s, l);
-                      if (p instanceof Error) return p;
+                  for (var a in o)
+                    if (o.hasOwnProperty(a)) {
+                      var c = e(o, a, i, n, d + '.' + a, l);
+                      if (c instanceof Error) return c;
                     }
                   return null;
                 });
               },
               oneOf: function(e) {
                 return Array.isArray(e)
-                  ? c(function(t, n, r, d, o) {
-                      for (var l = t[n], a = 0; a < e.length; a++)
-                        if (p(l, e[a])) return null;
+                  ? p(function(t, r, n, d, o) {
+                      for (var l = t[r], s = 0; s < e.length; s++)
+                        if (c(l, e[s])) return null;
                       var i = JSON.stringify(e);
                       return new u(
                         'Invalid ' +
@@ -1576,7 +1898,7 @@
                           l +
                           '` ' +
                           ('supplied to `' +
-                            r +
+                            n +
                             '`, expected one of ' +
                             i +
                             '.')
@@ -1588,7 +1910,7 @@
                           !1,
                           'Invalid argument supplied to oneOf, expected an instance of array.'
                         ),
-                    r.thatReturnsNull);
+                    n.thatReturnsNull);
               },
               oneOfType: function(e) {
                 if (!Array.isArray(e))
@@ -1599,91 +1921,91 @@
                           !1,
                           'Invalid argument supplied to oneOfType, expected an instance of array.'
                         ),
-                    r.thatReturnsNull
+                    n.thatReturnsNull
                   );
-                for (var n, o = 0; o < e.length; o++)
-                  if (((n = e[o]), 'function' != typeof n))
+                for (var r, o = 0; o < e.length; o++)
+                  if (((r = e[o]), 'function' != typeof r))
                     return (
                       d(
                         !1,
                         'Invalid argument supplied to oneOfType. Expected an array of check functions, but received %s at index %s.',
-                        b(n),
+                        y(r),
                         o
                       ),
-                      r.thatReturnsNull
+                      n.thatReturnsNull
                     );
-                return c(function(t, n, r, d, o) {
-                  for (var a, s = 0; s < e.length; s++)
-                    if (((a = e[s]), null == a(t, n, r, d, o, l))) return null;
+                return p(function(t, r, n, d, o) {
+                  for (var s, a = 0; a < e.length; a++)
+                    if (((s = e[a]), null == s(t, r, n, d, o, l))) return null;
                   return new u(
                     'Invalid ' +
                       d +
                       ' `' +
                       o +
                       '` supplied to ' +
-                      ('`' + r + '`.')
+                      ('`' + n + '`.')
                   );
                 });
               },
               shape: function(e) {
-                return c(function(t, n, r, i, d) {
-                  var o = t[n],
-                    a = m(o);
-                  if ('object' !== a)
+                return p(function(t, r, i, n, d) {
+                  var o = t[r],
+                    s = h(o);
+                  if ('object' !== s)
                     return new u(
                       'Invalid ' +
-                        i +
+                        n +
                         ' `' +
                         d +
                         '` of type `' +
-                        a +
+                        s +
                         '` ' +
-                        ('supplied to `' + r + '`, expected `object`.')
+                        ('supplied to `' + i + '`, expected `object`.')
                     );
-                  for (var s in e) {
-                    var p = e[s];
-                    if (p) {
-                      var c = p(o, s, r, i, d + '.' + s, l);
-                      if (c) return c;
+                  for (var a in e) {
+                    var c = e[a];
+                    if (c) {
+                      var p = c(o, a, i, n, d + '.' + a, l);
+                      if (p) return p;
                     }
                   }
                   return null;
                 });
               },
               exact: function(e) {
-                return c(function(t, n, r, i, d) {
-                  var a = t[n],
-                    s = m(a);
-                  if ('object' !== s)
+                return p(function(t, r, i, n, d) {
+                  var s = t[r],
+                    a = h(s);
+                  if ('object' !== a)
                     return new u(
                       'Invalid ' +
-                        i +
+                        n +
                         ' `' +
                         d +
                         '` of type `' +
-                        s +
+                        a +
                         '` ' +
-                        ('supplied to `' + r + '`, expected `object`.')
+                        ('supplied to `' + i + '`, expected `object`.')
                     );
-                  var p = o({}, t[n], e);
-                  for (var c in p) {
-                    var f = e[c];
+                  var c = o({}, t[r], e);
+                  for (var p in c) {
+                    var f = e[p];
                     if (!f)
                       return new u(
                         'Invalid ' +
-                          i +
+                          n +
                           ' `' +
                           d +
                           '` key `' +
-                          c +
+                          p +
                           '` supplied to `' +
-                          r +
+                          i +
                           '`.\nBad object: ' +
-                          JSON.stringify(t[n], null, '  ') +
+                          JSON.stringify(t[r], null, '  ') +
                           '\nValid keys: ' +
                           JSON.stringify(Object.keys(e), null, '  ')
                       );
-                    var g = f(a, c, r, i, d + '.' + c, l);
+                    var g = f(s, p, i, n, d + '.' + p, l);
                     if (g) return g;
                   }
                   return null;
@@ -1692,12 +2014,12 @@
             };
           return (
             (u.prototype = Error.prototype),
-            (S.checkPropTypes = a),
-            (S.PropTypes = S),
-            S
+            (T.checkPropTypes = s),
+            (T.PropTypes = T),
+            T
           );
         };
-      }.call(t, n(7)));
+      }.call(t, r(8)));
     },
     function(e) {
       'use strict';
@@ -1712,7 +2034,7 @@ object-assign
           );
         return Object(e);
       }
-      var n = Object.getOwnPropertySymbols,
+      var r = Object.getOwnPropertySymbols,
         i = Object.prototype.hasOwnProperty,
         d = Object.prototype.propertyIsEnumerable;
       e.exports = (function() {
@@ -1721,7 +2043,7 @@ object-assign
           var e = new String('abc');
           if (((e[5] = 'de'), '5' === Object.getOwnPropertyNames(e)[0]))
             return !1;
-          for (var t = {}, n = 0; 10 > n; n++) t['_' + r(n)] = n;
+          for (var t = {}, r = 0; 10 > r; r++) t['_' + n(r)] = r;
           var i = Object.getOwnPropertyNames(t).map(function(e) {
             return t[e];
           });
@@ -1761,78 +2083,78 @@ object-assign
       })()
         ? Object.assign
         : function(e) {
-            for (var r, o, l = t(e), a = 1; a < arguments.length; a++) {
-              for (var s in ((r = Object(arguments[a])), r))
-                i.call(r, s) && (l[s] = r[s]);
-              if (n) {
-                o = n(r);
-                for (var p = 0; p < o.length; p++)
-                  d.call(r, o[p]) && (l[o[p]] = r[o[p]]);
+            for (var n, o, l = t(e), a = 1; a < arguments.length; a++) {
+              for (var s in ((n = Object(arguments[a])), n))
+                i.call(n, s) && (l[s] = n[s]);
+              if (r) {
+                o = r(n);
+                for (var c = 0; c < o.length; c++)
+                  d.call(n, o[c]) && (l[o[c]] = n[o[c]]);
               }
             }
             return l;
           };
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       (function(t) {
         if ('production' !== t.env.NODE_ENV)
-          var r = n(11),
-            i = n(15),
-            d = n(12),
+          var i = r(14),
+            n = r(16),
+            d = r(15),
             o = {};
-        e.exports = function(e, n, l, a, s) {
+        e.exports = function(e, r, l, s, a) {
           if ('production' !== t.env.NODE_ENV)
-            for (var p in e)
-              if (e.hasOwnProperty(p)) {
+            for (var c in e)
+              if (e.hasOwnProperty(c)) {
                 var u;
                 try {
-                  r(
-                    'function' == typeof e[p],
+                  i(
+                    'function' == typeof e[c],
                     '%s: %s type `%s` is invalid; it must be a function, usually from the `prop-types` package, but received `%s`.',
-                    a || 'React class',
+                    s || 'React class',
                     l,
-                    p,
-                    typeof e[p]
+                    c,
+                    typeof e[c]
                   ),
-                    (u = e[p](n, p, a, l, null, d));
+                    (u = e[c](r, c, s, l, null, d));
                 } catch (e) {
                   u = e;
                 }
                 if (
-                  (i(
+                  (n(
                     !u || u instanceof Error,
                     '%s: type specification of %s `%s` is invalid; the type checker function must return `null` or an `Error` but returned a %s. You may have forgotten to pass an argument to the type checker creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and shape all require an argument).',
-                    a || 'React class',
+                    s || 'React class',
                     l,
-                    p,
+                    c,
                     typeof u
                   ),
                   u instanceof Error && !(u.message in o))
                 ) {
                   o[u.message] = !0;
-                  var c = s ? s() : '';
-                  i(
+                  var p = a ? a() : '';
+                  n(
                     !1,
                     'Failed %s type: %s%s',
                     l,
                     u.message,
-                    null == c ? '' : c
+                    null == p ? '' : p
                   );
                 }
               }
         };
-      }.call(t, n(7)));
+      }.call(t, r(8)));
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
-      var r = n(10),
-        i = n(11),
-        d = n(12);
+      var i = r(13),
+        n = r(14),
+        d = r(15);
       e.exports = function() {
-        function e(e, t, n, r, o, l) {
+        function e(e, t, r, i, o, l) {
           l === d ||
-            i(
+            n(
               !1,
               'Calling PropTypes validators directly is not supported by the `prop-types` package. Use PropTypes.checkPropTypes() to call them. Read more at http://fb.me/use-check-prop-types'
             );
@@ -1841,7 +2163,7 @@ object-assign
           return e;
         }
         e.isRequired = e;
-        var n = {
+        var r = {
           array: e,
           bool: e,
           func: e,
@@ -1860,144 +2182,153 @@ object-assign
           shape: t,
           exact: t,
         };
-        return (n.checkPropTypes = r), (n.PropTypes = n), n;
+        return (r.checkPropTypes = i), (r.PropTypes = r), r;
       };
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
-      function r(e) {
+      function i(e) {
         return e && e.__esModule ? e : { default: e };
       }
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.performAction = void 0),
-        (t.keysHandler = function(e, t, n) {
+        (t.keysHandler = function(e, t, r) {
           const {
-            id: r,
-            onLeft: a,
+            id: i,
+            onLeft: s,
             onLeftExit: u,
-            onUp: y,
-            onUpExit: m,
-            onRight: h,
-            onRightExit: b,
-            onDown: _,
-            onDownExit: E,
-            onEnter: B,
-            triggerClick: k,
+            onUp: m,
+            onUpExit: h,
+            onRight: b,
+            onRightExit: y,
+            onDown: I,
+            onDownExit: S,
+            onEnter: _,
+            triggerClick: E,
           } = this.innerProps;
           if (this.listenerId) {
-            const S = (0, i.findBinder)((0, d.getBinders)(), r);
-            if (S) {
+            const T = (0, n.findBinder)((0, d.getBinders)(), i);
+            if (T) {
               if (
-                n &&
-                k &&
-                (0, p.isActive)(this.innerProps) &&
+                r &&
+                E &&
+                (0, c.isActive)(this.innerProps) &&
                 !(0, l.isBlocked)() &&
-                !s.default.isBlocked(this.innerProps.id)
+                !a.default.isBlocked(this.innerProps.id)
               )
-                return void document.getElementById(S.nextEl.id).click();
+                return void document.getElementById(T.nextEl.id).click();
               if (
-                !n &&
-                (0, p.isActive)(this.innerProps) &&
+                !r &&
+                (0, c.isActive)(this.innerProps) &&
                 !(0, l.isBlocked)() &&
-                !s.default.isBlocked(this.innerProps.id) &&
+                !a.default.isBlocked(this.innerProps.id) &&
                 (!t || (t && this.innerProps.longPress))
               )
                 switch (e) {
-                  case c.default.left:
-                    g(this.innerProps, o.C_LEFT, a, u);
+                  case p.default.left:
+                    g(this.innerProps, o.C_LEFT, s, u);
                     break;
-                  case c.default.up:
-                    g(this.innerProps, o.C_UP, y, m);
+                  case p.default.up:
+                    g(this.innerProps, o.C_UP, m, h);
                     break;
-                  case c.default.right:
-                    g(this.innerProps, o.C_RIGHT, h, b);
+                  case p.default.right:
+                    g(this.innerProps, o.C_RIGHT, b, y);
                     break;
-                  case c.default.down:
-                    g(this.innerProps, o.C_DOWN, _, E);
+                  case p.default.down:
+                    g(this.innerProps, o.C_DOWN, I, S);
                     break;
-                  case c.default.enter:
-                    B && ((0, l.block)(), (0, f.execCb)(B, S.nextEl, this));
+                  case p.default.enter:
+                    _ && ((0, l.block)(), (0, f.execCb)(_, T.nextEl, this));
                     break;
                   default:
                 }
             }
           }
         });
-      var i = n(2),
-        d = n(3),
-        o = n(0),
-        l = n(13),
-        a = n(9),
-        s = r(a),
-        p = n(20),
-        u = n(18),
-        c = r(u),
-        f = n(1);
-      const g = (t.performAction = (e, t, n, r) => {
+      var n = r(4),
+        d = r(5),
+        o = r(0),
+        l = r(9),
+        s = r(10),
+        a = i(s),
+        c = r(32),
+        u = r(20),
+        p = i(u),
+        f = r(2);
+      const g = (t.performAction = (e, t, r, i) => {
         (0, l.block)(e.debounce),
-          (0, f.determineNewState)(e.id, e, t, n, r, void 0);
+          (0, f.determineNewState)(e.id, e, t, r, i, void 0);
       });
     },
-    function(e, t, r) {
+    function(e, t, i) {
       'use strict';
-      function i(e, t, r, i) {
-        const d = (0, l.getDomElement)(i.current.selectedId),
-          o = d ? d.getBoundingClientRect()[r] : 0,
-          a = (0, l.getCurrentChildren)((0, l.getDomElement)(e), t)
-            .map(e => ({ id: e.id, diff: n(e.getBoundingClientRect()[r] - o) }))
+      function n(e, t, i, n) {
+        const d = (0, l.getDomElement)(n.current.selectedId),
+          o = d ? d.getBoundingClientRect()[i] : 0,
+          s = (0, l.getCurrentChildren)((0, l.getDomElement)(e), t)
+            .map(e => ({ id: e.id, diff: r(e.getBoundingClientRect()[i] - o) }))
             .sort((e, t) => e.diff - t.diff);
-        return a[0].id;
+        return s[0].id;
       }
-      function d(e, t, n) {
-        const r = (0, l.getDomElement)(n),
-          i = r.getBoundingClientRect()[t],
-          d = (0, l.getCurrentChildren)(r, e)
-            .map(e => ({ id: e.id, [t]: e.getBoundingClientRect()[t] - i }))
+      function d(e, t, r) {
+        const i = (0, l.getDomElement)(r),
+          n = i.getBoundingClientRect()[t],
+          d = (0, l.getCurrentChildren)(i, e)
+            .map(e => ({ id: e.id, [t]: e.getBoundingClientRect()[t] - n }))
             .filter(e => 0 <= e[t])
-            .sort((e, n) => e[t] - n[t]);
+            .sort((e, r) => e[t] - r[t]);
         return d[0].id;
       }
       Object.defineProperty(t, '__esModule', { value: !0 }),
-        (t.findIdByStrategy = function(e, t, n = null) {
-          if (n) return n;
-          const r = (0, a.findBinder)(e.binders, t);
-          if (r.type === o.CAROUSEL_TYPE) return r.selectedId;
+        (t.findIdByStrategy = function(e, t, r = null) {
+          if (r) return r;
+          const i = (0, s.findBinder)(e.binders, t);
+          if (i.type === o.CAROUSEL_TYPE) return i.selectedId;
           const {
               position: l,
-              strategy: s,
-              selectedId: p,
+              strategy: a,
+              selectedId: c,
               selector: u,
-              elements: c,
+              elements: p,
               memory: f,
-            } = r,
+            } = i,
             g = l === o.VERTICAL ? 'top' : 'left';
-          return s === o.STRATEGY_MIRROR
-            ? i(t, u, g, e)
-            : s === o.STRATEGY_START ? d(u, g, t) : f ? p : c[0] && c[0].id;
+          return a === o.STRATEGY_MIRROR
+            ? n(t, u, g, e)
+            : a === o.STRATEGY_START ? d(u, g, t) : f ? c : p[0] && p[0].id;
         }),
-        (t.findMirrorExitId = i),
+        (t.findMirrorExitId = n),
         (t.findStartExitId = d);
-      var o = r(0),
-        l = r(5),
-        a = r(2);
+      var o = i(0),
+        l = i(7),
+        s = i(4);
     },
-    function(e, t, n) {
+    function(e, t, r) {
+      'use strict';
+      Object.defineProperty(t, '__esModule', { value: !0 }),
+        (t.isActive = function({ id: e, active: t }) {
+          return !!t && (0, n.findMountedId)((0, i.getBinders)()) === e;
+        });
+      var i = r(5),
+        n = r(4);
+    },
+    function(e, t, r) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 });
-      var r =
+      var i =
           Object.assign ||
           function(e) {
-            for (var t, n = 1; n < arguments.length; n++)
-              for (var r in ((t = arguments[n]), t))
-                Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
+            for (var t, r = 1; r < arguments.length; r++)
+              for (var i in ((t = arguments[r]), t))
+                Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
             return e;
           },
-        i = n(0);
+        n = r(0);
       t.default = e => {
-        let t = r({}, e);
+        let t = i({}, e);
         return (
           t.enterStrategy &&
-            (t.enterStrategy === i.STRATEGY_MEMORY
+            (t.enterStrategy === n.STRATEGY_MEMORY
               ? (t.memory = !0)
               : (t.strategy = t.enterStrategy),
             delete t.enterStrategy),
@@ -2005,241 +2336,1103 @@ object-assign
         );
       };
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.updateState = void 0);
-      var r =
+      var i =
         Object.assign ||
         function(e) {
-          for (var t, n = 1; n < arguments.length; n++)
-            for (var r in ((t = arguments[n]), t))
-              Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
+          for (var t, r = 1; r < arguments.length; r++)
+            for (var i in ((t = arguments[r]), t))
+              Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
           return e;
         };
       (t.refreshState = function() {
         const e = d.default.findDOMNode(this),
           {
             id: t,
-            filter: n,
-            wrapper: r,
-            selector: i,
-            direction: p,
+            filter: r,
+            wrapper: i,
+            selector: n,
+            direction: c,
           } = this.innerProps,
           u = (0, o.findBinder)((0, l.getBinders)(), t);
         if (u) {
-          const t = (0, a.calculateElSpace)(
-              r ? document.querySelector(r) : document.body
+          const t = (0, s.calculateElSpace)(
+              i ? document.querySelector(i) : document.body
             ),
-            d = (0, s.createList)(e, i, n),
+            d = (0, a.createList)(e, n, r),
             o =
-              (0, a.hasElementsDiff)(d, u.elements) ||
-              ((0, a.hasWrapperDiff)(t, u.wrapper, p) && 0 < d.length);
-          o && c(u, t, d, this.innerProps);
+              (0, s.hasElementsDiff)(d, u.elements) ||
+              ((0, s.hasWrapperDiff)(t, u.wrapper, c) && 0 < d.length);
+          o && p(u, t, d, this.innerProps);
         }
       }),
         (t.mountState = function() {
           const e = d.default.findDOMNode(this),
-            { id: t, filter: n, wrapper: r, selector: i } = this.innerProps,
-            p = (0, o.findBinder)((0, l.getBinders)(), t);
-          if (p) {
-            const t = (0, a.calculateElSpace)(
-                r ? document.querySelector(r) : document.body
+            { id: t, filter: r, wrapper: i, selector: n } = this.innerProps,
+            c = (0, o.findBinder)((0, l.getBinders)(), t);
+          if (c) {
+            const t = (0, s.calculateElSpace)(
+                i ? document.querySelector(i) : document.body
               ),
-              d = (0, s.createList)(e, i, n);
-            c(p, t, d, this.innerProps);
+              d = (0, a.createList)(e, n, r);
+            p(c, t, d, this.innerProps);
           }
         });
-      var i = n(32),
+      var n = r(35),
         d = (function(e) {
           return e && e.__esModule ? e : { default: e };
-        })(i),
-        o = n(2),
-        l = n(3),
-        a = n(5),
-        s = n(33),
-        p = n(1),
-        u = n(34);
-      const c = (t.updateState = (e, t, n, i) => {
-        const { id: d, visibilityOffset: o, refreshStrategy: l } = i,
-          c = (0, u.next)(n, e, l),
+        })(n),
+        o = r(4),
+        l = r(5),
+        s = r(7),
+        a = r(36),
+        c = r(2),
+        u = r(37);
+      const p = (t.updateState = (e, t, r, n) => {
+        const { id: d, visibilityOffset: o, refreshStrategy: l } = n,
+          p = (0, u.next)(r, e, l),
           f = {
-            marginLeft: c.marginLeft,
-            marginTop: c.marginTop,
+            marginLeft: p.marginLeft,
+            marginTop: p.marginTop,
             offset: o,
             wrapper: t,
           },
-          g = (0, s.build)(n, f),
-          y = g.find(e => e.id === c.selectedId),
-          m = {
+          g = (0, a.build)(r, f),
+          m = g.find(e => e.id === p.selectedId),
+          h = {
             id: d,
             wrapper: t,
-            downLimit: (0, a.downLimit)(g),
-            rightLimit: (0, a.rightLimit)(g),
+            downLimit: (0, s.downLimit)(g),
+            rightLimit: (0, s.rightLimit)(g),
             elements: g,
             prevDir: null,
           };
-        (0, p._updateBinder)(r({}, m, c, { nextEl: y }));
+        (0, c._updateBinder)(i({}, h, p, { nextEl: m }));
       });
     },
     function(e) {
       e.exports = t;
     },
-    function(e, t, r) {
+    function(e, t, i) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.calculDowScore = t.calculUpScore = t.calculLeftScore = t.calculRightScore = t.elementSort = t.findElement = t.upArray = t.downArray = t.leftArray = t.rightArray = void 0);
-      var i =
+      var n =
         Object.assign ||
         function(e) {
-          for (var t, n = 1; n < arguments.length; n++)
-            for (var r in ((t = arguments[n]), t))
-              Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
+          for (var t, r = 1; r < arguments.length; r++)
+            for (var i in ((t = arguments[r]), t))
+              Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
           return e;
         };
       (t.build = function(e, t) {
-        const { wrapper: n, marginLeft: r, offset: c, marginTop: f } = t,
+        const { wrapper: r, marginLeft: i, offset: p, marginTop: f } = t,
           g = e.map(d.calculateElSpace);
         return g.map(e => {
-          const t = i({}, e, {
-            right: e.right - r,
-            left: e.left - r,
+          const t = n({}, e, {
+            right: e.right - i,
+            left: e.left - i,
             top: e.top - f,
             down: e.down - f,
           });
           return {
             id: e.id,
             coords: t,
-            left: u(a(e, g)),
+            left: u(s(e, g)),
             right: u(l(e, g)),
-            up: u(p(e, g)),
-            down: u(s(e, g)),
-            isVisible: (0, o.isVisible)(n, t, r, f, c),
+            up: u(c(e, g)),
+            down: u(a(e, g)),
+            isVisible: (0, o.isVisible)(r, t, i, f, p),
           };
         });
       }),
-        (t.createList = function(e, t, n) {
+        (t.createList = function(e, t, r) {
           return [].slice
             .call(e.querySelectorAll(t))
             .filter(
-              e => '' !== e.id && -1 === [].slice.call(e.classList).indexOf(n)
+              e => '' !== e.id && -1 === [].slice.call(e.classList).indexOf(r)
             );
         });
-      var d = r(5),
-        o = r(16);
+      var d = i(7),
+        o = i(18);
       const l = (t.rightArray = (e, t) =>
-          t.filter(t => e.right <= t.left).sort(c(e, f))),
-        a = (t.leftArray = (e, t) =>
-          t.filter(t => e.left >= t.right).sort(c(e, g))),
-        s = (t.downArray = (e, t) =>
-          t.filter(t => e.down <= t.top).sort(c(e, m))),
-        p = (t.upArray = (e, t) =>
-          t.filter(t => e.top >= t.down).sort(c(e, y))),
+          t.filter(t => e.right <= t.left).sort(p(e, f))),
+        s = (t.leftArray = (e, t) =>
+          t.filter(t => e.left >= t.right).sort(p(e, g))),
+        a = (t.downArray = (e, t) =>
+          t.filter(t => e.down <= t.top).sort(p(e, h))),
+        c = (t.upArray = (e, t) =>
+          t.filter(t => e.top >= t.down).sort(p(e, m))),
         u = (t.findElement = e => (e[0] ? e[0].id : void 0)),
-        c = (t.elementSort = (e, t) => (n, r) => t(n, e) - t(r, e)),
+        p = (t.elementSort = (e, t) => (r, i) => t(r, e) - t(i, e)),
         f = (t.calculRightScore = (e, t) =>
-          n(e.top - t.top) + n(e.left - t.right)),
+          r(e.top - t.top) + r(e.left - t.right)),
         g = (t.calculLeftScore = (e, t) =>
-          n(e.top - t.top) + n(e.right - t.left)),
-        y = (t.calculUpScore = (e, t) =>
-          n(e.down - t.top) + n(e.left - t.left)),
-        m = (t.calculDowScore = (e, t) =>
-          n(e.top - t.down) + n(e.left - t.left));
+          r(e.top - t.top) + r(e.right - t.left)),
+        m = (t.calculUpScore = (e, t) =>
+          r(e.down - t.top) + r(e.left - t.left)),
+        h = (t.calculDowScore = (e, t) =>
+          r(e.top - t.down) + r(e.left - t.left));
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 }), (t.next = void 0);
-      var r =
+      var i =
           Object.assign ||
           function(e) {
-            for (var t, n = 1; n < arguments.length; n++)
-              for (var r in ((t = arguments[n]), t))
-                Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
+            for (var t, r = 1; r < arguments.length; r++)
+              for (var i in ((t = arguments[r]), t))
+                Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
             return e;
           },
-        i = n(14);
-      const d = (t.next = (e, t, n) => {
+        n = r(17);
+      const d = (t.next = (e, t, r) => {
           const { selectedId: d } = t;
-          let a = {};
+          let s = {};
           if (l(e, d)) {
-            a = e.find(t => t.id === d);
-            const n = (0, i.correctBoundsMargin)(a.id, t);
-            return r({ selectedId: a.id }, n);
+            s = e.find(t => t.id === d);
+            const r = (0, n.correctBoundsMargin)(s.id, t);
+            return i({ selectedId: s.id }, r);
           }
-          if ('previous' === n && d) {
-            const n = o(t.selectedId, t.elements, e),
-              d = (0, i.correctBoundsMargin)(n.id, t);
-            return r({ selectedId: n.id }, d);
+          if ('previous' === r && d) {
+            const r = o(t.selectedId, t.elements, e),
+              d = (0, n.correctBoundsMargin)(r.id, t);
+            return i({ selectedId: r.id }, d);
           }
           return 0 < e.length
-            ? ((a = e[0]), { selectedId: a.id, marginLeft: 0, marginTop: 0 })
+            ? ((s = e[0]), { selectedId: s.id, marginLeft: 0, marginTop: 0 })
             : { selectedId: void 0, marginLeft: 0, marginTop: 0 };
         }),
-        o = (e, t, n, r = 0) => {
-          const i = t.map(t => t.id).indexOf(e),
-            d = 0 === i ? 0 : i - 1;
-          return !l(n, t[d].id) && r < n.length
-            ? o(t[d].id, t, n, r + 1)
-            : n[d];
+        o = (e, t, r, i = 0) => {
+          const n = t.map(t => t.id).indexOf(e),
+            d = 0 === n ? 0 : n - 1;
+          return !l(r, t[d].id) && i < r.length
+            ? o(t[d].id, t, r, i + 1)
+            : r[d];
         },
         l = (e, t) => t !== void 0 && e.map(t => t.id).some(e => e === t);
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
-      function r(e) {
+      function i(e) {
         return e && e.__esModule ? e : { default: e };
       }
       Object.defineProperty(t, '__esModule', { value: !0 });
-      var i = n(6),
-        d = n(8),
-        o = r(d),
-        l = n(13),
-        a = n(4),
-        s = n(9),
-        p = r(s),
-        u = n(1);
-      class c extends i.Component {
-        static get propTypes() {
-          return {
-            children: o.default.oneOfType([o.default.object, o.default.array]),
-            id: o.default.string.isRequired,
-            debounce: o.default.number,
-            active: o.default.bool,
-          };
-        }
-        static get defaultProps() {
-          return { active: !0 };
-        }
+      var n = r(1),
+        d = i(n),
+        o = r(3),
+        l = i(o),
+        s = r(11),
+        a = i(s),
+        c = r(39),
+        u = i(c),
+        p = r(40),
+        f = i(p),
+        g = r(22),
+        m = i(g),
+        h = r(41),
+        b = i(h),
+        y = r(42),
+        I = r(2),
+        S = r(0),
+        _ = r(12);
+      class E extends n.Component {
         constructor(e) {
           super(e),
-            (this.listenerId = (0, a.addListener)(this.keysHandler, this));
+            (this.state = { initialized: !1 }),
+            (this.refreshCarousel = e => {
+              const { children: t, preloadItemsCount: r } = this.props;
+              r < t.length
+                ? this.setState({ refresh: !0 }, () => {
+                    e();
+                  })
+                : e();
+            }),
+            (this.updatePositions = e => {
+              const { children: t, id: r, preloadItemsCount: i } = this.props;
+              this.refreshCarousel(() => {
+                isNaN(e.iFocused) ||
+                  (0, _.itemFocusedHandler)(r, e.iFocused, e.nestedIFocused),
+                  isNaN(e.scrollableTranslateX)
+                    ? isNaN(e.nestedScrollableTranslateX)
+                      ? !isNaN(e.scrollableTranslateY) &&
+                        (0, _.verticalScrollHandler)(r, e.scrollableTranslateY)
+                      : (0, _.horizontalNestedScrollHandler)(
+                          r,
+                          e.nestedScrollableTranslateX
+                        )
+                    : (0, _.horizontalScrollHandler)(
+                        r,
+                        e.scrollableTranslateX,
+                        e.nestedScrollableTranslateX
+                      );
+              });
+            });
         }
-        isActive() {
-          return (
-            this.props.active &&
-            !(0, l.isBlocked)() &&
-            !p.default.isBlocked(this.props.id)
+        componentWillMount() {
+          const {
+            children: e,
+            childItemWrapper: t,
+            direction: r,
+            focusedClassName: i,
+            horizontalChildItemWrapper: n,
+            id: d,
+            itemsVisiblesCount: o,
+            nestedFocusedClassName: l,
+            loop: s,
+            preloadItemsCount: a,
+            verticalChildItemWrapper: c,
+          } = this.props;
+          if (!r) throw new Error('You must fill direction');
+          else if (
+            r === S.CAROUSEL_DIRECTIONS.verticalBidirectional &&
+            (!n || !c)
+          )
+            throw new Error(
+              'You must fill horizontal child item wrapper and vertical child item wrapper selectors'
+            );
+          else if (r !== S.CAROUSEL_DIRECTIONS.verticalBidirectional && !t)
+            throw new Error('You must fill child item wrapper selector');
+          (0, I.addCarouselToStore)(this.props, S.CAROUSEL_TYPE),
+            (0, I._updateBinder)(d, {
+              childItemWrapper: t,
+              focusedClassName: i,
+              direction: r,
+              iFocused: 0,
+              loop: s,
+              horizontalChildItemWrapper: n,
+              itemsVisiblesCount: o,
+              preloadItemsCount: a,
+              nestedFocusedClassName: l,
+              nestedScrollableItems: [],
+              nestedScrollableRefs: [],
+              scrollableItems: [],
+              scrollableTranslateX: 0,
+              scrollableTranslateY: 0,
+              scrollableWidth: 0,
+              verticalChildItemWrapper: c,
+            });
+        }
+        componentDidMount() {
+          (0, _.itemFocusedHandler)(this.props.id, 0, 0);
+        }
+        componentWillReceiveProps({
+          id: e,
+          children: t,
+          direction: r,
+          itemsVisiblesCount: i,
+          itemHeight: n,
+          itemWidth: d,
+          loop: o,
+          preloadItemsCount: l,
+        }) {
+          const { children: s } = this.props;
+        }
+        getHorizontalWrapperStyles(e, t, r) {
+          return {
+            height: e,
+            width: `${r + t}px`,
+            margin: '0 auto',
+            overflow: 'hidden',
+            position: 'relative',
+          };
+        }
+        getVerticalWrapperStyles(e, t, r) {
+          return {
+            height: `${e + r}px`,
+            width: t,
+            margin: '0 auto',
+            overflow: 'hidden',
+            position: 'relative',
+            display: 'block',
+          };
+        }
+        renderItems(e, t, r, i, n, o, l, s, a, c) {
+          const { verticalChildItemWrapper: u } = this.props;
+          if (n === S.CAROUSEL_DIRECTIONS.verticalBidirectional) {
+            const p = t + r + l;
+            return i.map((i, f) => {
+              const g = f < p && f > t - r - l,
+                h = (0, _.getNestedIFocused)(e, f),
+                y = h + r + l;
+              if (!g && f < p) {
+                const t = (0, _.getItemOffsetHeight)(e, f),
+                  r = (0, _.getItemOffsetWidth)(e, f);
+                return d.default.createElement(
+                  'div',
+                  {
+                    key: `spacer_${f}`,
+                    style: {
+                      display:
+                        n === S.CAROUSEL_DIRECTIONS.horizontal
+                          ? 'inline-block'
+                          : 'block',
+                    },
+                  },
+                  d.default.createElement('div', {
+                    style: { height: t, width: r },
+                  })
+                );
+              }
+              return (
+                g &&
+                d.default.createElement(
+                  m.default,
+                  {
+                    carouselId: e,
+                    direction: n,
+                    hasNestedItems: !0,
+                    key: `item_${f}`,
+                    itemIndex: f,
+                    itemStyles: o,
+                    preloadItemsCount: l,
+                    wrapperHeight: c,
+                  },
+                  d.default.Children.toArray(i.props.children).map(
+                    (t, p) =>
+                      `.${t.props.className}` === u
+                        ? d.default.createElement(
+                            'div',
+                            {
+                              id: i.props.id,
+                              className: t.props.className,
+                              key: `${e}_${f}`,
+                            },
+                            d.default.createElement(
+                              b.default,
+                              {
+                                parentCarouselId: e,
+                                parentItemIndex: f,
+                                carouselId: `${e}_${f}`,
+                                direction: S.CAROUSEL_DIRECTIONS.horizontal,
+                                nested: !0,
+                                scrollableTranslateX: s,
+                                scrollableTranslateY: a,
+                              },
+                              t.props.children.map((t, i) => {
+                                const s = i < y && i > h - r - l;
+                                if (!s && i < y) {
+                                  const t = (0, _.getNestedItemOffsetWidth)(
+                                    e,
+                                    f,
+                                    i
+                                  );
+                                  return d.default.createElement(
+                                    'div',
+                                    {
+                                      key: `spacer_${f}_${p}_${i}`,
+                                      style: { display: 'inline-block' },
+                                    },
+                                    d.default.createElement('div', {
+                                      style: { width: t },
+                                    })
+                                  );
+                                }
+                                return (
+                                  s &&
+                                  d.default.createElement(
+                                    m.default,
+                                    {
+                                      carouselId: `${e}_${p}`,
+                                      parentCarouselId: e,
+                                      parentItemIndex: f,
+                                      direction: n,
+                                      key: `item_${f}_${p}_${i}`,
+                                      itemIndex: i,
+                                      itemStyles: o,
+                                      nested: !0,
+                                      preloadItemsCount: l,
+                                      wrapperHeight: c,
+                                    },
+                                    t
+                                  )
+                                );
+                              })
+                            )
+                          )
+                        : t
+                  )
+                )
+              );
+            });
+          }
+          return i.map((i, s) => {
+            const a = s < t + r + l && s > t - r - l;
+            if (!a) {
+              const t = (0, _.getItemOffsetHeight)(e, s),
+                r = (0, _.getItemOffsetWidth)(e, s);
+              return d.default.createElement(
+                'div',
+                {
+                  key: `spacer_${s}`,
+                  style: {
+                    display:
+                      n === S.CAROUSEL_DIRECTIONS.horizontal
+                        ? 'inline-block'
+                        : 'block',
+                  },
+                },
+                d.default.createElement('div', {
+                  style: { height: t, width: r },
+                })
+              );
+            }
+            return (
+              a &&
+              d.default.createElement(
+                m.default,
+                {
+                  carouselId: e,
+                  direction: n,
+                  key: `item_${s}`,
+                  itemIndex: s,
+                  itemStyles: o,
+                  preloadItemsCount: l,
+                  wrapperHeight: c,
+                },
+                i
+              )
+            );
+          });
+        }
+        render() {
+          const {
+              initialized: e,
+              itemsLeft: t,
+              itemsTop: r,
+              itemsPositionsIndex: i,
+              scrollableAnimated: n,
+              scrollable2Animated: o,
+              scrollable2TranslateX: l,
+              scrollablesVisibles: s,
+              scrollableHeight: a,
+              scrollableWidth: c,
+            } = this.state,
+            {
+              active: p,
+              children: g,
+              direction: m,
+              id: h,
+              itemsVisiblesCount: y,
+              itemHeight: I,
+              itemWidth: E,
+              itemStyles: T,
+              loop: C,
+              preloadItemsCount: B,
+              onEnter: O,
+              wrapperOverflow: R,
+              wrapperHeight: v,
+              wrapperWidth: k,
+            } = this.props,
+            L =
+              m === S.CAROUSEL_DIRECTIONS.horizontal
+                ? this.getHorizontalWrapperStyles(I, R, k)
+                : this.getVerticalWrapperStyles(v, k, R),
+            P = (0, _.getIFocused)(h),
+            N = (0, _.getScrollableTranslateY)(h) || 0,
+            x = (0, _.getScrollableTranslateX)(h) || 0;
+          return d.default.createElement(
+            'div',
+            { id: h, style: L },
+            d.default.createElement(
+              b.default,
+              {
+                carouselId: h,
+                direction:
+                  m === S.CAROUSEL_DIRECTIONS.verticalBidirectional
+                    ? S.CAROUSEL_DIRECTIONS.vertical
+                    : m,
+                scrollableHeight: a,
+                scrollableTranslateX: x,
+                scrollableTranslateY: N,
+                scrollable2TranslateX: l,
+                scrollableWidth: c,
+              },
+              this.renderItems(h, P, y, g, m, T, B, x, N, v)
+            ),
+            C
+              ? d.default.createElement(f.default, {
+                  id: `keys-${h}`,
+                  direction: m,
+                  itemsLeft: t,
+                  itemsVisiblesCount: y,
+                  itemWidth: E,
+                  onEnter: O,
+                  preloadItemsCount: B,
+                  scrollableTranslateX: x,
+                  scrollable2TranslateX: l,
+                  scrollableHeight: a,
+                  scrollableWidth: c,
+                  updatePositions: this.updatePositions,
+                  wrapperHeight: v,
+                  wrapperWidth: k,
+                })
+              : d.default.createElement(u.default, {
+                  binderId: h,
+                  direction: m,
+                  onEnter: O,
+                  wrapperHeight: v,
+                  wrapperWidth: k,
+                  updatePositions: this.updatePositions,
+                })
           );
         }
-        keysHandler(e, t, n) {
-          if (!n && this.isActive())
-            for (const t in a.userConfig) {
-              const n = a.userConfig[t],
-                r = t
-                  .toLowerCase()
-                  .replace(/\b[a-z](?=[a-z]{1})/g, e => e.toUpperCase());
-              if (
-                (Number.isInteger(n) && n === e) ||
-                (Array.isArray(n) && -1 !== n.indexOf(e))
-              ) {
-                this.performAction(this.props[`on${r}`], e);
-                break;
+      }
+      (E.propTypes = y.propTypes),
+        (E.defaultProps = y.defaultProps),
+        (t.default = E);
+    },
+    function(e, t, r) {
+      'use strict';
+      function i(e) {
+        return e && e.__esModule ? e : { default: e };
+      }
+      Object.defineProperty(t, '__esModule', { value: !0 });
+      var n = r(1),
+        d = i(n),
+        o = r(3),
+        l = i(o),
+        s = r(11),
+        a = i(s),
+        c = r(9),
+        u = r(
+          !(function() {
+            var t = new Error('Cannot find module "../../funcHandler"');
+            throw ((t.code = 'MODULE_NOT_FOUND'), t);
+          })()
+        ),
+        p = r(7),
+        f = r(0),
+        g = r(12),
+        m = r(6);
+      class h extends n.Component {
+        constructor(e) {
+          super(e),
+            (this.getHorizontalPositions = (e, t, r) => {
+              if (r) {
+                const r = (0, g.getIFocused)(e),
+                  i = (0, g.getNestedIFocused)(e, r),
+                  n = (0, g.getNestedScrollableTranslateX)(e, r),
+                  d =
+                    t === f.CAROUSEL_SCROLLABLE_DIRECTIONS.right
+                      ? i + 1
+                      : i - 1,
+                  o = (0, g.getNestedItemOffsetLeft)(e, r, d),
+                  l = (0, g.getNestedItemOffsetWidth)(e, r, d);
+                return {
+                  iFocused: r,
+                  nestedIFocused: i,
+                  scrollableTranslateX: n,
+                  nextIFocused: r,
+                  nextNestedIFocused: d,
+                  nextItemFocusedPosition: o,
+                  itemWidth: l,
+                };
+              } else {
+                const r = (0, g.getIFocused)(e),
+                  i = (0, g.getScrollableTranslateX)(e),
+                  n =
+                    t === f.CAROUSEL_SCROLLABLE_DIRECTIONS.right
+                      ? r + 1
+                      : r - 1,
+                  d = (0, g.getItemOffsetLeft)(e, n),
+                  o = (0, g.getItemOffsetWidth)(e, n);
+                return {
+                  iFocused: r,
+                  scrollableTranslateX: i,
+                  nextIFocused: n,
+                  nextItemFocusedPosition: d,
+                  itemWidth: o,
+                };
               }
-            }
+            }),
+            (this.getVerticalPositions = (e, t, r) => {
+              const i = (0, g.getIFocused)(e);
+              if (r) {
+                const r = (0, g.getNestedIFocused)(e, i),
+                  n = getNestedScrollableTranslateY(e, i),
+                  d =
+                    t === f.CAROUSEL_SCROLLABLE_DIRECTIONS.down ? r + 1 : r - 1,
+                  o = getNestedItemOffsetTop(e, i, d),
+                  l = getNestedItemOffsetHeight(e, i, d);
+                return {
+                  iFocused: i,
+                  nestedIFocused: r,
+                  scrollableTranslateY: n,
+                  nextIFocused: i,
+                  nextNestedIFocused: d,
+                  nextItemFocusedPosition: o,
+                  itemHeight: l,
+                };
+              } else {
+                const r = (0, g.getScrollableTranslateY)(e),
+                  n =
+                    t === f.CAROUSEL_SCROLLABLE_DIRECTIONS.down ? i + 1 : i - 1,
+                  d = (0, g.getItemOffsetTop)(e, n),
+                  o = (0, g.getItemOffsetHeight)(e, n);
+                return {
+                  iFocused: i,
+                  scrollableTranslateY: r,
+                  nextIFocused: n,
+                  nextItemFocusedPosition: d,
+                  itemHeight: o,
+                };
+              }
+            }),
+            (this.scrollToDown = e => {
+              const {
+                  binderId: t,
+                  wrapperHeight: r,
+                  updatePositions: i,
+                } = this.props,
+                {
+                  iFocused: n,
+                  itemHeight: d,
+                  scrollableTranslateY: o,
+                  nestedIFocused: l,
+                  nextIFocused: s,
+                  nextNestedIFocused: a,
+                  nextItemFocusedPosition: c,
+                } = this.getVerticalPositions(
+                  t,
+                  f.CAROUSEL_SCROLLABLE_DIRECTIONS.down,
+                  e
+                );
+              if (c >= -o && c + d <= r - o) {
+                i({ iFocused: s });
+              } else if (!isNaN(c)) {
+                i({ iFocused: s, scrollableTranslateY: o - d });
+              }
+            }),
+            (this.scrollToLeft = e => {
+              const {
+                  binderId: t,
+                  wrapperWidth: r,
+                  updatePositions: i,
+                } = this.props,
+                {
+                  iFocused: n,
+                  itemWidth: d,
+                  scrollableTranslateX: o,
+                  nestedIFocused: l,
+                  nextIFocused: s,
+                  nextNestedIFocused: a,
+                  nextItemFocusedPosition: c,
+                } = this.getHorizontalPositions(
+                  t,
+                  f.CAROUSEL_SCROLLABLE_DIRECTIONS.left,
+                  e
+                );
+              if (c >= -o && c + d <= r - o) {
+                if (!e) {
+                  i({ iFocused: s });
+                } else {
+                  i({ iFocused: s, nestedIFocused: a });
+                }
+              } else if (!isNaN(c)) {
+                const t = 0 >= o + d ? o + d : 0;
+                if (!e) {
+                  i({ iFocused: s, scrollableTranslateX: t });
+                } else {
+                  i({
+                    iFocused: s,
+                    nestedIFocused: a,
+                    nestedScrollableTranslateX: t,
+                  });
+                }
+              }
+            }),
+            (this.scrollToRight = e => {
+              const {
+                  binderId: t,
+                  wrapperWidth: r,
+                  updatePositions: i,
+                } = this.props,
+                {
+                  iFocused: n,
+                  itemWidth: d,
+                  scrollableTranslateX: o,
+                  nestedIFocused: l,
+                  nextIFocused: s,
+                  nextNestedIFocused: a,
+                  nextItemFocusedPosition: c,
+                } = this.getHorizontalPositions(
+                  t,
+                  f.CAROUSEL_SCROLLABLE_DIRECTIONS.right,
+                  e
+                );
+              if (c >= -o && c + d <= r - o) {
+                if (!e) {
+                  i({ iFocused: s });
+                } else {
+                  i({ iFocused: s, nestedIFocused: a });
+                }
+              } else if (!isNaN(c)) {
+                const t = o - d;
+                if (!e) {
+                  i({ iFocused: s, scrollableTranslateX: t });
+                } else {
+                  i({
+                    iFocused: s,
+                    nestedIFocused: a,
+                    nestedScrollableTranslateX: t,
+                  });
+                }
+              }
+            }),
+            (this.scrollToUp = e => {
+              const {
+                  binderId: t,
+                  wrapperHeight: r,
+                  updatePositions: i,
+                } = this.props,
+                {
+                  iFocused: n,
+                  itemHeight: d,
+                  scrollableTranslateY: o,
+                  nestedIFocused: l,
+                  nextIFocused: s,
+                  nextNestedIFocused: a,
+                  nextItemFocusedPosition: c,
+                } = this.getVerticalPositions(
+                  t,
+                  f.CAROUSEL_SCROLLABLE_DIRECTIONS.up,
+                  e
+                );
+              if (c >= -o && c + d <= r - o) i({ iFocused: s });
+              else if (!isNaN(c)) {
+                const e = 0 >= o + d ? o + d : 0;
+                i({ iFocused: s, scrollableTranslateY: e });
+              }
+            }),
+            (this.ticking = !1);
         }
-        performAction(e, t) {
-          const { debounce: n } = this.props;
-          e && ((0, l.block)(n), (0, u.execCb)(e, t, this));
+        componentWillMount() {
+          this.listenerId = (0, m.addListener)(this.keysHandler, this);
+        }
+        componentWillUnmount() {
+          (0, m.removeListener)(this.listenerId);
+        }
+        keysHandler(e) {
+          const { binderId: t, direction: r } = this.props,
+            i = Date.now(),
+            n = i - this.lastKeysCall;
+          if ((0, g.isCarouselActive)(t) && (isNaN(n) || 200 < n)) {
+            this.lastKeysCall = Date.now();
+            const i = r === f.CAROUSEL_DIRECTIONS.verticalBidirectional;
+            switch (e) {
+              case m.userConfig.left:
+                (r === f.CAROUSEL_DIRECTIONS.horizontal || i) &&
+                  this.scrollToLeft(i);
+                break;
+              case m.userConfig.right:
+                (r === f.CAROUSEL_DIRECTIONS.horizontal || i) &&
+                  this.scrollToRight(i);
+                break;
+              case m.userConfig.down:
+                (r === f.CAROUSEL_DIRECTIONS.vertical || i) &&
+                  this.scrollToDown();
+                break;
+              case m.userConfig.up:
+                (r === f.CAROUSEL_DIRECTIONS.vertical || i) &&
+                  this.scrollToUp();
+                break;
+              case m.userConfig.enter:
+                const { selectedId: n } = (0, g.getBinder)(t);
+                this.props.onEnter(n);
+            }
+          }
+        }
+        shouldComponentUpdate() {
+          return !1;
+        }
+        render() {
+          return null;
+        }
+      }
+      t.default = h;
+    },
+    function(e, t, r) {
+      'use strict';
+      function i(e) {
+        return e && e.__esModule ? e : { default: e };
+      }
+      Object.defineProperty(t, '__esModule', { value: !0 });
+      var n = r(1),
+        d = i(n),
+        o = r(11),
+        l = i(o),
+        s = r(9),
+        a = r(
+          !(function() {
+            var t = new Error('Cannot find module "../../funcHandler"');
+            throw ((t.code = 'MODULE_NOT_FOUND'), t);
+          })()
+        );
+      class c extends n.Component {
+        constructor(e) {
+          super(e),
+            (this.scrollToRight = () => {
+              const {
+                  iFocused: e,
+                  itemsLeft: t,
+                  scrollableTranslateX: r,
+                  scrollable2TranslateX: i,
+                  scrollableWidth: n,
+                  wrapperWidth: d,
+                  items: o,
+                  itemWidth: l,
+                  updatePositions: s,
+                } = this.props,
+                a = o[e + 1] ? e + 1 : 0,
+                c = this.getItemsVisibles(r, i, n, d, l);
+              if (c.includes(a))
+                s({ iFocused: a }, () => {
+                  this.ticking = !1;
+                });
+              else {
+                const e = r - l,
+                  t = i - l;
+                s(
+                  {
+                    iFocused: a,
+                    scrollableTranslateX: e,
+                    scrollable2TranslateX: t,
+                  },
+                  () => {
+                    const r = this.mustPlaceScrollableToRight(e),
+                      i = this.mustPlaceScrollableToRight(t);
+                    if (i) {
+                      s({ scrollable2TranslateX: e + n });
+                    }
+                    if (r) {
+                      s({ scrollableTranslateX: t + n });
+                    }
+                    this.ticking = !1;
+                  }
+                );
+              }
+            }),
+            (this.onCarouselLoopedRight = () => {
+              this.ticking =
+                this.ticking ||
+                window.requestAnimationFrame(this.scrollToRight);
+            }),
+            (this.scrollToLeft = () => {
+              const {
+                  iFocused: e,
+                  itemsLeft: t,
+                  scrollableTranslateX: r,
+                  scrollable2TranslateX: i,
+                  scrollableWidth: n,
+                  wrapperWidth: d,
+                  items: o,
+                  itemWidth: l,
+                  updatePositions: s,
+                } = this.props,
+                a = o[e - 1] ? e - 1 : o.length - 1,
+                c = this.getItemsVisibles(r, i, n, d, l);
+              if (c.includes(a)) {
+                s({ iFocused: a }, () => {
+                  this.ticking = !1;
+                });
+              } else {
+                const e = r + l,
+                  t = i + l;
+                s(
+                  {
+                    iFocused: a,
+                    scrollableTranslateX: e,
+                    scrollable2TranslateX: t,
+                  },
+                  () => {
+                    const r = this.mustPlaceScrollableToLeft(e),
+                      i = this.mustPlaceScrollableToLeft(t);
+                    if (i) {
+                      s({ scrollable2TranslateX: e - n });
+                    }
+                    if (r) {
+                      s({ scrollableTranslateX: t - n });
+                    }
+                    this.ticking = !1;
+                  }
+                );
+              }
+            }),
+            (this.onCarouselLoopedLeft = () => {
+              this.ticking =
+                this.ticking || window.requestAnimationFrame(this.scrollToLeft);
+            }),
+            (this.ticking = !1);
+        }
+        mustPlaceScrollableToRight(e) {
+          const {
+            itemWidth: t,
+            preloadItemsCount: r,
+            scrollableWidth: i,
+          } = this.props;
+          return e <= -(t * r - t + i);
+        }
+        mustPlaceScrollableToLeft(e) {
+          const {
+            itemWidth: t,
+            preloadItemsCount: r,
+            wrapperWidth: i,
+          } = this.props;
+          return e >= i + t * r - t;
+        }
+        getItemsVisiblesInScrollable(e, t, r, n) {
+          if (e > r || 0 >= e + t) return [];
+          if (0 > e) {
+            const { items: t } = this.props,
+              d = [];
+            for (let o = -e / n; o < t.length && d.length < r / n; o++)
+              d.push(o);
+            return d;
+          } else {
+            const t = [];
+            let d = 0;
+            for (let o = e / n; o < r / n; o++) t.push(d), d++;
+            return t;
+          }
+        }
+        getItemsVisibles(e, t, r, i, n) {
+          const d = this.getItemsVisiblesInScrollable(e, r, i, n),
+            o = this.getItemsVisiblesInScrollable(t, r, i, n);
+          return d.concat(o);
+        }
+        performCallback(e) {
+          if (e) {
+            (0, s.block)();
+            const { items: t, iFocused: r } = this.props;
+            (0, a.enterTo)(e, t[r].props.id);
+          }
+        }
+        render() {
+          const { id: e, onDownExit: t, onUpExit: r, onEnter: i } = this.props;
+          return d.default.createElement(l.default, {
+            id: e,
+            active: !0,
+            onLeft: this.onCarouselLoopedLeft,
+            onRight: this.onCarouselLoopedRight,
+            onUp: () => this.performCallback(r),
+            onDown: () => this.performCallback(t),
+            onEnter: () => this.performCallback(i),
+          });
+        }
+      }
+      t.default = c;
+    },
+    function(e, t, r) {
+      'use strict';
+      function i(e) {
+        return e && e.__esModule ? e : { default: e };
+      }
+      Object.defineProperty(t, '__esModule', { value: !0 });
+      var n = r(1),
+        d = i(n),
+        o = r(22),
+        l = i(o),
+        s = r(0),
+        a = r(3),
+        c = i(a),
+        u = r(12);
+      class p extends d.default.PureComponent {
+        constructor(...e) {
+          var t;
+          return (t = super(...e)), (this.state = {}), t;
+        }
+        componentDidMount() {
+          const {
+            carouselId: e,
+            nested: t,
+            parentCarouselId: r,
+            parentItemIndex: i,
+          } = this.props;
+          t
+            ? (0, u.addNestedScrollableRef)(r, this.el, i)
+            : (0, u.addScrollableRef)(e, this.el);
+        }
+        getHorizontalScrollableStyles() {
+          return { display: 'flex', flexDirection: 'row', height: '100%' };
+        }
+        getVerticalScrollableStyles(e) {
+          return { width: '100%', height: e };
+        }
+        render() {
+          const {
+              children: e,
+              direction: t,
+              scrollableHeight: r,
+              scrollableTranslateX: i,
+              scrollableTranslateY: n,
+              scrollable2TranslateX: o,
+              scrollableWidth: l,
+            } = this.props,
+            a =
+              t === s.CAROUSEL_DIRECTIONS.horizontal
+                ? this.getHorizontalScrollableStyles()
+                : this.getVerticalScrollableStyles(r),
+            c = this.getHorizontalScrollableStyles();
+          return d.default.createElement(
+            'div',
+            {
+              className: 'keys-carousel-scrollable',
+              ref: e => {
+                this.el = e;
+              },
+              style: a,
+            },
+            e
+          );
+        }
+      }
+      t.default = p;
+    },
+    function(e, t, r) {
+      'use strict';
+      Object.defineProperty(t, '__esModule', { value: !0 }),
+        (t.defaultProps = t.propTypes = void 0);
+      var i = r(3),
+        n = (function(e) {
+          return e && e.__esModule ? e : { default: e };
+        })(i),
+        d = r(0);
+      const o = (t.propTypes = {
+          children: n.default.oneOfType([n.default.object, n.default.array]),
+          id: n.default.string.isRequired,
+          active: n.default.bool,
+          index: n.default.number,
+          onDownExit: n.default.oneOfType([n.default.string, n.default.func]),
+          onUpExit: n.default.oneOfType([n.default.string, n.default.func]),
+          onEnter: n.default.func,
+          itemWidth: n.default.number,
+          itemHeight: n.default.number,
+          loop: n.default.bool,
+          preloadItemsCount: n.default.number,
+          wrapperOverflow: n.default.number,
+        }),
+        l = (t.defaultProps = { children: [], active: !1, index: 0, loop: !1 });
+    },
+    function(e, t, r) {
+      'use strict';
+      function i(e) {
+        return e && e.__esModule ? e : { default: e };
+      }
+      Object.defineProperty(t, '__esModule', { value: !0 });
+      var d = r(1),
+        o = i(d),
+        l = r(3),
+        s = i(l),
+        a = r(6);
+      class c extends d.Component {
+        constructor(e) {
+          super(e),
+            (this.history = ''),
+            (this.listenerId = (0, a.addListener)(this.keysHandler, this));
         }
         componentWillUnmount() {
           (0, a.removeListener)(this.listenerId);
@@ -2247,464 +3440,142 @@ object-assign
         render() {
           return this.props.children || null;
         }
-      }
-      t.default = c;
-    },
-    function(e, t, n) {
-      'use strict';
-      Object.defineProperty(t, '__esModule', { value: !0 });
-      var r =
-          Object.assign ||
-          function(e) {
-            for (var t, n = 1; n < arguments.length; n++)
-              for (var r in ((t = arguments[n]), t))
-                Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
-            return e;
-          },
-        i = n(6),
-        d = (function(e) {
-          return e && e.__esModule ? e : { default: e };
-        })(i),
-        o = n(37),
-        l = n(14),
-        a = n(5),
-        s = n(4),
-        p = n(13),
-        u = n(20),
-        c = n(1),
-        f = n(0),
-        g = n(38);
-      class y extends i.Component {
-        constructor(e) {
-          super(e),
-            (this.uniqElement = !0),
-            (this.timeout = null),
-            (this.movingCountDown = () =>
-              (this.timeout = setTimeout(
-                () =>
-                  (0, c._updateBinder)({
-                    id: e.id,
-                    moving: !1,
-                    selectedId: this.selectedId,
-                  }),
-                e.speed
-              ))),
-            (this.state = { cursor: e.index, elements: [] });
-        }
-        componentWillMount() {
-          (this.listenerId = (0, s.addListener)(this.keysHandler, this)),
-            (0, c.addBinder)(this.props, f.CAROUSEL_TYPE),
-            this.updateState(this.state.cursor, this.props.children);
-        }
-        componentWillUpdate({ index: e, children: t, updateIndex: n }) {
-          if (
-            (0, a.hasElementsDiff)(t, this.props.children) ||
-            this.props.index !== e
-          ) {
-            const r = n ? e : this.state.cursor;
-            this.updateState(r, t);
-          }
-        }
-        componentWillUnmount() {
-          (0, s.removeListener)(this.listenerId),
-            (0, c._removeBinder)(this.props.id);
-        }
-        computeChildren(e) {
-          let t = e;
-          if (
-            ('[object Array]' !== Object.prototype.toString.call(e) &&
-              (t = [e]),
-            0 === t.length)
-          )
-            return t;
-          for (let n = 1; t.length <= this.props.size + 4; ) {
-            const e = t.map(e => {
-              const t = r({}, e.props, { id: e.props.id + '_' + n });
-              return r({}, e, { props: t, key: e.props.id + '_' + n });
-            });
-            (t = t.concat(e)), n++;
-          }
-          return t;
-        }
-        keysHandler(e, t, n) {
-          const {
-              children: r,
-              circular: i,
-              onDownExit: d,
-              onUpExit: l,
-              onEnter: a,
-              triggerClick: c,
-              debounce: f,
-            } = this.props,
-            { cursor: g } = this.state;
-          if (
-            (n &&
-              c &&
-              (0, u.isActive)(this.props) &&
-              !(0, p.isBlocked)() &&
-              document.getElementById(r[g].props.id).click(),
-            (0, u.isActive)(this.props) && !(0, p.isBlocked)())
-          )
-            switch (e) {
-              case s.userConfig.left:
-                if (!i && 0 === g) return;
-                this.performAction((0, o.getPrev)(r.length, g));
-                break;
-              case s.userConfig.right:
-                if (!i && g === r.length - 1) return;
-                this.performAction((0, o.getNext)(r.length, g));
-                break;
-              case s.userConfig.down:
-                this.performCallback(d);
-                break;
-              case s.userConfig.up:
-                this.performCallback(l);
-                break;
-              case s.userConfig.enter:
-                (0, p.block)(f), this.performCallback(a);
-            }
-        }
-        isLeftMove(e, t, n) {
-          return t < e || (0 === e && t === n.length - 1);
-        }
-        performAction(e) {
-          const { debounce: t, onChange: n, children: r } = this.props;
-          (0, p.block)(t),
-            clearTimeout(this.timeout),
-            this.updateState(e, r),
-            this.movingCountDown(),
-            (0, c.execCb)(n, this.selectedId, this);
-        }
-        updateState(e, t) {
-          const n = this.computeChildren(t),
-            { id: r, size: i, circular: d } = this.props;
-          if (n[e]) {
-            (this.selectedId = n[e].props.id),
-              (0, c._updateBinder)({
-                id: r,
-                selectedId: this.selectedId,
-                cursor: e,
-                moving: !0,
-              });
-            const t = (0, o.build)(n, i + 4, e, d);
-            this.setState({
-              cursor: e,
-              elements: t,
-              gaps: this.determineGap(
-                t,
-                this.isLeftMove(this.state.cursor, e, t)
-              ),
-            });
-          }
-        }
-        performCallback(e) {
-          e && ((0, p.block)(), (0, c.enterTo)(e, this.selectedId));
-        }
-        determineGap(e, t) {
-          const {
-              navigation: n,
-              id: r,
-              elWidth: i,
-              size: d,
-              gap: o,
-            } = this.props,
-            { gaps: s } = this.state,
-            p =
-              s ||
-              e.map(
-                (e, t) => (t - (n === f.NAVIGATION_BOUND ? d - 1 : 2)) * i + o
-              );
-          if (n === f.NAVIGATION_BOUND) {
-            const e = (0, a.calculateElSpace)(
-              document.getElementById(this.selectedId)
-            );
-            if (!e) return p;
-            const n = (0, a.calculateElSpace)(document.getElementById(r));
-            return !t && (0, l.isInsideRight)(n, e, o)
-              ? p.map(e => e + i)
-              : t && (0, l.isInsideLeft)(n, e, o) ? p.map(e => e - i) : p;
-          }
-          return p;
-        }
-        render() {
-          const {
-              size: e,
-              elWidth: t,
-              childrenClassName: n,
-              className: r,
-              id: i,
-            } = this.props,
-            { elements: o, gaps: l } = this.state;
-          return d.default.createElement(
-            'div',
-            {
-              id: i,
-              className: r,
-              style: { overflow: 'hidden', position: 'absolute' },
-            },
-            o.map((r, i) => {
-              if (r) {
-                const o = l[i];
-                return d.default.createElement(
-                  'div',
-                  {
-                    id: r.props.id,
-                    key: r.props.id,
-                    className: n,
-                    style: {
-                      transform: `translateX(${o}px)`,
-                      position: 'absolute',
-                      width: `${t}px`,
-                      display: 'block',
-                      opacity: o === -(2 * t) || o === (e + 1) * t ? 0 : 1,
-                    },
-                  },
-                  r
-                );
-              }
-            })
-          );
-        }
-      }
-      (y.propTypes = g.propTypes),
-        (y.defaultProps = g.defaultProps),
-        (t.default = y);
-    },
-    function(e, t) {
-      'use strict';
-      function n(e, t, n = !0) {
-        return n || (0 !== t && null !== t) ? (0 < t ? t - 1 : e - 1) : null;
-      }
-      function r(e, t, n = !0) {
-        return n || (null !== t && t !== e - 1)
-          ? t < e - 1 ? t + 1 : 0
-          : null;
-      }
-      Object.defineProperty(t, '__esModule', { value: !0 }),
-        (t.getPrev = n),
-        (t.getNext = r),
-        (t.build = function(e, t, i, d = !0) {
-          const o = [e[i]],
-            l = Math.floor(t / 2);
-          let a = i,
-            s = i;
-          for (let p = 0; p < l; p++)
-            (s = r(e.length, s, d)),
-              (a = n(e.length, a, d)),
-              (o[o.length] = null === s ? null : e[s]),
-              o.unshift(null === a ? null : e[a]);
-          return o;
-        });
-    },
-    function(e, t, n) {
-      'use strict';
-      Object.defineProperty(t, '__esModule', { value: !0 }),
-        (t.defaultProps = t.propTypes = void 0);
-      var r = n(8),
-        i = (function(e) {
-          return e && e.__esModule ? e : { default: e };
-        })(r),
-        d = n(0);
-      const o = (t.propTypes = {
-          children: i.default.oneOfType([i.default.object, i.default.array]),
-          id: i.default.string.isRequired,
-          active: i.default.bool,
-          index: i.default.number,
-          size: i.default.number,
-          speed: i.default.number,
-          priority: i.default.number,
-          debounce: i.default.number,
-          elWidth: i.default.number,
-          navigation: i.default.string,
-          memory: i.default.bool,
-          circular: i.default.bool,
-          triggerClick: i.default.bool,
-          gap: i.default.number,
-          className: i.default.string,
-          childrenClassName: i.default.string,
-          onChange: i.default.func,
-          onDownExit: i.default.oneOfType([i.default.string, i.default.func]),
-          onUpExit: i.default.oneOfType([i.default.string, i.default.func]),
-          onEnter: i.default.func,
-          updateIndex: i.default.bool,
-        }),
-        l = (t.defaultProps = {
-          index: 0,
-          size: 3,
-          elWidth: 100,
-          circular: !0,
-          triggerClick: !0,
-          memory: !1,
-          active: !0,
-          speed: 100,
-          priority: 0,
-          gap: 0,
-          navigation: d.NAVIGATION_CENTER,
-          debounce: 82,
-          className: 'carousel',
-          childrenClassName: 'carousel-child',
-          updateIndex: !1,
-        });
-    },
-    function(e, t, n) {
-      'use strict';
-      function i(e) {
-        return e && e.__esModule ? e : { default: e };
-      }
-      Object.defineProperty(t, '__esModule', { value: !0 });
-      var d = n(6),
-        o = i(d),
-        l = n(8),
-        a = i(l),
-        s = n(4);
-      class p extends d.Component {
-        constructor(e) {
-          super(e),
-            (this.history = ''),
-            (this.listenerId = (0, s.addListener)(this.keysHandler, this));
-        }
-        componentWillUnmount() {
-          (0, s.removeListener)(this.listenerId);
-        }
-        render() {
-          return this.props.children || null;
-        }
         keysHandler(e) {
-          (this.history += r(e)),
+          (this.history += n(e)),
             this.history.length > this.props.sequence.length &&
               (this.history = this.history.slice(1)),
             this.history.toUpperCase() === this.props.sequence.toUpperCase() &&
               ((this.history = ''), this.props.cb());
         }
       }
-      (p.propTypes = {
-        sequence: a.default.string.isRequired,
-        cb: a.default.func.isRequired,
-        children: a.default.oneOfType([a.default.object, a.default.array]),
+      (c.propTypes = {
+        sequence: s.default.string.isRequired,
+        cb: s.default.func.isRequired,
+        children: s.default.oneOfType([s.default.object, s.default.array]),
       }),
-        (t.default = p);
+        (t.default = c);
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t.initialKeysSate = void 0);
-      var r =
+      var i =
         Object.assign ||
         function(e) {
-          for (var t, n = 1; n < arguments.length; n++)
-            for (var r in ((t = arguments[n]), t))
-              Object.prototype.hasOwnProperty.call(t, r) && (e[r] = t[r]);
+          for (var t, r = 1; r < arguments.length; r++)
+            for (var i in ((t = arguments[r]), t))
+              Object.prototype.hasOwnProperty.call(t, i) && (e[i] = t[i]);
           return e;
         };
       t.reducer = function(e = o, t) {
         switch (t.type) {
-          case i.ADD_BINDER: {
-            let n = (0, d.computeAddingBinder)(e.binders, t.binder),
-              i = (0, d.buildCurrent)(n, e.current);
-            return r({}, e, { binders: n, current: i });
+          case n.ADD_BINDER: {
+            let r = (0, d.computeAddingBinder)(e.binders, t.binder),
+              n = (0, d.buildCurrent)(r, e.current);
+            return i({}, e, { binders: r, current: n });
           }
-          case i.MOUNT_BINDER: {
-            let n = (0, d.findBinder)(e.binders, t.binderId);
-            n.priority = t.priority;
-            let i = (0, d.computeMountBinder)(e.binders, n),
-              o = (0, d.buildCurrent)(i, e.current);
-            return r({}, e, { binders: i, current: o });
+          case n.MOUNT_BINDER: {
+            let r = (0, d.findBinder)(e.binders, t.binderId);
+            r.priority = t.priority;
+            let n = (0, d.computeMountBinder)(e.binders, r),
+              o = (0, d.buildCurrent)(n, e.current);
+            return i({}, e, { binders: n, current: o });
           }
-          case i.UPDATE_BINDER: {
-            let n = (0, d.updateBinder)(e.binders, t.binder),
-              i = (0, d.buildCurrent)(n, e.current);
-            return r({}, e, { binders: n, current: i });
+          case n.UPDATE_BINDER: {
+            let r = (0, d.updateBinder)(e.binders, t.binder),
+              n = (0, d.buildCurrent)(r, e.current);
+            return i({}, e, { binders: r, current: n });
           }
-          case i.REMOVE_BINDER: {
-            let n = (0, d.computeRemoveBinder)(e.binders, t.binderId, t.force),
-              i = (0, d.buildCurrent)(n, e.current);
-            return r({}, e, { binders: n, current: i });
+          case n.REMOVE_BINDER: {
+            let r = (0, d.computeRemoveBinder)(e.binders, t.binderId, t.force),
+              n = (0, d.buildCurrent)(r, e.current);
+            return i({}, e, { binders: r, current: n });
           }
-          case i.ACTIVE_BINDER: {
-            let n = (0, d.mountBinder)(e.binders, t.binderId),
-              i = (0, d.buildCurrent)(n, e.current);
-            return r({}, e, { binders: n, current: i });
+          case n.ACTIVE_BINDER: {
+            let r = (0, d.mountBinder)(e.binders, t.binderId),
+              n = (0, d.buildCurrent)(r, e.current);
+            return i({}, e, { binders: r, current: n });
           }
-          case i.UPDATE_PRESS_STATUS:
-            return r({}, e, { PRESS: { press: t.press, keyCode: t.keyCode } });
+          case n.UPDATE_PRESS_STATUS:
+            return i({}, e, { PRESS: { press: t.press, keyCode: t.keyCode } });
           case 'RESET_STATE':
             return o;
           default:
             return e;
         }
       };
-      var i = n(1),
-        d = n(2);
+      var n = r(2),
+        d = r(4);
       const o = (t.initialKeysSate = {
         current: { binderId: null, selectedId: null },
         binders: [],
         PRESS: { press: !1 },
       });
     },
-    function(e, t, n) {
+    function(e, t, r) {
       'use strict';
       Object.defineProperty(t, '__esModule', { value: !0 }),
         (t._isVisibleInBinder = t._isBinderActive = t._getBinderMarginTop = t._getBinderMarginLeft = t._getBinderSelectedId = t._isLongPress = t._getKeyCode = t._getCurrentBinderId = t._getCurrentBinder = t._getBinders = t._getCurrentSelectedId = t._isCurrentBinder = t._selector = void 0);
-      var r = n(0),
-        i = n(3),
-        d = n(17),
-        o = n(2);
+      var i = r(0),
+        n = r(5),
+        d = r(19),
+        o = r(4);
       const l = (t._selector = e => () => {
           (0, d.ensureState)();
-          const t = (0, o.findBinder)((0, i.getBinders)(), e);
+          const t = (0, o.findBinder)((0, n.getBinders)(), e);
           return t || { marginLeft: 0, marginTop: 0 };
         }),
-        a = (t._isCurrentBinder = e => () => {
+        s = (t._isCurrentBinder = e => () => {
           (0, d.ensureState)();
           const t =
-            (0, i.getStore)().current && (0, i.getStore)().current.binderId;
+            (0, n.getStore)().current && (0, n.getStore)().current.binderId;
           return t === e;
         }),
-        s = (t._getCurrentSelectedId = () => () => (
-          (0, d.ensureState)(), (0, i.getStore)().current.selectedId
+        a = (t._getCurrentSelectedId = () => () => (
+          (0, d.ensureState)(), (0, n.getStore)().current.selectedId
         )),
-        p = (t._getBinders = () => () => (
-          (0, d.ensureState)(), (0, i.getBinders)()
+        c = (t._getBinders = () => () => (
+          (0, d.ensureState)(), (0, n.getBinders)()
         )),
         u = (t._getCurrentBinder = () => () => {
           (0, d.ensureState)();
-          const { binders: e, current: t } = i.globalStore.getState()[r.NAME];
+          const { binders: e, current: t } = n.globalStore.getState()[i.NAME];
           return (0, o.findBinder)(e, t.binderId);
         }),
-        c = (t._getCurrentBinderId = () => () =>
-          (0, i.getStore)().current.binderId),
+        p = (t._getCurrentBinderId = () => () =>
+          (0, n.getStore)().current.binderId),
         f = (t._getKeyCode = () => () => (
-          (0, d.ensureState)(), (0, i.getStore)().PRESS.keyCode
+          (0, d.ensureState)(), (0, n.getStore)().PRESS.keyCode
         )),
         g = (t._isLongPress = () => () => (
-          (0, d.ensureState)(), (0, i.getStore)().PRESS.press
+          (0, d.ensureState)(), (0, n.getStore)().PRESS.press
         )),
-        y = (t._getBinderSelectedId = e => () => {
+        m = (t._getBinderSelectedId = e => () => {
           (0, d.ensureState)();
-          const t = (0, o.findBinder)((0, i.getBinders)(), e);
+          const t = (0, o.findBinder)((0, n.getBinders)(), e);
           return t ? t.selectedId : '';
         }),
-        m = (t._getBinderMarginLeft = e => () => {
+        h = (t._getBinderMarginLeft = e => () => {
           (0, d.ensureState)();
-          const t = (0, o.findBinder)((0, i.getBinders)(), e);
+          const t = (0, o.findBinder)((0, n.getBinders)(), e);
           return t ? t.marginLeft : 0;
         }),
-        h = (t._getBinderMarginTop = e => () => {
+        b = (t._getBinderMarginTop = e => () => {
           (0, d.ensureState)();
-          const t = (0, o.findBinder)((0, i.getBinders)(), e);
+          const t = (0, o.findBinder)((0, n.getBinders)(), e);
           return t ? t.marginTop : 0;
         }),
-        b = (t._isBinderActive = e => () => {
+        y = (t._isBinderActive = e => () => {
           (0, d.ensureState)();
-          const t = (0, o.findBinder)((0, i.getBinders)(), e);
+          const t = (0, o.findBinder)((0, n.getBinders)(), e);
           return t && t.mounted;
         }),
-        _ = (t._isVisibleInBinder = (e, t) => () => {
+        I = (t._isVisibleInBinder = (e, t) => () => {
           (0, d.ensureState)();
-          const n = (0, o.findBinder)((0, i.getBinders)(), e);
-          if (!n) return !1;
-          const r = n.elements.find(e => e.id === t);
-          return !!r && r.isVisible;
+          const r = (0, o.findBinder)((0, n.getBinders)(), e);
+          if (!r) return !1;
+          const i = r.elements.find(e => e.id === t);
+          return !!i && i.isVisible;
         });
     },
   ]);

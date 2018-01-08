@@ -209,7 +209,7 @@ class CarouselV2Wrapper extends React.Component {
           itemsVisiblesCount={3}
           loop={loop}
           onEnter={this.onEnter}
-          preloadItemsCount={3}
+          preloadItemsCount={1}
           focusedClassName={'focuseditemlol'}
           nestedFocusedClassName={'focuseditemlolilol'}
           wrapperWidth={600}
