@@ -15,6 +15,10 @@ class CarouselItem extends Component {
     }
   }
 
+  shouldComponentUpdate(){
+    return this.props.hasNestedItems ? true : false;
+  }
+
   render() {
     const {
       direction,
@@ -29,7 +33,7 @@ class CarouselItem extends Component {
       height: `${itemHeight}px`,
       display: direction === CAROUSEL_DIRECTIONS.horizontal ? 'inline-block' : 'block'
     };
-    
+
     return (
       <div ref={(el) => { this.el = el }} style={itemWrapperStyles}>
         <div style={itemStyles}>

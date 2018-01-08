@@ -30,7 +30,7 @@ class CarouselScrollable extends React.PureComponent {
     }
   }
 
-  getVerticalScrollableStyles(scrollableTranslateY, scrollableHeight) {
+  getVerticalScrollableStyles(scrollableHeight) {
     return {
       width: '100%',
       height: scrollableHeight,
@@ -48,8 +48,8 @@ class CarouselScrollable extends React.PureComponent {
       scrollableWidth
     } = this.props;
 
-    const scrollableStyles = direction === CAROUSEL_DIRECTIONS.horizontal ? this.getHorizontalScrollableStyles() : this.getVerticalScrollableStyles(scrollableTranslateY, scrollableHeight),
-      scrollable2Styles = this.getHorizontalScrollableStyles(scrollable2TranslateX, scrollableWidth);
+    const scrollableStyles = direction === CAROUSEL_DIRECTIONS.horizontal ? this.getHorizontalScrollableStyles() : this.getVerticalScrollableStyles(scrollableHeight),
+      scrollable2Styles = this.getHorizontalScrollableStyles();
 
     return (
       <div className="keys-carousel-scrollable" ref={(el) => { this.el = el }} style={scrollableStyles} >

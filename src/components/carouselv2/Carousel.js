@@ -115,7 +115,7 @@ class Carousel extends Component {
     };
   }
 
-  renderItems(carouselId, iFocused, itemsVisiblesCount, children, direction, itemStyles, preloadItemsCount, scrollableTranslateY, wrapperHeight) {
+  renderItems(carouselId, iFocused, itemsVisiblesCount, children, direction, itemStyles, preloadItemsCount, scrollableTranslateX, scrollableTranslateY, wrapperHeight) {
     const { verticalChildItemWrapper } = this.props;
     if (direction === CAROUSEL_DIRECTIONS.verticalBidirectional) {
       const maxItemsVisible = iFocused + itemsVisiblesCount + preloadItemsCount;
@@ -128,7 +128,7 @@ class Carousel extends Component {
         const maxNestedItemsVisible = nestedIFocused + itemsVisiblesCount + preloadItemsCount;
         const minNestedItemsVisible = nestedIFocused - itemsVisiblesCount - preloadItemsCount;
 
-        if (!isItemVisible) {
+        if (!isItemVisible && iIndex < maxItemsVisible) {
           const height = getItemOffsetHeight(carouselId, iIndex);
           const width = getItemOffsetWidth(carouselId, iIndex);
           return (
@@ -138,10 +138,12 @@ class Carousel extends Component {
             </div>
           )
         }
+        
         return isItemVisible && (
           <CarouselItem
             carouselId={carouselId}
             direction={direction}
+            hasNestedItems
             key={`item_${iIndex}`}
             itemIndex={iIndex}
             itemStyles={itemStyles}
@@ -158,13 +160,13 @@ class Carousel extends Component {
                       carouselId={`${carouselId}_${iIndex}`}
                       direction={CAROUSEL_DIRECTIONS.horizontal}
                       nested
-                      scrollableTranslateX={0}
-                      scrollableTranslateY={0}
+                      scrollableTranslateX={scrollableTranslateX}
+                      scrollableTranslateY={scrollableTranslateY}
                     >
                       {nestedChild.props.children.map((nestedChildItem, iNestedItem) => {
                         const isItemVisible = iNestedItem < maxNestedItemsVisible && iNestedItem > minNestedItemsVisible
 
-                        if (!isItemVisible) {
+                        if (!isItemVisible && iNestedItem < maxNestedItemsVisible) {
                           const width = getNestedItemOffsetWidth(carouselId, iIndex, iNestedItem);
                           return (
                             <div key={`spacer_${iIndex}_${iNested}_${iNestedItem}`} style={{ display: 'inline-block' }}>
@@ -324,6 +326,7 @@ class Carousel extends Component {
               direction,
               itemStyles,
               preloadItemsCount,
+              scrollableTranslateX,
               scrollableTranslateY,
               wrapperHeight
             )
