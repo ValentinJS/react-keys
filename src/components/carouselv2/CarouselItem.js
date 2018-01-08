@@ -3,27 +3,37 @@ import PropTypes from 'prop-types';
 import { addScrollableItemRef, addNestedScrollableItemRef } from './handler';
 import { CAROUSEL_DIRECTIONS } from '../../constants';
 class CarouselItem extends Component {
-  state = {}
+  state = {};
 
   componentDidMount() {
-    const { carouselId, itemIndex, nested, parentCarouselId, parentItemIndex } = this.props;
-    if(!nested) {
-      addScrollableItemRef(carouselId, itemIndex, this.el)
-    }
-    else {
-      addNestedScrollableItemRef(parentCarouselId, itemIndex, parentItemIndex, this.el)
+    const {
+      carouselId,
+      itemIndex,
+      nested,
+      parentCarouselId,
+      parentItemIndex,
+    } = this.props;
+    if (!nested) {
+      addScrollableItemRef(carouselId, itemIndex, this.el);
+    } else {
+      addNestedScrollableItemRef(
+        parentCarouselId,
+        itemIndex,
+        parentItemIndex,
+        this.el
+      );
     }
   }
 
-  shouldComponentUpdate(){
-    return this.props.hasNestedItems ? true : false;
+  shouldComponentUpdate() {
+    return this.props.hasNestedItems || false;
   }
 
   render() {
     const {
       direction,
       children,
-      itemWidth, 
+      itemWidth,
       itemHeight,
       itemStyles,
     } = this.props;
@@ -31,14 +41,17 @@ class CarouselItem extends Component {
     const itemWrapperStyles = {
       width: `${itemWidth}px`,
       height: `${itemHeight}px`,
-      display: direction === CAROUSEL_DIRECTIONS.horizontal ? 'inline-block' : 'block'
+      display:
+        direction === CAROUSEL_DIRECTIONS.horizontal ? 'inline-block' : 'block',
     };
-
     return (
-      <div ref={(el) => { this.el = el }} style={itemWrapperStyles}>
-        <div style={itemStyles}>
-          {children}
-        </div>
+      <div
+        ref={el => {
+          this.el = el;
+        }}
+        style={itemWrapperStyles}
+      >
+        <div style={itemStyles}>{children}</div>
       </div>
     );
   }

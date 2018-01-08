@@ -6,6 +6,7 @@ import {
   Binder,
   Carousel,
   CarouselV2,
+  CarouselV2Scrollable,
   getBinderSelectedId,
   keysInit,
   keysReducer,
@@ -221,23 +222,7 @@ class CarouselV2Wrapper extends React.Component {
           {
             items.map((parentItem, parentIndex) => {
               return (
-                <div id={`parent_item_${parentIndex}`} key={`parent_item_${parentIndex}`}>
-                  {parentIndex % 2 === 0 && <div> Titre </div>}
-                  {parentIndex === 2 && <div> <em>Un sous-titre</em> </div> }
-                  <div className={'parent-child'} style={{display: 'flex', flexDirection: 'row'}}>
-                    {
-                      items.map((item, index) => {
-                        return (
-                          <div key={`item_${parentIndex}_${index}`} className={'item-child-2'} style={{ width: index === 4 ? '200px' : '200px', height: '200px' }}>
-                            <div id={`item_${parentIndex}_${index}`} className={'item-child'}>
-                              item_{index}
-                            </div>
-                          </div>
-                        )
-                      })
-                    }
-                  </div>
-                </div>
+                <RowItem key={`parent_item_${parentIndex}`} parentIndex={parentIndex} items={items} />
               )
             })
           }
@@ -276,7 +261,7 @@ class CarouselV2Wrapper extends React.Component {
             })
           }
         </CarouselV2> */}
-        
+
         {
           /**
            * CAROUSEL EXAMPLE :
@@ -309,13 +294,52 @@ class CarouselV2Wrapper extends React.Component {
             })
           }
         </CarouselV2> */}
-        
+
 
       </div>
     )
   }
 
 }
+
+class RowItem extends React.Component {
+
+
+  render() {
+    const { parentIndex, items } = this.props;
+    return (
+
+      <div id={`parent_item_${parentIndex}`} >
+        {parentIndex % 2 === 0 && <div> Titre </div>}
+        {parentIndex === 2 && <div> <em>Un sous-titre</em> </div>}
+        <div className={'parent-child'} style={{ display: 'flex', flexDirection: 'row' }}>
+          <CarouselV2Scrollable
+            key={`parent_item_${parentIndex}`}
+            itemsVisiblesCount={3}
+            preloadItemsCount={1}
+            nested
+            parentCarouselId="carousel-v-1"
+            parentItemIndex={parentIndex}
+          >
+            {
+              items.map((item, index) => {
+                return (
+                  <div key={`item_${parentIndex}_${index}`} className={'item-child-2'} style={{ width: index === 4 ? '200px' : '200px', height: '200px' }}>
+                    <div id={`item_${parentIndex}_${index}`} className={'item-child'}>
+                      item_{index}
+                    </div>
+                  </div>
+                )
+              })
+            }
+          </CarouselV2Scrollable>
+        </div>
+      </div>
+    )
+  }
+
+}
+
 
 
 

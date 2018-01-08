@@ -259,48 +259,49 @@ class Carousel extends Component {
         );
       });
     } else {
-      return children.map((item, iIndex) => {
-        const maxItemsVisible =
-          iFocused + itemsVisiblesCount + preloadItemsCount;
-        const minItemsVisible =
-          iFocused - itemsVisiblesCount - preloadItemsCount;
-        const isItemVisible =
-          iIndex < maxItemsVisible && iIndex > minItemsVisible;
+      return null;
+      //   return children.map((item, iIndex) => {
+      //     const maxItemsVisible =
+      //       iFocused + itemsVisiblesCount + preloadItemsCount;
+      //     const minItemsVisible =
+      //       iFocused - itemsVisiblesCount - preloadItemsCount;
+      //     const isItemVisible =
+      //       iIndex < maxItemsVisible && iIndex > minItemsVisible;
 
-        if (!isItemVisible) {
-          const height = getItemOffsetHeight(carouselId, iIndex);
-          const width = getItemOffsetWidth(carouselId, iIndex);
-          return (
-            <div
-              key={`spacer_${iIndex}`}
-              style={{
-                display:
-                  direction === CAROUSEL_DIRECTIONS.horizontal
-                    ? 'inline-block'
-                    : 'block',
-              }}
-            >
-              <div style={{ height: height, width: width }} />
-            </div>
-          );
-        }
+      //     if (!isItemVisible) {
+      //       const height = getItemOffsetHeight(carouselId, iIndex);
+      //       const width = getItemOffsetWidth(carouselId, iIndex);
+      //       return (
+      //         <div
+      //           key={`spacer_${iIndex}`}
+      //           style={{
+      //             display:
+      //               direction === CAROUSEL_DIRECTIONS.horizontal
+      //                 ? 'inline-block'
+      //                 : 'block',
+      //           }}
+      //         >
+      //           <div style={{ height: height, width: width }} />
+      //         </div>
+      //       );
+      //     }
 
-        return (
-          isItemVisible && (
-            <CarouselItem
-              carouselId={carouselId}
-              direction={direction}
-              key={`item_${iIndex}`}
-              itemIndex={iIndex}
-              itemStyles={itemStyles}
-              preloadItemsCount={preloadItemsCount}
-              wrapperHeight={wrapperHeight}
-            >
-              {item}
-            </CarouselItem>
-          )
-        );
-      });
+      //     return (
+      //       isItemVisible && (
+      //         <CarouselItem
+      //           carouselId={carouselId}
+      //           direction={direction}
+      //           key={`item_${iIndex}`}
+      //           itemIndex={iIndex}
+      //           itemStyles={itemStyles}
+      //           preloadItemsCount={preloadItemsCount}
+      //           wrapperHeight={wrapperHeight}
+      //         >
+      //           {item}
+      //         </CarouselItem>
+      //       )
+      //     );
+      //   });
     }
   }
 
@@ -387,29 +388,13 @@ class Carousel extends Component {
       <div id={id} style={wrapperStyles}>
         <CarouselScrollable
           carouselId={id}
-          direction={
-            direction === CAROUSEL_DIRECTIONS.verticalBidirectional
-              ? CAROUSEL_DIRECTIONS.vertical
-              : direction
-          }
-          scrollableHeight={scrollableHeight}
-          scrollableTranslateX={scrollableTranslateX}
-          scrollableTranslateY={scrollableTranslateY}
-          scrollable2TranslateX={scrollable2TranslateX}
-          scrollableWidth={scrollableWidth}
+          direction={direction}
+          iFocused={iFocused}
+          blah={Math.random()}
+          itemsVisiblesCount={itemsVisiblesCount}
+          preloadItemsCount={preloadItemsCount}
         >
-          {this.renderItems(
-            id,
-            iFocused,
-            itemsVisiblesCount,
-            children,
-            direction,
-            itemStyles,
-            preloadItemsCount,
-            scrollableTranslateX,
-            scrollableTranslateY,
-            wrapperHeight
-          )}
+          {children}
         </CarouselScrollable>
         {loop ? (
           <CarouselLoopedEngine

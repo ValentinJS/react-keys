@@ -182,6 +182,8 @@ export function itemFocusedHandler(id, iFocused, nestedIFocused, callback) {
     scrollableItems,
     verticalChildItemWrapper,
   } = getBinder(id);
+  //console.log('=> BINDER', getBinder(id));
+
   if (direction === CAROUSEL_DIRECTIONS.verticalBidirectional) {
     const focusedItem = scrollableItems[iFocused].ref.querySelector(
       verticalChildItemWrapper
