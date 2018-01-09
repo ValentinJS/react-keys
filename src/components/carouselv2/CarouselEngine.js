@@ -380,7 +380,7 @@ class CarouselEngine extends Component {
           break;
         case userConfig.enter:
           const { nestedSelectedId, selectedId } = getBinder(carouselId);
-          this.props.onEnter(nested ? nestedSelectedId : selectedId);
+          this.props.onEnter(selectedId, nestedSelectedId);
           break;
       }
     }

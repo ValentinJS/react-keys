@@ -91,6 +91,10 @@ class Carousel extends Component {
     itemFocusedHandler(this.props.id, 0, 0);
   }
 
+  componentWillUnmount() {
+    _removeBinder(this.props.id);
+  }
+
   componentWillReceiveProps({
     id,
     children,
@@ -127,13 +131,9 @@ class Carousel extends Component {
 
   refreshCarousel = cb => {
     const { children, preloadItemsCount } = this.props;
-    if (preloadItemsCount < children.length) {
-      this.setState({ refresh: true }, () => {
-        cb();
-      });
-    } else {
+    this.setState({ refresh: true }, () => {
       cb();
-    }
+    });
   };
 
   updatePositions = (positions, cb) => {
