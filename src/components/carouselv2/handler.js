@@ -168,6 +168,45 @@ export function getNestedScrollableTranslateX(id, iFocused) {
   return nestedScrollableRefs[iFocused].scrollableTranslateX;
 }
 
+function findClosestNextItem(id, iFocused) {
+  const {
+    iFocused: prevIFocused,
+    nestedScrollableItems,
+    nestedScrollableRefs,
+  } = getBinder(id);
+
+  const currentScrollable = nestedScrollableRefs[prevIFocused];
+  const currentScrollableChildren = nestedScrollableItems[prevIFocused];
+  const nextScrollable = nestedScrollableRefs[iFocused];
+  const nextScrollableChildren = nestedScrollableItems[iFocused];
+
+  const currentScrollableFocusPosition =
+    currentScrollableChildren[currentScrollable.iFocused].offsetLeft +
+    currentScrollable.scrollableTranslateX;
+
+  let indexClosest = 0;
+  let closestFoundAbsPosition = Math.abs(
+    currentScrollableFocusPosition -
+      (nextScrollableChildren[indexClosest].offsetLeft +
+        nextScrollable.scrollableTranslateX)
+  );
+
+  for (let i = 1; i < nextScrollableChildren.length; i++) {
+    const nextAbsPosition = Math.abs(
+      currentScrollableFocusPosition -
+        (nextScrollableChildren[i].offsetLeft +
+          nextScrollable.scrollableTranslateX)
+    );
+
+    if (nextAbsPosition < closestFoundAbsPosition) {
+      indexClosest = i;
+      closestFoundAbsPosition = nextAbsPosition;
+    }
+  }
+
+  return indexClosest;
+}
+
 export function itemFocusedHandler(id, iFocused, nestedIFocused, callback) {
   const {
     childItemWrapper,
@@ -176,6 +215,7 @@ export function itemFocusedHandler(id, iFocused, nestedIFocused, callback) {
     nestedFocusedClassName,
     horizontalChildItemWrapper,
     iFocused: prevIFocused,
+    mirror,
     nestedScrollableItems,
     nestedScrollableRefs,
     preloadItemsCount,
@@ -190,7 +230,8 @@ export function itemFocusedHandler(id, iFocused, nestedIFocused, callback) {
     );
     const prevNestedIFocused = nestedScrollableRefs[prevIFocused].iFocused;
     if (isNaN(nestedIFocused)) {
-      nestedIFocused = nestedScrollableRefs[iFocused].iFocused;
+      if (mirror) nestedIFocused = findClosestNextItem(id, iFocused);
+      else nestedIFocused = nestedScrollableRefs[iFocused].iFocused;
     }
 
     const prevNestedFocusedItem = nestedScrollableItems[prevIFocused][
