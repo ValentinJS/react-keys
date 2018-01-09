@@ -214,7 +214,7 @@ class CarouselV2Wrapper extends React.Component {
           focusedClassName={'focuseditemlol'}
           nestedFocusedClassName={'focuseditemlolilol'}
           wrapperWidth={600}
-          wrapperHeight={715}
+          wrapperHeight={400}
           wrapperOverflow={30}
           horizontalChildItemWrapper={'.item-child'}
           verticalChildItemWrapper={'.parent-child'}
@@ -309,7 +309,7 @@ class RowItem extends React.Component {
     const { parentIndex, items } = this.props;
     return (
 
-      <div id={`parent_item_${parentIndex}`} >
+      <div id={`parent_item_${parentIndex}`} className="carousel-children">
         {parentIndex % 2 === 0 && <div> Titre </div>}
         {parentIndex === 2 && <div> <em>Un sous-titre</em> </div>}
         <div className={'parent-child'} style={{ display: 'flex', flexDirection: 'row' }}>
@@ -324,11 +324,7 @@ class RowItem extends React.Component {
             {
               items.map((item, index) => {
                 return (
-                  <div key={`item_${parentIndex}_${index}`} className={'item-child-2'} style={{ width: index === 4 ? '200px' : '200px', height: '200px' }}>
-                    <div id={`item_${parentIndex}_${index}`} className={'item-child'}>
-                      item_{index}
-                    </div>
-                  </div>
+                  <ChildItem key={`item_${index}`} parentIndex={parentIndex} index={index} />
                 )
               })
             }
@@ -339,6 +335,54 @@ class RowItem extends React.Component {
   }
 
 }
+
+var imagesLoaded = [];
+
+class ChildItem extends React.Component {
+  state = {}
+
+  componentDidMount() {
+    const { parentIndex, index } = this.props;
+    if (!imagesLoaded.includes(`${parentIndex}_${index}`)) {
+      this.imageDisplayTimeout = setTimeout(() => {
+        if(this.el){
+          this.el.src = `./thumb.png?hash=${parentIndex}_${index}`;
+          this.el.style.opacity = 1;
+          imagesLoaded.push(`${parentIndex}_${index}`);
+        }
+      }, 700)
+    }
+    else {
+      this.el.src = `./thumb.png?hash=${parentIndex}_${index}`;
+      this.el.style.transition = 'none';
+      this.el.style.opacity = 1;
+    }
+  }
+
+  componentWillUnmout() {
+    clearTimeout(this.imageDisplayTimeout);
+  }
+
+  render() {
+    const { parentIndex, index } = this.props;
+    return (
+      <div key={`item_${parentIndex}_${index}`} className={'item-child-2'} style={{ width: index === 4 ? '200px' : '200px', height: '200px', border: '1px solid purple' }}>
+        <div id={`item_${parentIndex}_${index}`} className={'item-child'}>
+          <img
+            key={`img_item_${parentIndex}_${index}`}
+            ref={el => {
+              this.el = el;
+            }}
+            className="img-loading"
+            src={null}
+            width="200"
+            height="150" />
+        </div>
+      </div>
+    );
+  }
+}
+
 
 
 

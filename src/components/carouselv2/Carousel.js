@@ -28,9 +28,7 @@ import {
 } from './handler';
 
 class Carousel extends Component {
-  state = {
-    initialized: false,
-  };
+  state = {};
 
   constructor(props) {
     super(props);
@@ -106,9 +104,9 @@ class Carousel extends Component {
     const { children: previousChildren } = this.props;
   }
 
-  getHorizontalWrapperStyles(itemHeight, wrapperOverflow, wrapperWidth) {
+  getHorizontalWrapperStyles(wrapperHeight, wrapperOverflow, wrapperWidth) {
     return {
-      height: itemHeight,
+      height: wrapperHeigth,
       width: `${wrapperWidth + wrapperOverflow}px`,
       margin: '0 auto',
       overflow: 'hidden',
@@ -125,184 +123,6 @@ class Carousel extends Component {
       position: 'relative',
       display: 'block',
     };
-  }
-
-  renderItems(
-    carouselId,
-    iFocused,
-    itemsVisiblesCount,
-    children,
-    direction,
-    itemStyles,
-    preloadItemsCount,
-    scrollableTranslateX,
-    scrollableTranslateY,
-    wrapperHeight
-  ) {
-    const { verticalChildItemWrapper } = this.props;
-    if (direction === CAROUSEL_DIRECTIONS.verticalBidirectional) {
-      const maxItemsVisible = iFocused + itemsVisiblesCount + preloadItemsCount;
-      const minItemsVisible = iFocused - itemsVisiblesCount - preloadItemsCount;
-
-      return children.map((item, iIndex) => {
-        const isItemVisible =
-          iIndex < maxItemsVisible && iIndex > minItemsVisible;
-
-        const nestedIFocused = getNestedIFocused(carouselId, iIndex);
-        const maxNestedItemsVisible =
-          nestedIFocused + itemsVisiblesCount + preloadItemsCount;
-        const minNestedItemsVisible =
-          nestedIFocused - itemsVisiblesCount - preloadItemsCount;
-
-        if (!isItemVisible && iIndex < maxItemsVisible) {
-          const height = getItemOffsetHeight(carouselId, iIndex);
-          const width = getItemOffsetWidth(carouselId, iIndex);
-          return (
-            <div
-              key={`spacer_${iIndex}`}
-              style={{
-                display:
-                  direction === CAROUSEL_DIRECTIONS.horizontal
-                    ? 'inline-block'
-                    : 'block',
-              }}
-            >
-              <div style={{ height: height, width: width }} />
-            </div>
-          );
-        }
-
-        return (
-          isItemVisible && (
-            <CarouselItem
-              carouselId={carouselId}
-              direction={direction}
-              hasNestedItems
-              key={`item_${iIndex}`}
-              itemIndex={iIndex}
-              itemStyles={itemStyles}
-              preloadItemsCount={preloadItemsCount}
-              wrapperHeight={wrapperHeight}
-            >
-              {React.Children.toArray(item.props.children).map(
-                (nestedChild, iNested) => {
-                  return `.${nestedChild.props.className}` ===
-                    verticalChildItemWrapper ? (
-                    <div
-                      id={item.props.id}
-                      className={nestedChild.props.className}
-                      key={`${carouselId}_${iIndex}`}
-                    >
-                      <CarouselScrollable
-                        parentCarouselId={carouselId}
-                        parentItemIndex={iIndex}
-                        carouselId={`${carouselId}_${iIndex}`}
-                        direction={CAROUSEL_DIRECTIONS.horizontal}
-                        nested
-                        scrollableTranslateX={scrollableTranslateX}
-                        scrollableTranslateY={scrollableTranslateY}
-                      >
-                        {nestedChild.props.children.map(
-                          (nestedChildItem, iNestedItem) => {
-                            const isItemVisible =
-                              iNestedItem < maxNestedItemsVisible &&
-                              iNestedItem > minNestedItemsVisible;
-
-                            if (
-                              !isItemVisible &&
-                              iNestedItem < maxNestedItemsVisible
-                            ) {
-                              const width = getNestedItemOffsetWidth(
-                                carouselId,
-                                iIndex,
-                                iNestedItem
-                              );
-                              return (
-                                <div
-                                  key={`spacer_${iIndex}_${iNested}_${iNestedItem}`}
-                                  style={{ display: 'inline-block' }}
-                                >
-                                  <div style={{ width: width }} />
-                                </div>
-                              );
-                            }
-
-                            return (
-                              isItemVisible && (
-                                <CarouselItem
-                                  carouselId={`${carouselId}_${iNested}`}
-                                  parentCarouselId={carouselId}
-                                  parentItemIndex={iIndex}
-                                  direction={direction}
-                                  key={`item_${iIndex}_${iNested}_${iNestedItem}`}
-                                  itemIndex={iNestedItem}
-                                  itemStyles={itemStyles}
-                                  nested
-                                  preloadItemsCount={preloadItemsCount}
-                                  wrapperHeight={wrapperHeight}
-                                >
-                                  {nestedChildItem}
-                                </CarouselItem>
-                              )
-                            );
-                          }
-                        )}
-                      </CarouselScrollable>
-                    </div>
-                  ) : (
-                    nestedChild
-                  );
-                }
-              )}
-            </CarouselItem>
-          )
-        );
-      });
-    } else {
-      return null;
-      //   return children.map((item, iIndex) => {
-      //     const maxItemsVisible =
-      //       iFocused + itemsVisiblesCount + preloadItemsCount;
-      //     const minItemsVisible =
-      //       iFocused - itemsVisiblesCount - preloadItemsCount;
-      //     const isItemVisible =
-      //       iIndex < maxItemsVisible && iIndex > minItemsVisible;
-
-      //     if (!isItemVisible) {
-      //       const height = getItemOffsetHeight(carouselId, iIndex);
-      //       const width = getItemOffsetWidth(carouselId, iIndex);
-      //       return (
-      //         <div
-      //           key={`spacer_${iIndex}`}
-      //           style={{
-      //             display:
-      //               direction === CAROUSEL_DIRECTIONS.horizontal
-      //                 ? 'inline-block'
-      //                 : 'block',
-      //           }}
-      //         >
-      //           <div style={{ height: height, width: width }} />
-      //         </div>
-      //       );
-      //     }
-
-      //     return (
-      //       isItemVisible && (
-      //         <CarouselItem
-      //           carouselId={carouselId}
-      //           direction={direction}
-      //           key={`item_${iIndex}`}
-      //           itemIndex={iIndex}
-      //           itemStyles={itemStyles}
-      //           preloadItemsCount={preloadItemsCount}
-      //           wrapperHeight={wrapperHeight}
-      //         >
-      //           {item}
-      //         </CarouselItem>
-      //       )
-      //     );
-      //   });
-    }
   }
 
   refreshCarousel = cb => {
@@ -339,26 +159,11 @@ class Carousel extends Component {
 
   render() {
     const {
-      initialized,
-      itemsLeft,
-      itemsTop,
-      itemsPositionsIndex,
-      scrollableAnimated,
-      scrollable2Animated,
-      scrollable2TranslateX,
-      scrollablesVisibles,
-      scrollableHeight,
-      scrollableWidth,
-    } = this.state;
-
-    const {
         active,
         children,
         direction,
         id,
         itemsVisiblesCount,
-        itemHeight,
-        itemWidth,
         itemStyles,
         loop,
         preloadItemsCount,
@@ -370,7 +175,7 @@ class Carousel extends Component {
       wrapperStyles =
         direction === CAROUSEL_DIRECTIONS.horizontal
           ? this.getHorizontalWrapperStyles(
-              itemHeight,
+              wrapperHeight,
               wrapperOverflow,
               wrapperWidth
             )
@@ -388,6 +193,7 @@ class Carousel extends Component {
       <div id={id} style={wrapperStyles}>
         <CarouselScrollable
           carouselId={id}
+          key={id}
           direction={direction}
           iFocused={iFocused}
           blah={Math.random()}
@@ -415,7 +221,8 @@ class Carousel extends Component {
           />
         ) : (
           <CarouselEngine
-            binderId={id}
+            active={active}
+            carouselId={id}
             direction={direction}
             onEnter={onEnter}
             wrapperHeight={wrapperHeight}

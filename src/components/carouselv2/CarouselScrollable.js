@@ -13,7 +13,7 @@ import {
   getNestedIFocused,
 } from './handler';
 
-class CarouselScrollable extends React.PureComponent {
+class CarouselScrollable extends React.Component {
   state = {};
   prevNestedIFocused = 0;
 
@@ -168,6 +168,24 @@ class CarouselScrollable extends React.PureComponent {
         })}
       </div>
     );
+  }
+
+  shouldComponentUpdate({ iFocused, nested }) {
+    const {
+      iFocused: prevIFocused,
+      parentCarouselId,
+      parentItemIndex,
+    } = this.props;
+
+    if (nested) {
+      const nestedIFocused = getNestedIFocused(
+        parentCarouselId,
+        parentItemIndex
+      );
+      return this.prevNestedIFocused !== nestedIFocused;
+    } else {
+      return true;
+    }
   }
 
   render() {

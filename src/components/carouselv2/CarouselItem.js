@@ -30,20 +30,13 @@ class CarouselItem extends Component {
   }
 
   render() {
-    const {
-      direction,
-      children,
-      itemWidth,
-      itemHeight,
-      itemStyles,
-    } = this.props;
+    const { direction, children, itemStyles } = this.props;
 
     const itemWrapperStyles = {
-      width: `${itemWidth}px`,
-      height: `${itemHeight}px`,
       display:
         direction === CAROUSEL_DIRECTIONS.horizontal ? 'inline-block' : 'block',
     };
+
     return (
       <div
         ref={el => {
