@@ -173,6 +173,7 @@ class Carousel extends Component {
         wrapperOverflow,
         wrapperHeight,
         wrapperWidth,
+        verticalFocusGap,
       } = this.props,
       wrapperStyles =
         direction === CAROUSEL_DIRECTIONS.horizontal
@@ -230,6 +231,7 @@ class Carousel extends Component {
             wrapperHeight={wrapperHeight}
             wrapperWidth={wrapperWidth}
             updatePositions={this.updatePositions}
+            verticalFocusGap={verticalFocusGap}
           />
         )}
       </div>

@@ -112,6 +112,7 @@ class CarouselEngine extends Component {
         iFocused,
         nextNestedIFocused
       );
+
       return {
         iFocused: iFocused,
         nestedIFocused,
@@ -131,49 +132,78 @@ class CarouselEngine extends Component {
         carouselId,
         nextIFocused
       );
+
       const itemHeight = getItemOffsetHeight(carouselId, iFocused);
+      const nextItemHeight = getItemOffsetHeight(carouselId, nextIFocused);
+      const isLastItem =
+        getItemOffsetHeight(
+          carouselId,
+          direction === CAROUSEL_SCROLLABLE_DIRECTIONS.down
+            ? nextIFocused + 1
+            : nextIFocused - 1
+        ) === undefined;
+
       return {
         iFocused,
         scrollableTranslateY,
         nextIFocused,
         nextItemFocusedPosition,
         itemHeight,
+        nextItemHeight,
+        isLastItem,
       };
     }
   };
 
   scrollToDown = nested => {
-    const { carouselId, wrapperHeight, updatePositions } = this.props;
+    const {
+      carouselId,
+      wrapperHeight,
+      updatePositions,
+      verticalFocusGap,
+    } = this.props;
 
     const {
       iFocused,
       itemHeight,
+      nextItemHeight,
       scrollableTranslateY,
       nestedIFocused,
       nextIFocused,
       nextNestedIFocused,
       nextItemFocusedPosition,
+      isLastItem,
     } = this.getVerticalPositions(
       carouselId,
       CAROUSEL_SCROLLABLE_DIRECTIONS.down,
       nested
     );
 
-    const isAboveWrapperLeftBorder =
+    const isInsideWrapperLeftBorder =
       nextItemFocusedPosition >= -scrollableTranslateY;
-    const isBeforeWrapperRightBorder =
+    const isInsideWrapperRightBorder =
       nextItemFocusedPosition + itemHeight <=
       wrapperHeight - scrollableTranslateY;
-    const isNextItemFocusedVisible =
-      isAboveWrapperLeftBorder && isBeforeWrapperRightBorder;
+    const isNextItemFocusedInsideWrapper =
+      isInsideWrapperLeftBorder && isInsideWrapperRightBorder;
 
-    if (isNextItemFocusedVisible) {
+    if (isNextItemFocusedInsideWrapper) {
       const newPositions = {
         iFocused: nextIFocused,
       };
       updatePositions(newPositions);
     } else if (!isNaN(nextItemFocusedPosition)) {
-      const newScrollableTranslateY = scrollableTranslateY - itemHeight;
+      let newScrollableTranslateY;
+      if (isLastItem)
+        newScrollableTranslateY = -(
+          nextItemFocusedPosition +
+          nextItemHeight -
+          wrapperHeight
+        );
+      else if (verticalFocusGap > 0)
+        newScrollableTranslateY = -nextItemFocusedPosition - verticalFocusGap;
+      else newScrollableTranslateY = scrollableTranslateY - itemHeight;
+
       const newPositions = {
         iFocused: nextIFocused,
         scrollableTranslateY: newScrollableTranslateY,
@@ -309,8 +339,12 @@ class CarouselEngine extends Component {
   };
 
   scrollToUp = nested => {
-    const { carouselId, wrapperHeight, updatePositions } = this.props;
-
+    const {
+      carouselId,
+      wrapperHeight,
+      updatePositions,
+      verticalFocusGap,
+    } = this.props;
     const {
       iFocused,
       itemHeight,
@@ -325,23 +359,25 @@ class CarouselEngine extends Component {
       nested
     );
 
-    const isAboveWrapperLeftBorder =
+    const isInsideWrapperLeftBorder =
       previousItemFocusedPosition >= -scrollableTranslateY;
-    const isBeforeWrapperRightBorder =
+    const isInsideWrapperRightBorder =
       previousItemFocusedPosition + itemHeight <=
       wrapperHeight - scrollableTranslateY;
-    const isPreviousItemFocusedVisible =
-      isAboveWrapperLeftBorder && isBeforeWrapperRightBorder;
+    const isPreviousItemInsideWrapper =
+      isInsideWrapperLeftBorder && isInsideWrapperRightBorder;
 
-    if (isPreviousItemFocusedVisible) {
+    if (isPreviousItemInsideWrapper) {
       updatePositions({
         iFocused: previousIFocused,
       });
     } else if (!isNaN(previousItemFocusedPosition)) {
-      const newScrollableTranslateY =
-        scrollableTranslateY + itemHeight <= 0
-          ? scrollableTranslateY + itemHeight
-          : 0;
+      let newScrollableTranslateY;
+      if (previousIFocused === 0) newScrollableTranslateY = 0;
+      else if (verticalFocusGap > 0)
+        newScrollableTranslateY =
+          -previousItemFocusedPosition - verticalFocusGap;
+      else newScrollableTranslateY = scrollableTranslateY + itemHeight;
 
       const newPositions = {
         iFocused: previousIFocused,
