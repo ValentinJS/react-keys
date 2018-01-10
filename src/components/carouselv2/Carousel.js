@@ -120,9 +120,9 @@ class Carousel extends Component {
     };
   }
 
-  getVerticalWrapperStyles(wrapperHeight, wrapperWidth, wrapperOverflow) {
+  getVerticalWrapperStyles(wrapperHeight, wrapperWidth) {
     return {
-      height: `${wrapperHeight + wrapperOverflow}px`,
+      height: `${wrapperHeight}px`,
       width: wrapperWidth,
       margin: '0 auto',
       overflow: 'hidden',
