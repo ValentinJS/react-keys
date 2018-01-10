@@ -220,22 +220,24 @@ function findClosestNextItem(id, iFocused) {
     currentScrollable.scrollableTranslateX;
 
   let indexClosest = 0;
-  let closestFoundAbsPosition = Math.abs(
+  let closestFoundRelativePosition = Math.abs(
     currentScrollableFocusPosition -
       (nextScrollableChildren[indexClosest].offsetLeft +
         nextScrollable.scrollableTranslateX)
   );
 
   for (let i = 1; i < nextScrollableChildren.length; i++) {
-    const nextAbsPosition = Math.abs(
+    const itemRelativePosition = Math.abs(
       currentScrollableFocusPosition -
         (nextScrollableChildren[i].offsetLeft +
           nextScrollable.scrollableTranslateX)
     );
 
-    if (nextAbsPosition < closestFoundAbsPosition) {
+    if (itemRelativePosition < closestFoundRelativePosition) {
       indexClosest = i;
-      closestFoundAbsPosition = nextAbsPosition;
+      closestFoundRelativePosition = itemRelativePosition;
+    } else if (itemRelativePosition >= closestFoundRelativePosition) {
+      break;
     }
   }
 
