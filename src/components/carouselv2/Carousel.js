@@ -141,10 +141,10 @@ class Carousel extends Component {
   updatePositions = (positions, cb) => {
     const { children, id, preloadItemsCount } = this.props;
 
-    this.refreshCarousel(() => {
-      if (!isNaN(positions.iFocused))
-        itemFocusedHandler(id, positions.iFocused, positions.nestedIFocused);
+    if (!isNaN(positions.iFocused))
+      itemFocusedHandler(id, positions.iFocused, positions.nestedIFocused);
 
+    this.refreshCarousel(() => {
       if (!isNaN(positions.scrollableTranslateX)) {
         horizontalScrollHandler(
           id,

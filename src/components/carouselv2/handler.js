@@ -19,12 +19,33 @@ export function addScrollableRef(id, scrollableRef, parentItemIndex) {
 
 export function addNestedScrollableRef(id, scrollableRef, parentItemIndex) {
   const { nestedScrollableRefs } = getBinder(id);
-  nestedScrollableRefs[parentItemIndex] = {
-    ref: scrollableRef,
-    scrollableTranslateX: 0,
-    scrollableTranslateY: 0,
-    iFocused: 0,
-  };
+  if (nestedScrollableRefs[parentItemIndex]) {
+    nestedScrollableRefs[parentItemIndex].ref = scrollableRef;
+    if (
+      !isNaN(nestedScrollableRefs[parentItemIndex].scrollableTranslateX) &&
+      nestedScrollableRefs[parentItemIndex].scrollableTranslateX !== 0
+    )
+      jumpToTranslateX(
+        scrollableRef,
+        nestedScrollableRefs[parentItemIndex].scrollableTranslateX
+      );
+    if (
+      !isNaN(nestedScrollableRefs[parentItemIndex].scrollableTranslateY) &&
+      nestedScrollableRefs[parentItemIndex].scrollableTranslateY !== 0
+    )
+      jumpToTranslateY(
+        scrollableRef,
+        nestedScrollableRefs[parentItemIndex].scrollableTranslateY
+      );
+  } else {
+    nestedScrollableRefs[parentItemIndex] = {
+      ref: scrollableRef,
+      scrollableTranslateX: 0,
+      scrollableTranslateY: 0,
+      iFocused: 0,
+    };
+  }
+
   _updateBinder({ id, nestedScrollableRefs });
 }
 
@@ -41,6 +62,20 @@ export function getScrollableTranslateX(id) {
 export function getScrollableTranslateY(id) {
   const { scrollableTranslateY } = getBinder(id);
   return scrollableTranslateY;
+}
+
+export function jumpToTranslateX(ref, translateX) {
+  const tempTransition = ref.style.transition;
+  ref.style.transition = 'none';
+  ref.style.transform = `translate3d(${translateX}px, 0, 0)`;
+  ref.style.transition = tempTransition;
+}
+
+export function jumpToTranslateY(ref, translateY) {
+  const tempTransition = ref.style.transition;
+  ref.style.transition = 'none';
+  ref.style.transform = `translate3d(0, ${translateY}px, 0)`;
+  ref.style.transition = tempTransition;
 }
 
 export function horizontalScrollHandler(id, translateX, nestedTranslateX) {
@@ -72,7 +107,7 @@ export function addScrollableItemRef(id, itemIndex, scrollableItemRef) {
 
   if (
     direction === CAROUSEL_DIRECTIONS.vertical ||
-    direction === CAROUSEL_DIRECTIONS.verticalBidirectional
+    isCarouselBidirectional(id)
   ) {
     scrollableItems[itemIndex].offsetHeight = scrollableItemRef.offsetHeight;
     scrollableItems[itemIndex].offsetTop = scrollableItemRef.offsetTop;
@@ -222,9 +257,9 @@ export function itemFocusedHandler(id, iFocused, nestedIFocused, callback) {
     scrollableItems,
     verticalChildItemWrapper,
   } = getBinder(id);
-  //console.log('=> BINDER', getBinder(id));
+  // console.log('=> BINDER', getBinder(id));
 
-  if (direction === CAROUSEL_DIRECTIONS.verticalBidirectional) {
+  if (isCarouselBidirectional(id)) {
     const focusedItem = scrollableItems[iFocused].ref.querySelector(
       verticalChildItemWrapper
     );
@@ -279,4 +314,12 @@ export function itemFocusedHandler(id, iFocused, nestedIFocused, callback) {
 export function isCarouselActive(id) {
   const { active } = getBinder(id);
   return active;
+}
+
+export function isCarouselBidirectional(id) {
+  const { direction } = getBinder(id);
+  return (
+    direction === CAROUSEL_DIRECTIONS.horizontalBidirectional ||
+    direction === CAROUSEL_DIRECTIONS.verticalBidirectional
+  );
 }

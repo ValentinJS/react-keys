@@ -11,6 +11,7 @@ import {
   getItemOffsetWidth,
   getNestedItemOffsetWidth,
   getNestedIFocused,
+  isCarouselBidirectional,
 } from './handler';
 
 class CarouselScrollable extends React.Component {
@@ -63,26 +64,28 @@ class CarouselScrollable extends React.Component {
         iIndex < maxItemsVisible && iIndex > minItemsVisible;
 
       if (!isItemVisible) {
-        const height = getItemOffsetHeight(carouselId, iIndex);
-        const width = getItemOffsetWidth(carouselId, iIndex);
+        const spacerContentStyles = {
+          height: getItemOffsetHeight(carouselId, iIndex),
+          width: getItemOffsetWidth(carouselId, iIndex),
+        };
+
+        const spacerStyles = {
+          display:
+            direction === CAROUSEL_DIRECTIONS.horizontal
+              ? 'inline-block'
+              : 'block',
+        };
+
         return (
-          <div
-            key={`spacer_${iIndex}`}
-            style={{
-              display:
-                direction === CAROUSEL_DIRECTIONS.horizontal
-                  ? 'inline-block'
-                  : 'block',
-            }}
-          >
-            <div style={{ height: height, width: width }} />
+          <div key={`spacer_${iIndex}`} style={spacerStyles}>
+            <div style={spacerContentStyles} />
           </div>
         );
       }
 
       let mustUpdateNested = false;
 
-      if (direction === CAROUSEL_DIRECTIONS.verticalBidirectional) {
+      if (isCarouselBidirectional(carouselId)) {
         const nestedIFocused = getNestedIFocused(carouselId, iIndex);
         if (nestedIFocused !== this.prevNestedIFocused) {
           mustUpdateNested = true;
@@ -138,12 +141,14 @@ class CarouselScrollable extends React.Component {
               parentItemIndex,
               iNestedItem
             );
+            const spacerStyles = { display: 'inline-block' };
+            const widthStyles = { width };
             return (
               <div
                 key={`spacer_${parentItemIndex}_${iNestedItem}`}
-                style={{ display: 'inline-block' }}
+                style={spacerStyles}
               >
-                <div style={{ width: width }} />
+                <div style={widthStyles} />
               </div>
             );
           }

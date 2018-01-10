@@ -22,6 +22,7 @@ import {
   getScrollableTranslateX,
   getScrollableTranslateY,
   isCarouselActive,
+  isCarouselBidirectional,
 } from './handler';
 import { addListener, removeListener, userConfig } from '../../listener';
 
@@ -39,57 +40,54 @@ class CarouselEngine extends Component {
     removeListener(this.listenerId);
   }
 
-  getHorizontalPositions = (carouselId, direction, nested) => {
-    if (nested) {
-      const iFocused = getIFocused(carouselId);
-      const nestedIFocused = getNestedIFocused(carouselId, iFocused);
-      const scrollableTranslateX = getNestedScrollableTranslateX(
-        carouselId,
-        iFocused
-      );
-      const nextNestedIFocused =
-        direction === CAROUSEL_SCROLLABLE_DIRECTIONS.right
-          ? nestedIFocused + 1
-          : nestedIFocused - 1;
-      const nextItemFocusedPosition = getNestedItemOffsetLeft(
-        carouselId,
-        iFocused,
-        nextNestedIFocused
-      );
-      const itemWidth = getNestedItemOffsetWidth(
-        carouselId,
-        iFocused,
-        nextNestedIFocused
-      );
-      return {
-        iFocused: iFocused,
-        nestedIFocused,
-        scrollableTranslateX,
-        nextIFocused: iFocused,
-        nextNestedIFocused,
-        nextItemFocusedPosition,
-        itemWidth,
-      };
-    } else {
-      const iFocused = getIFocused(carouselId);
-      const scrollableTranslateX = getScrollableTranslateX(carouselId);
-      const nextIFocused =
-        direction === CAROUSEL_SCROLLABLE_DIRECTIONS.right
-          ? iFocused + 1
-          : iFocused - 1;
-      const nextItemFocusedPosition = getItemOffsetLeft(
-        carouselId,
-        nextIFocused
-      );
-      const itemWidth = getItemOffsetWidth(carouselId, nextIFocused);
-      return {
-        iFocused,
-        scrollableTranslateX,
-        nextIFocused,
-        nextItemFocusedPosition,
-        itemWidth,
-      };
-    }
+  getNestedHorizontalPositions = (carouselId, direction) => {
+    const iFocused = getIFocused(carouselId);
+    const nestedIFocused = getNestedIFocused(carouselId, iFocused);
+    const scrollableTranslateX = getNestedScrollableTranslateX(
+      carouselId,
+      iFocused
+    );
+    const nextNestedIFocused =
+      direction === CAROUSEL_SCROLLABLE_DIRECTIONS.right
+        ? nestedIFocused + 1
+        : nestedIFocused - 1;
+    const nextItemFocusedPosition = getNestedItemOffsetLeft(
+      carouselId,
+      iFocused,
+      nextNestedIFocused
+    );
+    const itemWidth = getNestedItemOffsetWidth(
+      carouselId,
+      iFocused,
+      nextNestedIFocused
+    );
+    return {
+      iFocused: iFocused,
+      nestedIFocused,
+      scrollableTranslateX,
+      nextIFocused: iFocused,
+      nextNestedIFocused,
+      nextItemFocusedPosition,
+      itemWidth,
+    };
+  };
+
+  getHorizontalPositions = (carouselId, direction) => {
+    const iFocused = getIFocused(carouselId);
+    const scrollableTranslateX = getScrollableTranslateX(carouselId);
+    const nextIFocused =
+      direction === CAROUSEL_SCROLLABLE_DIRECTIONS.right
+        ? iFocused + 1
+        : iFocused - 1;
+    const nextItemFocusedPosition = getItemOffsetLeft(carouselId, nextIFocused);
+    const itemWidth = getItemOffsetWidth(carouselId, nextIFocused);
+    return {
+      iFocused,
+      scrollableTranslateX,
+      nextIFocused,
+      nextItemFocusedPosition,
+      itemWidth,
+    };
   };
 
   getVerticalPositions = (carouselId, direction, nested) => {
@@ -195,11 +193,15 @@ class CarouselEngine extends Component {
       nextIFocused: previousIFocused,
       nextNestedIFocused: prevNestedIFocused,
       nextItemFocusedPosition: previousItemFocusedPosition,
-    } = this.getHorizontalPositions(
-      carouselId,
-      CAROUSEL_SCROLLABLE_DIRECTIONS.left,
-      nested
-    );
+    } = nested
+      ? this.getNestedHorizontalPositions(
+          carouselId,
+          CAROUSEL_SCROLLABLE_DIRECTIONS.left
+        )
+      : this.getHorizontalPositions(
+          carouselId,
+          CAROUSEL_SCROLLABLE_DIRECTIONS.left
+        );
 
     const isAboveWrapperLeftBorder =
       previousItemFocusedPosition >= -scrollableTranslateX;
@@ -256,11 +258,15 @@ class CarouselEngine extends Component {
       nextIFocused,
       nextNestedIFocused,
       nextItemFocusedPosition,
-    } = this.getHorizontalPositions(
-      carouselId,
-      CAROUSEL_SCROLLABLE_DIRECTIONS.right,
-      nested
-    );
+    } = nested
+      ? this.getNestedHorizontalPositions(
+          carouselId,
+          CAROUSEL_SCROLLABLE_DIRECTIONS.right
+        )
+      : this.getHorizontalPositions(
+          carouselId,
+          CAROUSEL_SCROLLABLE_DIRECTIONS.right
+        );
 
     const isAboveWrapperLeftBorder =
       nextItemFocusedPosition >= -scrollableTranslateX;
@@ -355,7 +361,7 @@ class CarouselEngine extends Component {
       (isNaN(timeDiff) || timeDiff > 80)
     ) {
       this.lastKeysCall = Date.now();
-      const nested = direction === CAROUSEL_DIRECTIONS.verticalBidirectional;
+      const nested = isCarouselBidirectional(carouselId);
 
       switch (keyCode) {
         case userConfig.left:
