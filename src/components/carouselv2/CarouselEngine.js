@@ -131,7 +131,7 @@ class CarouselEngine extends Component {
         carouselId,
         nextIFocused
       );
-      const itemHeight = getItemOffsetHeight(carouselId, nextIFocused);
+      const itemHeight = getItemOffsetHeight(carouselId, iFocused);
       return {
         iFocused,
         scrollableTranslateY,
