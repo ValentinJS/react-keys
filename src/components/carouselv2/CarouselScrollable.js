@@ -12,13 +12,39 @@ import {
   getNestedItemOffsetWidth,
   getNestedIFocused,
   isCarouselBidirectional,
+  removeScrollableRef,
+  removeNestedScrollableRef,
 } from './handler';
 
 class CarouselScrollable extends React.Component {
   state = {};
   prevNestedIFocused = 0;
+  renderedItems = [];
 
   componentDidMount() {
+    this.handleAddRef();
+  }
+
+  componentWillUnmount() {
+    this.handleRemoveRef();
+  }
+
+  getHorizontalScrollableStyles() {
+    return {
+      display: 'flex',
+      flexDirection: 'row',
+      height: '100%',
+    };
+  }
+
+  getVerticalScrollableStyles() {
+    return {
+      height: '0px',
+      width: '100%',
+    };
+  }
+
+  handleAddRef() {
     const {
       carouselId,
       nested,
@@ -32,18 +58,27 @@ class CarouselScrollable extends React.Component {
     }
   }
 
-  getHorizontalScrollableStyles() {
-    return {
-      display: 'flex',
-      flexDirection: 'row',
-      height: '100%',
-    };
+  handleRemoveRef() {
+    const {
+      carouselId,
+      nested,
+      parentCarouselId,
+      parentItemIndex,
+    } = this.props;
+    if (!nested) {
+      removeScrollableRef(carouselId);
+    } else {
+      removeNestedScrollableRef(parentCarouselId, parentItemIndex);
+    }
   }
 
-  getVerticalScrollableStyles() {
-    return {
-      width: '100%',
-    };
+  hasBeenRendered(itemIndex) {
+    const { loadOnce } = this.props;
+    if (!loadOnce) {
+      return false;
+    }
+
+    return this.renderedItems.includes(itemIndex);
   }
 
   renderItems() {
@@ -57,30 +92,22 @@ class CarouselScrollable extends React.Component {
       preloadItemsCount,
     } = this.props;
 
-    return React.Children.toArray(children).map((item, iIndex) => {
+    let spacerHeight = 0,
+      spacerWidth = 0;
+    const itemsTree = React.Children.toArray(children).map((item, iIndex) => {
       const maxItemsVisible = iFocused + itemsVisiblesCount + preloadItemsCount;
       const minItemsVisible = iFocused - itemsVisiblesCount - preloadItemsCount;
       const isItemVisible =
-        iIndex < maxItemsVisible && iIndex > minItemsVisible;
+        (iIndex < maxItemsVisible && iIndex > minItemsVisible) ||
+        this.hasBeenRendered(iIndex);
 
-      if (!isItemVisible) {
-        const spacerContentStyles = {
-          height: getItemOffsetHeight(carouselId, iIndex),
-          width: getItemOffsetWidth(carouselId, iIndex),
-        };
+      if (isItemVisible && !this.hasBeenRendered(iIndex, false)) {
+        this.renderedItems.push(iIndex);
+      }
 
-        const spacerStyles = {
-          display:
-            direction === CAROUSEL_DIRECTIONS.horizontal
-              ? 'inline-block'
-              : 'block',
-        };
-
-        return (
-          <div key={`spacer_${iIndex}`} style={spacerStyles}>
-            <div style={spacerContentStyles} />
-          </div>
-        );
+      if (!isItemVisible && iIndex < maxItemsVisible) {
+        spacerHeight += getItemOffsetHeight(carouselId, iIndex) || 0;
+        spacerWidth += getItemOffsetWidth(carouselId, iIndex) || 0;
       }
 
       let mustUpdateNested = false;
@@ -109,6 +136,17 @@ class CarouselScrollable extends React.Component {
         )
       );
     });
+
+    return React.createElement(
+      'div',
+      {
+        style: {
+          paddingLeft: spacerWidth,
+          paddingTop: spacerHeight,
+        },
+      },
+      itemsTree
+    );
   }
 
   renderNestedItems() {
@@ -132,8 +170,13 @@ class CarouselScrollable extends React.Component {
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         {nestedChildren.map((nestedChildItem, iNestedItem) => {
           const isItemVisible =
-            iNestedItem < maxNestedItemsVisible &&
-            iNestedItem > minNestedItemsVisible;
+            (iNestedItem < maxNestedItemsVisible &&
+              iNestedItem > minNestedItemsVisible) ||
+            this.hasBeenRendered(iNestedItem);
+
+          if (isItemVisible && !this.hasBeenRendered(iNestedItem, false)) {
+            this.renderedItems.push(iNestedItem);
+          }
 
           if (!isItemVisible && iNestedItem < maxNestedItemsVisible) {
             const width = getNestedItemOffsetWidth(
@@ -203,14 +246,16 @@ class CarouselScrollable extends React.Component {
       scrollable2Styles = this.getHorizontalScrollableStyles();
 
     return (
-      <div
-        className="keys-carousel-scrollable"
-        ref={el => {
-          this.el = el;
-        }}
-        style={scrollableStyles}
-      >
-        {nested ? this.renderNestedItems() : this.renderItems()}
+      <div>
+        <div
+          className="keys-carousel-scrollable"
+          ref={el => {
+            this.el = el;
+          }}
+          style={scrollableStyles}
+        >
+          {nested ? this.renderNestedItems() : this.renderItems()}
+        </div>
       </div>
     );
   }

@@ -23,13 +23,13 @@ import {
   getScrollableTranslateY,
   isCarouselActive,
   isCarouselBidirectional,
+  queueAction,
 } from './handler';
 import { addListener, removeListener, userConfig } from '../../listener';
 
 class CarouselEngine extends Component {
   constructor(props) {
     super(props);
-    this.ticking = false;
   }
 
   componentWillMount() {
@@ -158,9 +158,10 @@ class CarouselEngine extends Component {
   scrollToDown = nested => {
     const {
       carouselId,
-      wrapperHeight,
+      onDownExit,
       updatePositions,
       verticalFocusGap,
+      wrapperHeight,
     } = this.props;
 
     const {
@@ -209,6 +210,8 @@ class CarouselEngine extends Component {
         scrollableTranslateY: newScrollableTranslateY,
       };
       updatePositions(newPositions);
+    } else {
+      onDownExit();
     }
   };
 
@@ -341,9 +344,10 @@ class CarouselEngine extends Component {
   scrollToUp = nested => {
     const {
       carouselId,
-      wrapperHeight,
+      onUpExit,
       updatePositions,
       verticalFocusGap,
+      wrapperHeight,
     } = this.props;
     const {
       iFocused,
@@ -384,19 +388,15 @@ class CarouselEngine extends Component {
         scrollableTranslateY: newScrollableTranslateY,
       };
       updatePositions(newPositions);
+    } else {
+      onUpExit();
     }
   };
 
   keysHandler(keyCode, longPress, click) {
     const { active, carouselId, direction } = this.props;
-    const newCall = Date.now();
-    const timeDiff = newCall - this.lastKeysCall;
-    if (
-      isCarouselActive(carouselId) &&
-      isActive({ active, id: carouselId }) &&
-      (isNaN(timeDiff) || timeDiff > 80)
-    ) {
-      this.lastKeysCall = Date.now();
+
+    if (isCarouselActive(carouselId) && isActive({ active, id: carouselId })) {
       const nested = isCarouselBidirectional(carouselId);
 
       switch (keyCode) {

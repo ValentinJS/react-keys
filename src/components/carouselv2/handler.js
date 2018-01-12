@@ -3,18 +3,30 @@ import { findBinder } from '../../redux/helper';
 import { C_DOWN, C_LEFT, C_RIGHT, C_UP, NAME } from '../../constants';
 import { _updateBinder, UPDATE_CURRENT } from '../../redux/actions';
 import { CAROUSEL_DIRECTIONS } from '../../constants';
+import { updateBinder } from '../../index';
 
 export function getBinder(id) {
   return findBinder(getBinders(), id);
 }
 
-export function addScrollableRef(id, scrollableRef, parentItemIndex) {
+export function addScrollableRef(id, scrollableRef) {
   _updateBinder({
     id,
     scrollableRef,
     scrollableTranslateX: 0,
     scrollableTranslateY: 0,
   });
+}
+
+export function removeScrollableRef(id) {
+  if (getBinder(id)) {
+    _updateBinder({
+      id,
+      scrollableRef: null,
+      scrollableTranslateX: 0,
+      scrollableTranslateY: 0,
+    });
+  }
 }
 
 export function addNestedScrollableRef(id, scrollableRef, parentItemIndex) {
@@ -47,6 +59,15 @@ export function addNestedScrollableRef(id, scrollableRef, parentItemIndex) {
   }
 
   _updateBinder({ id, nestedScrollableRefs });
+}
+
+export function removeNestedScrollableRef(id, parentItemIndex) {
+  const binder = getBinder(id);
+  if (binder) {
+    const { nestedScrollableRefs } = binder;
+    delete nestedScrollableRefs[parentItemIndex].ref;
+    _updateBinder({ id, nestedScrollableRefs });
+  }
 }
 
 export function getScrollableRef(id) {
@@ -100,7 +121,7 @@ export function verticalScrollHandler(id, translateY) {
 }
 
 export function addScrollableItemRef(id, itemIndex, scrollableItemRef) {
-  const { direction, nestedScrollableItems, scrollableItems } = getBinder(id);
+  const { direction, scrollableItems } = getBinder(id);
 
   scrollableItems[itemIndex] = {};
   scrollableItems[itemIndex].ref = scrollableItemRef;
@@ -109,13 +130,33 @@ export function addScrollableItemRef(id, itemIndex, scrollableItemRef) {
     direction === CAROUSEL_DIRECTIONS.vertical ||
     isCarouselBidirectional(id)
   ) {
-    scrollableItems[itemIndex].offsetHeight = scrollableItemRef.offsetHeight;
+    const dimensions = scrollableItemRef.getBoundingClientRect();
+    scrollableItems[itemIndex].offsetHeight = dimensions.height;
     scrollableItems[itemIndex].offsetTop = scrollableItemRef.offsetTop;
   } else if (direction === CAROUSEL_DIRECTIONS.horizontal) {
-    scrollableItems[itemIndex].offsetWidth = scrollableItemRef.offsetWidth;
+    const dimensions = scrollableItemRef.getBoundingClientRect();
+    scrollableItems[itemIndex].offsetWidth = dimensions.width;
     scrollableItems[itemIndex].offsetLeft = scrollableItemRef.offsetLeft;
   }
   _updateBinder({ id, scrollableItems });
+}
+
+export function removeScrollableItemRef(id, itemIndex) {
+  const binder = getBinder(id);
+  if (binder) {
+    const { scrollableItems } = binder;
+    delete scrollableItems[itemIndex].ref;
+    _updateBinder({ id, scrollableItems });
+  }
+}
+
+export function removeNestedScrollableItemRef(id, itemIndex, parentItemIndex) {
+  const binder = getBinder(id);
+  if (binder) {
+    const { nestedScrollableItems } = binder;
+    delete nestedScrollableItems[parentItemIndex][itemIndex].ref;
+    _updateBinder({ id, nestedScrollableItems });
+  }
 }
 
 export function addNestedScrollableItemRef(
@@ -259,7 +300,6 @@ export function itemFocusedHandler(id, iFocused, nestedIFocused, callback) {
     scrollableItems,
     verticalChildItemWrapper,
   } = getBinder(id);
-  // console.log('=> BINDER', getBinder(id));
 
   if (isCarouselBidirectional(id)) {
     const focusedItem = scrollableItems[iFocused].ref.querySelector(
@@ -324,4 +364,31 @@ export function isCarouselBidirectional(id) {
     direction === CAROUSEL_DIRECTIONS.horizontalBidirectional ||
     direction === CAROUSEL_DIRECTIONS.verticalBidirectional
   );
+}
+
+export function exitCarousel(id) {
+  const {
+    iFocused,
+    focusedClassName,
+    nestedFocusedClassName,
+    scrollableItems,
+  } = getBinder(id);
+
+  updateBinder({ id, active: false });
+
+  const focusedItem = scrollableItems[iFocused].ref.querySelector(
+    `.${focusedClassName}`
+  );
+  if (focusedItem) {
+    focusedItem.classList.remove(focusedClassName);
+  }
+
+  if (isCarouselBidirectional(id)) {
+    const focusedNestedItem = scrollableItems[iFocused].ref.querySelector(
+      `.${nestedFocusedClassName}`
+    );
+    if (focusedNestedItem) {
+      focusedNestedItem.classList.remove(nestedFocusedClassName);
+    }
+  }
 }

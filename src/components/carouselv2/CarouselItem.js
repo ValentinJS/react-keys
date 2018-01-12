@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { addScrollableItemRef, addNestedScrollableItemRef } from './handler';
+import {
+  addScrollableItemRef,
+  addNestedScrollableItemRef,
+  removeScrollableItemRef,
+  removeNestedScrollableItemRef,
+} from './handler';
 import { CAROUSEL_DIRECTIONS } from '../../constants';
 class CarouselItem extends Component {
   state = {};
 
   componentDidMount() {
+    this.handleAddRef();
+  }
+
+  componentWillUnmount() {
+    this.handleRemoveRef();
+  }
+
+  handleAddRef() {
     const {
       carouselId,
       itemIndex,
@@ -21,6 +34,25 @@ class CarouselItem extends Component {
         itemIndex,
         parentItemIndex,
         this.el
+      );
+    }
+  }
+
+  handleRemoveRef() {
+    const {
+      carouselId,
+      itemIndex,
+      nested,
+      parentCarouselId,
+      parentItemIndex,
+    } = this.props;
+    if (!nested) {
+      removeScrollableItemRef(carouselId, itemIndex);
+    } else {
+      removeNestedScrollableItemRef(
+        parentCarouselId,
+        itemIndex,
+        parentItemIndex
       );
     }
   }

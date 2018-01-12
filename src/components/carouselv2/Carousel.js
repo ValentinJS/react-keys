@@ -9,14 +9,13 @@ import { defaultProps, propTypes } from './props';
 import { _updateBinder, addBinder, _removeBinder } from '../../redux/actions';
 import { CAROUSEL_DIRECTIONS, CAROUSEL_TYPE } from '../../constants';
 import {
+  exitCarousel,
   itemFocusedHandler,
   horizontalScrollHandler,
   horizontalNestedScrollHandler,
   verticalScrollHandler,
   getItemOffsetHeight,
   getNestedItemOffsetWidth,
-} from './handler';
-import {
   getIFocused,
   getNestedIFocused,
   getItemOffsetWidth,
@@ -29,6 +28,8 @@ import {
 
 class Carousel extends Component {
   state = {};
+  updatesTimeout = [];
+  TICK = 0;
 
   constructor(props) {
     super(props);
@@ -38,6 +39,7 @@ class Carousel extends Component {
     const {
       children,
       childItemWrapper,
+      debounce,
       direction,
       focusedClassName,
       horizontalChildItemWrapper,
@@ -64,6 +66,10 @@ class Carousel extends Component {
       !childItemWrapper
     ) {
       throw new Error('You must fill child item wrapper selector');
+    }
+
+    if (debounce) {
+      this.TICK = debounce;
     }
 
     addBinder(this.props, CAROUSEL_TYPE);
@@ -95,6 +101,7 @@ class Carousel extends Component {
 
   componentWillUnmount() {
     _removeBinder(this.props.id);
+    this.updatesTimeout.forEach(t => clearTimeout(t));
   }
 
   componentWillReceiveProps({
@@ -112,7 +119,7 @@ class Carousel extends Component {
 
   getHorizontalWrapperStyles(wrapperHeight, wrapperOverflow, wrapperWidth) {
     return {
-      height: wrapperHeigth,
+      height: wrapperHeight,
       width: `${wrapperWidth + wrapperOverflow}px`,
       margin: '0 auto',
       overflow: 'hidden',
@@ -131,6 +138,22 @@ class Carousel extends Component {
     };
   }
 
+  onUpExit = () => {
+    const { id, onUpExit } = this.props;
+    if (onUpExit) {
+      onUpExit();
+      exitCarousel(id);
+    }
+  };
+
+  onDownExit = () => {
+    const { id, onDownExit } = this.props;
+    if (onDownExit) {
+      onDownExit();
+      exitCarousel(id);
+    }
+  };
+
   refreshCarousel = cb => {
     const { children, preloadItemsCount } = this.props;
     this.setState({ refresh: true }, () => {
@@ -138,24 +161,40 @@ class Carousel extends Component {
     });
   };
 
+  queueAction(action, timeout) {
+    const timeoutHandle = setTimeout(action, timeout);
+    this.updatesTimeout.push(timeoutHandle);
+  }
+
   updatePositions = (positions, cb) => {
+    if (this.pendingScrollAsyncUpdateHandle || this.blocked) {
+      return; // an update already queued, skip
+    }
     const { children, id, preloadItemsCount } = this.props;
+    this.blocked = true;
+    this.pendingScrollAsyncUpdateHandle = requestAnimationFrame(() => {
+      this.queueAction(() => {
+        this.refreshCarousel(() => {});
+        if (!isNaN(positions.iFocused))
+          itemFocusedHandler(id, positions.iFocused, positions.nestedIFocused);
 
-    if (!isNaN(positions.iFocused))
-      itemFocusedHandler(id, positions.iFocused, positions.nestedIFocused);
-
-    this.refreshCarousel(() => {
-      if (!isNaN(positions.scrollableTranslateX)) {
-        horizontalScrollHandler(
-          id,
-          positions.scrollableTranslateX,
-          positions.nestedScrollableTranslateX
-        );
-      } else if (!isNaN(positions.nestedScrollableTranslateX)) {
-        horizontalNestedScrollHandler(id, positions.nestedScrollableTranslateX);
-      } else if (!isNaN(positions.scrollableTranslateY)) {
-        verticalScrollHandler(id, positions.scrollableTranslateY);
-      }
+        if (!isNaN(positions.scrollableTranslateX)) {
+          horizontalScrollHandler(
+            id,
+            positions.scrollableTranslateX,
+            positions.nestedScrollableTranslateX
+          );
+        } else if (!isNaN(positions.nestedScrollableTranslateX)) {
+          horizontalNestedScrollHandler(
+            id,
+            positions.nestedScrollableTranslateX
+          );
+        } else if (!isNaN(positions.scrollableTranslateY)) {
+          verticalScrollHandler(id, positions.scrollableTranslateY);
+        }
+        this.pendingScrollAsyncUpdateHandle = 0;
+        this.blocked = false;
+      }, this.TICK);
     });
   };
 
@@ -167,6 +206,7 @@ class Carousel extends Component {
         id,
         itemsVisiblesCount,
         itemStyles,
+        loadOnce,
         loop,
         preloadItemsCount,
         onEnter,
@@ -199,7 +239,8 @@ class Carousel extends Component {
           key={id}
           direction={direction}
           iFocused={iFocused}
-          blah={Math.random()}
+          refresh={Math.random()}
+          loadOnce={loadOnce}
           itemsVisiblesCount={itemsVisiblesCount}
           preloadItemsCount={preloadItemsCount}
         >
@@ -230,6 +271,8 @@ class Carousel extends Component {
             onEnter={onEnter}
             wrapperHeight={wrapperHeight}
             wrapperWidth={wrapperWidth}
+            onUpExit={this.onUpExit}
+            onDownExit={this.onDownExit}
             updatePositions={this.updatePositions}
             verticalFocusGap={verticalFocusGap}
           />

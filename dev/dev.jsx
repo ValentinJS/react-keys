@@ -205,12 +205,14 @@ class CarouselV2Wrapper extends React.Component {
         }
         <CarouselV2
           active
+          debounce={200}
           id="carousel-v-1"
           direction="vertical-bidirectional"
           itemsVisiblesCount={3}
           loop={loop}
           onEnter={this.onEnter}
           mirror
+          loadOnce={true}
           preloadItemsCount={1}
           focusedClassName={'focuseditemlol'}
           nestedFocusedClassName={'focuseditemlolilol'}
@@ -255,7 +257,11 @@ class CarouselV2Wrapper extends React.Component {
               return (
                 <div key={`item_${index}`} className={'item-child-2'} style={{ width: index % 2 === 0 ? '300px' : '200px', height: '200px' }}>
                   <div id={`item_${index}`} className={'item-child'}>
-                    item_{index}
+                    <img
+                      key={`img_item_${index}`}
+                      src={`./thumb.png`}
+                      width="200"
+                      height="150" />
                   </div>
                 </div>
               )
@@ -310,6 +316,7 @@ class RowItem extends React.Component {
     const { parentIndex, items } = this.props;
 
     const mappedItems = items.slice(0, 4);
+    // const mappedItems = items;
     return (
 
       <div id={`parent_item_${parentIndex}`} className="carousel-children">
@@ -318,8 +325,9 @@ class RowItem extends React.Component {
         <div className={'parent-child'} style={{ display: 'flex', flexDirection: 'row' }}>
           <CarouselV2Scrollable
             key={`parent_item_${parentIndex}`}
-            itemsVisiblesCount={3}
-            preloadItemsCount={1}
+            direction={'horizontal'}
+            itemsVisiblesCount={4}
+            preloadItemsCount={2}
             nested
             parentCarouselId="carousel-v-1"
             parentItemIndex={parentIndex}
@@ -345,6 +353,8 @@ class ChildItem extends React.Component {
   state = {}
 
   componentDidMount() {
+
+
     // const { parentIndex, index } = this.props;
     // if (!imagesLoaded.includes(`${parentIndex}_${index}`)) {
     //   this.imageDisplayTimeout = setTimeout(() => {
@@ -369,18 +379,14 @@ class ChildItem extends React.Component {
   render() {
     const { parentIndex, index } = this.props;
     return (
-      <div key={`item_${parentIndex}_${index}`} className={'item-child-2'} style={{ width: index === 4 ? '200px' : '200px', height: '200px', border: '1px solid purple' }}>
+      <div key={`item_${parentIndex}_${index}`} className={'item-child-2'} style={{ width: index === 4 ? '200px' : '200px', height: '200px'}}>
         <div id={`item_${parentIndex}_${index}`} className={'item-child'}>
-          item{parentIndex}_{index}
-          {/* <img
+          {/* item{parentIndex}_{index} */}
+          <img
             key={`img_item_${parentIndex}_${index}`}
-            ref={el => {
-              this.el = el;
-            }}
-            className="img-loading"
-            src={null}
+            src={`./thumb.png?hash=${Math.random()}`}
             width="200"
-            height="150" /> */}
+            height="150" />
         </div>
       </div>
     );
