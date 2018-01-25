@@ -22,6 +22,7 @@ export function refreshState() {
   const nextWrapper = calculateElSpace(
     wrapper ? document.querySelector(wrapper) : document.body
   );
+
   const nextElements = createList(dom, selector, filter);
 
   const hasDiff =
@@ -50,7 +51,18 @@ export function mountState() {
 
 export const updateState = (binder, nextWrapper, nextElements, props) => {
   const { id, visibilityOffset, refreshStrategy } = props;
+
+  const updatedOptions = {
+    marginLeft: 0,
+    marginTop: 0,
+    offset: visibilityOffset,
+    wrapper: nextWrapper,
+  };
+  const updatedElements = build(nextElements, updatedOptions);
+  binder.elements = updatedElements;
+
   const nextSelection = next(nextElements, binder, refreshStrategy);
+
   const options = {
     marginLeft: nextSelection.marginLeft,
     marginTop: nextSelection.marginTop,

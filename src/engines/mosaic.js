@@ -41,14 +41,13 @@ export const calculDowScore = (el, elCoords) =>
 export function build(elements, options) {
   const { wrapper, marginLeft, offset, marginTop } = options;
   const elementsCoords = elements.map(calculateElSpace);
-
   return elementsCoords.map(el => {
     const coords = {
       ...el,
-      right: el.right - marginLeft,
-      left: el.left - marginLeft,
-      top: el.top - marginTop,
-      down: el.down - marginTop,
+      right: el.right,
+      left: el.left,
+      top: el.top,
+      down: el.down,
     };
     return {
       id: el.id,

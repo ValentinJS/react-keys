@@ -31,7 +31,9 @@ class Binder extends Component {
   }
 
   componentDidUpdate() {
-    refreshState.apply(this);
+    requestAnimationFrame(() => {
+      refreshState.apply(this);
+    });
   }
 
   componentWillUnmount() {
