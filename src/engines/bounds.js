@@ -192,7 +192,7 @@ export function calculMarginOnTop(
   const lastGap = boundedGap || topGap;
   const isLastGap = top + (wrapper.height + lastGap) < 0;
   const computedTop = top - (isLastGap ? lastGap : gap);
-  const finalTop = computedTop - wrapper.top;
+  const finalTop = computedTop;
   return finalTop < 0 && !isLastGap ? 0 : -finalTop;
 }
 
